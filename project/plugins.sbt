@@ -3,3 +3,15 @@ resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releas
 
 // Use the Play sbt plugin for Play projects
 addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.1")
+
+// Coffeescript compilation
+addSbtPlugin("com.typesafe.sbt" % "sbt-coffeescript" % "1.0.0")
+
+// Less compilation
+addSbtPlugin("com.typesafe.sbt" % "sbt-less" % "1.0.6")
+
+// JSHint
+addSbtPlugin("com.typesafe.sbt" % "sbt-jshint" % "1.0.3")
+
+// RequireJS
+addSbtPlugin("com.typesafe.sbt" % "sbt-rjs" % "1.0.7")

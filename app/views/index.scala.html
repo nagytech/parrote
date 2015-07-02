@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
+    </head>
+    <body>
+        <div id="header" class="col-sm-12">
+            <h1 class="pull-left">parotte <small>a bird on a wire</small></h1>
+            <button class="btn pull-right btn-default" data-action="signup">sign up</button>
+            <button class="btn pull-right btn-default" data-action="login">login</button>
+        </div>
+        <!-- TODO: Scala form / templating -->
+        <form id="postForm" class="col-sm-4 col-sm-offset-4">
+            <label>New Post:</label>
+            <textarea name="text" class="form-control"></textarea>
+            <button class="btn pull-right btn-primary">Post <i class="glyphicon glyphicon-bullhorn"></i></button>
+        </form>
+        <script src="@routes.Assets.at("jquery-1.11.3.min.js")" ></script>
+        <script src="@routes.Assets.at("javascripts/main.js")" ></script>
+    </body>
+</html>

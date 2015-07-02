@@ -7,7 +7,7 @@ public class Application extends Controller {
 
     public static Result index() {
 
-        return ok("Hello, world!");
+        return ok(views.html.index.render());
 
     }
 

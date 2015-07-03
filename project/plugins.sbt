@@ -14,3 +14,6 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-jshint" % "1.0.3")
 
 // RequireJS
 addSbtPlugin("com.typesafe.sbt" % "sbt-rjs" % "1.0.7")
+
+// Ebean
+addSbtPlugin("com.typesafe.sbt" % "sbt-play-ebean" % "1.0.0")

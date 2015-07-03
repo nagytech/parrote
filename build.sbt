@@ -2,8 +2,8 @@ name := "parrote"
 
 version := "1.0"
 
+scalaVersion := "2.11.1"
+
 lazy val root = (project in file(".")).enablePlugins(PlayJava)
 
-libraryDependencies += "org.webjars" % "bootstrap" % "3.3.4"
-
-pipelineStages := Seq(rjs)
+libraryDependencies += "org.webjars" % "bootstrap" % "3.0.2"

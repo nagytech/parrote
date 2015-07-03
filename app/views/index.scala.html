@@ -1,3 +1,4 @@
+@import play.i18n._
 <!DOCTYPE html>
 <html>
     <head>
@@ -5,11 +6,12 @@
     </head>
     <body>
         <div id="header" class="col-sm-12">
-            <h1 class="pull-left">parotte <small>a bird on a wire</small></h1>
+            <h1 class="pull-left">@Messages.get("brand.name") <small>@Messages.get("brand.tagline")</small></h1>
             <button class="btn pull-right btn-default" data-action="signup">sign up</button>
             <button class="btn pull-right btn-default" data-action="login">login</button>
         </div>
         <!-- TODO: Scala form / templating -->
+        <!-- TODO: Show main page unless user logged in, then show profile-->
         <form id="postForm" class="col-sm-4 col-sm-offset-4">
             <label>New Post:</label>
             <textarea name="text" class="form-control"></textarea>

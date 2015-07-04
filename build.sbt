@@ -8,3 +8,5 @@ lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
 
 libraryDependencies += "org.webjars" % "bootstrap" % "3.3.5"
+
+libraryDependencies += "org.webjars" % "jquery" % "1.11.3"

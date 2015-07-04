@@ -1,12 +1,15 @@
 package models;
 
 import javax.persistence.Id;
+
+import com.avaje.ebean.Model;
+
 import java.util.Date;
 
-public class Audit {
+public class Audit extends Model {
 
     @Id
-    public int Id;
+    public long Id;
 
     public Date CreatedOn;
     public int CreatedBy;

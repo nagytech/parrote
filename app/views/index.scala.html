@@ -1,23 +1,40 @@
-@import play.i18n._
-<!DOCTYPE html>
-<html>
-    <head>
-        <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
-    </head>
-    <body>
-        <div id="header" class="col-sm-12">
-            <h1 class="pull-left">@Messages.get("brand.name") <small>@Messages.get("brand.tagline")</small></h1>
-            <button class="btn pull-right btn-default" data-action="signup">sign up</button>
-            <button class="btn pull-right btn-default" data-action="login">login</button>
-        </div>
-        <!-- TODO: Scala form / templating -->
-        <!-- TODO: Show main page unless user logged in, then show profile-->
-        <form id="postForm" class="col-sm-4 col-sm-offset-4">
-            <label>New Post:</label>
-            <textarea name="text" class="form-control"></textarea>
-            <button class="btn pull-right btn-primary">Post <i class="glyphicon glyphicon-bullhorn"></i></button>
-        </form>
-        <script src="@routes.Assets.at("jquery-1.11.3.min.js")" ></script>
-        <script src="@routes.Assets.at("javascripts/main.js")" ></script>
-    </body>
-</html>
+@import play.mvc.Http
+@(bonmotForm: Form[models.BonMot], mots: List[models.BonMot])
+@main {
+
+    @if(Http.Context.current().session().get("email") != null) {
+        @helper.form(routes.BonMot.create(), 'class -> "col-sm-4 col-sm-offset-4") {
+            @helper.textarea(bonmotForm("text"), 'class -> "form-control")
+            <button class="btn pull-right btn-primary" type="submit" name="submit">
+                Post <i class="glyphicon glyphicon-bullhorn"></i></button>
+        }
+    }
+
+    <!--
+        TODO:
+            - Pith highlting
+            - User profile links
+            - User profile images / editing
+            - Profile pages
+    -->
+
+    <div class="col-sm-4 col-sm-offset-4">
+        <h2>Recent Bon Mots</h2>
+        @for((mot) <- mots) {
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span>@mot.text</span>
+                </div>
+                <div class="panel-footer">
+                    <div class="small">
+                        <span class="pull-right"><em>@mot.createdOn</em></span>
+                        <span class="pull-left">@{val name = mot.createdBy.username; "@" + name}</span>
+                        <div class="clearfix"></div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+
+}

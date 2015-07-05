@@ -1,0 +1,19 @@
+@(signupForm: Form[Application.Signup])
+
+@main {
+
+    @helper.form(routes.Application.register(), 'class -> "col-sm-4 col-sm-offset-4") {
+
+        @if(signupForm.hasGlobalErrors) {
+            <p>
+            @signupForm.globalError
+            </p>
+        }
+
+        @helper.inputText(signupForm("username"), 'class -> "form-control")
+        @helper.inputText(signupForm("email"), 'class -> "form-control")
+        @helper.inputPassword(signupForm("password"), 'class -> "form-control")
+        @helper.inputPassword(signupForm("passwordMatch"), 'class -> "form-control")
+        <button class="btn btn-primary" type="submit" name="submit">Signup</button>
+    }
+}

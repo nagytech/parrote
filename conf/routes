@@ -1,5 +1,16 @@
 
 
-GET        /                    controllers.Application.index
+GET         /                    controllers.Application.index()
 
-GET        /assets/*file        controllers.Assets.at(path="/public", file)
+GET         /register            controllers.Application.signup()
+POST        /register            controllers.Application.register()
+GET         /login               controllers.Application.login()
+POST        /login               controllers.Application.authenticate()
+POST        /logout              controllers.Application.logout()
+
+POST        /bonmot/new          controllers.BonMot.create()
+
+GET         /api/bonmots         controllers.BonMots.latest(page: Int = 0, pageSize: Int = 25, piths: String ?= "")
+
+GET         /jsroutes            controllers.Application.jsRoutes
+GET         /assets/*file        controllers.Assets.at(path="/public", file)

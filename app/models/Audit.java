@@ -1,21 +1,70 @@
 package models;
 
+import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 
 import com.avaje.ebean.Model;
+import play.mvc.Http;
 
 import java.util.Date;
 
+@MappedSuperclass
 public class Audit extends Model {
 
     @Id
-    public long Id;
+    public long id;
 
-    public Date CreatedOn;
-    public int CreatedBy;
-    public Date UpdatedOn;
-    public int UpdatedBy;
-    public Date DeletedOn;
-    public int DeletedBy;
+    public Date createdOn;
+    @ManyToOne
+    public User createdBy;
+    public Date updatedOn;
+    @ManyToOne
+    public User updatedBy;
+    public Date deletedOn;
+    @ManyToOne
+    public User deletedBy;
+    public java.lang.Boolean deleted;
 
+    public void clean() {
+        this.createdOn = null;
+        this.createdBy = null;
+        this.updatedOn = null;
+        this.updatedOn = null;
+        this.deletedOn = null;
+        this.deletedBy = null;
+        this.deleted = null;
+    }
+
+    @Override
+    public void save() {
+        if (createdOn == null) {
+            createdOn = new Date();
+            createdBy = User.findByEmail(Http.Context.current().session().get("email"));
+        }
+        super.save();
+    }
+
+    @Override
+    public void insert() {
+        createdOn = new Date();
+        createdBy = User.findByEmail(Http.Context.current().session().get("email"));
+        super.insert();
+    }
+
+    @Override
+    public void update() {
+        updatedOn = new Date();
+        updatedBy = User.findByEmail(Http.Context.current().session().get("email"));
+        super.update();
+    }
+
+    @Override
+    public void delete() {
+        deleted = true;
+        deletedOn = new Date();
+        deletedBy = User.findByEmail(Http.Context.current().session().get("email"));
+        super.delete();
+    }
 }

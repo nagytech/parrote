@@ -110,7 +110,7 @@ public class Secure extends Controller {
      * <p>
      * Attempt to authenticate the user based on the POST data
      *
-     * @return redirect to main page on success, revert to form on failure
+     * @return redirect to main page on success, bad request revert to form on failure
      */
     public static Result authenticate() {
 
@@ -141,30 +141,73 @@ public class Secure extends Controller {
      * @return rendered login form
      */
     public static Result login() {
+
+        // Render login form
         return ok(login.render(form(Login.class)));
+
     }
 
+    /**
+     * POST: Logout action.
+     * <p>
+     * Handles POST to log current user out
+     *
+     * @return redirect to main page
+     */
     public static Result logout() {
+
+        // Clear session state
         session().clear();
+
+        // Redirect to main page
         return redirect(routes.Application.index());
+
     }
 
+    /**
+     * POST: Register action.
+     * <p>
+     * Handles POST to register user
+     *
+     * @return redirect to login form on success, bad request revert to form on failure
+     */
     public static Result register() {
+
+        // Bind from form request
         Form<Signup> signupForm = form(Signup.class).bindFromRequest();
         if (signupForm.hasErrors()) {
+            // Send bad request with form data if invalid
             return badRequest(signup.render(signupForm));
         }
+
+        // Get data from form
         Signup postSignup = signupForm.get();
+
+        // Try to register the user
         if (!User.register(postSignup.email, postSignup.username, postSignup.password)) {
+            // If the registration failed, return bad request
             signupForm.data().put("password", "");
             signupForm.reject(Messages.get("signup.error"));
             return badRequest(signup.render(signupForm));
         }
+
+        // Success, redirect to login page
         return redirect(routes.Application.login());
+
     }
 
+    /**
+     * GET: Signup action
+     * <p>
+     * Handles GET request for signup form
+     *
+     * @return render signup form
+     */
     public static Result signup() {
+
+        // Render signup form
         return ok(signup.render(form(Signup.class)));
+
     }
 
 }

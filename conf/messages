@@ -1,6 +1,13 @@
 brand.name=parrote
 brand.tagline=birds on a wire
+
+brand.friend=bff
+brand.message=bonmot
+brand.tag=pith
+
+
 login.invalid=Invalid username or password
+
 signup.usernameExists=Username already in use
 signup.emailExists=Email address already in use
 signup.error=Could not compelte registration

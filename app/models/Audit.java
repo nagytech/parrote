@@ -1,20 +1,19 @@
 package models;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.MappedSuperclass;
-
 import com.avaje.ebean.Model;
 import play.mvc.Http;
 
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.MappedSuperclass;
 import java.util.Date;
+import java.util.UUID;
 
 @MappedSuperclass
 public class Audit extends Model {
 
     @Id
-    public long id;
+    public UUID id;
 
     public Date createdOn;
     @ManyToOne

@@ -21,9 +21,9 @@
     <div class="col-sm-4 col-sm-offset-4">
         <h2>Recent Bon Mots</h2>
         @for((mot) <- mots) {
-            <div class="panel panel-default">
+            <div class="panel panel-default" data-bonmot-id="@mot.id">
                 <div class="panel-body">
-                    <span>@mot.text</span>
+                    <span>@mot.formatForWeb()</span>
                 </div>
                 <div class="panel-footer">
                     <div class="small">

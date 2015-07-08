@@ -19,7 +19,6 @@ public class Pith extends Audit {
     @ManyToMany(mappedBy = "piths")
     public List<BonMot> bonMots = new ArrayList<>();
 
-
     public static List<Pith> findList(String[] codes) {
 
         List<Pith> piths = find.where()

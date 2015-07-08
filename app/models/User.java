@@ -9,6 +9,8 @@ import play.data.validation.Constraints;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class User extends Audit {
@@ -23,6 +25,8 @@ public class User extends Audit {
     public String email;
     @JsonIgnore
     public String password;
+    @JsonIgnore
+    public List<User> crowd = new ArrayList<>();
 
     public static boolean authenticate(String email, String password) {
 
@@ -31,10 +35,10 @@ public class User extends Audit {
                 .isNull("deleted")
                 .findUnique();
         try {
-        if (user == null || !BCrypt.checkpw(password, user.password)) {
-            Logger.debug("User failed to authenticate: [{}]", email);
-            return false;
-        }
+            if (user == null || !BCrypt.checkpw(password, user.password)) {
+                Logger.debug("User failed to authenticate: [{}]", email);
+                return false;
+            }
         } catch (Exception ex) {
             Logger.error("Failed to authenticate: ", ex);
         }

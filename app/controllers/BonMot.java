@@ -7,9 +7,7 @@ import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
 
-import java.util.ArrayList;
 import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static play.data.Form.form;
 
@@ -32,13 +30,9 @@ public class BonMot extends Controller {
         // TODO: Don't block client, use promise to return then process piths
         newMot.save();
 
-        Pattern p = Pattern.compile("\\B#(\\w\\w+)");
-        Matcher m = p.matcher(newMot.text);
+        Matcher m = newMot.matchPiths();
         while (m.find()) {
             Pith pith = Pith.findOrCreate(m.group(1).toLowerCase());
-            if (pith.bonMots == null) {
-                pith.bonMots = new ArrayList<>();
-            }
             pith.bonMots.add(newMot);
             pith.save();
             Logger.debug("Pith [{}] attached to bonmot id [{}]", pith, newMot.id);

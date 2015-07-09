@@ -11,7 +11,7 @@
       <pattern>%coloredLevel %logger{15} - %message%n%xException{5}</pattern>
     </encoder>
   </appender>
-  <logger name="play" level="INFO" />
+  <logger name="play" level="DEBUG" />
   <logger name="application" level="DEBUG" />
   <root level="ERROR">
     <appender-ref ref="STDOUT" />

@@ -13,18 +13,39 @@
 @default: #00bbff;
 
 @white: #eeeeee;
+@dark-purple: #442288;
 @grey: #888888;
 @black: #333333;
 
-#header {
-  background: @black;
-  color: @white;
-  padding: 20px;
-  height: 80px;
-  h1 {
-    margin: 0;
-    padding: 0;
-  }
+#content {
+  padding-top: 50px; // not sure why navbar is bugged.
+}
+
+.user-profile {
+  margin-top: 20px;
+}
+
+span.username-profile {
+  font-size: 32px;
+  font-weight: bold;
+}
+
+#text-area-submit {
+  height: 120px;
+}
+
+.image-frame {
+  width: 120px;
+  height: 120px;
+  border: 1px solid @black;
+  background: @grey;
+  color: white;
+  font-size: 110px;
+  text-align: center;
+}
+
+.bonmot {
+  box-shadow: 1px 1px 5px #888;
 }
 
 #postForm {
@@ -37,4 +58,8 @@
 
 button {
   margin: 3px;
+}
+
+.spacer-45 {
+  height: 45px;
 }

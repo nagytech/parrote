@@ -1,40 +1,17 @@
-@import play.mvc.Http
-@(bonmotForm: Form[models.BonMot], mots: List[models.BonMot])
+
+@(mots: List[models.BonMot])
 @main {
 
-    @if(Http.Context.current().session().get("email") != null) {
-        @helper.form(routes.BonMot.create(), 'class -> "col-sm-4 col-sm-offset-4") {
-            @helper.textarea(bonmotForm("text"), 'class -> "form-control")
-            <button class="btn pull-right btn-primary" type="submit" name="submit">
-                Post <i class="glyphicon glyphicon-bullhorn"></i></button>
-        }
-    }
-
-    <!--
-        TODO:
-            - Pith highlting
-            - User profile links
-            - User profile images / editing
-            - Profile pages
-    -->
-
-    <div class="col-sm-4 col-sm-offset-4">
-        <h2>Recent Bon Mots</h2>
-        @for((mot) <- mots) {
-            <div class="panel panel-default" data-bonmot-id="@mot.id">
-                <div class="panel-body">
-                    <span>@mot.formatForWeb()</span>
-                </div>
-                <div class="panel-footer">
-                    <div class="small">
-                        <span class="pull-right"><em>@mot.createdOn</em></span>
-                        <span class="pull-left">@{val name = mot.createdBy.username; "@" + name}</span>
-                        <div class="clearfix"></div>
-                    </div>
-                </div>
-            </div>
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <div class="panel">
+            <h3>Recent BonMots</h3>
+        </div>
+        @for(mot <- mots) {
+            @bonmot(mot)
         }
     </div>
-
+    <div class="col-sm-4">
+    </div>
 
 }

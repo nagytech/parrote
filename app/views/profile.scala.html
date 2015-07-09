@@ -1,0 +1,28 @@
+@import play.mvc.Http
+@(username: String, showEntry: Boolean, mots: List[models.BonMot])
+
+@main {
+
+    <div class="col-sm-4">
+        <div class="user-profile pull-right">
+            <span class="username-profile pull-right">@{ "@" + username }</span><br />
+            <i class="image-frame glyphicon glyphicon-camera pull-right"></i><br />
+            <span class="pull-right"><em>No photo</em></span>
+        </div>
+    </div>
+    <div class="col-sm-4">
+        <h2>&nbsp;</h2>
+        @bonmots(mots)
+    </div>
+    <div class="col-sm-4">
+    @if(showEntry && Http.Context.current().session().get("email") != null) {
+        @helper.form(routes.BonMot.create(), 'class -> "col-sm-9") {
+            <h2>New BonMot</h2>
+            <textarea name="text" id="text-area-submit" class="form-control"></textarea>
+            <button class="btn pull-right btn-primary" type="submit" name="submit">
+                Post <i class="glyphicon glyphicon-bullhorn"></i></button>
+        }
+    }
+    </div>
+
+}

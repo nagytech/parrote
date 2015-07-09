@@ -7,19 +7,37 @@
         <link rel="stylesheet" href="@routes.Assets.at("stylesheets/main.css")">
     </head>
     <body>
-        <div id="header" class="col-sm-12">
-            <h1 class="pull-left">@Messages.get("brand.name") <small>@Messages.get("brand.tagline")</small></h1>
-            @if(Http.Context.current().session().get("email") == null) {
-                <button class="btn pull-right btn-default" data-action="navigate" data-action-url="@routes.Application.signup().url">sign up</button>
-                <button class="btn pull-right btn-default" data-action="navigate" data-action-url="@routes.Application.login().url">login</button>
-            } else {
-                @helper.form(routes.Application.logout()) {
-                    <button class="btn pull-right btn-default" type="submit" name="submit">logout</button>
-                }
-            }
-        </div>
+        <nav id="header" class="navbar navbar-default navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">@Messages.get("brand.name")</a>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="#" data-action="navigate" data-action-url="@routes.Application.index()">Home</a></li>
+                        @if(Http.Context.current().session().get("email") != null) {
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">Post</a></li>
+                        }
+                        <li><a href="#" data-action="navigate" data-action-url="@routes.Search.index()">Search</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                        @if(Http.Context.current().session().get("email") == null) {
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url">Login</a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.signup().url">Sign Up</a></li>
+                        } else {
+                            <li><a href="#" data-action="logout">Logout</a></li>
+                            @helper.form(routes.Secure.logout(), 'hidden -> "hidden", 'id -> "logout-form") { }
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <div id="content" class="container">
         @content
+        </div>
         <script src="@routes.Assets.at("lib/jquery/jquery.min.js")" ></script>
+        <script src="@routes.Assets.at("moment.js")" ></script>
         <script type="text/javascript" src="@routes.Application.jsRoutes"></script>
         <script src="@routes.Assets.at("javascripts/main.js")" ></script>
         <script src="@routes.Assets.at("javascripts/bonmot.js")" ></script>

@@ -1,0 +1,9 @@
+@(mots: List[models.BonMot])
+
+@if(mots.size() == 0) {
+    <h3>No bonmots.</h3>
+} else {
+    @for(mot <- mots) {
+        @bonmot(mot)
+    }
+}

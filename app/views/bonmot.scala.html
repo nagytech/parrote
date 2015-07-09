@@ -1,0 +1,17 @@
+@(mot: models.BonMot)
+
+<div class="panel panel-default bonmot" data-bonmot-id="@mot.id">
+    <div class="panel-body">
+        <span>@mot.formatForWeb()</span>
+    </div>
+    <div class="panel-footer">
+        <div class="small">
+            <span class="pull-right"><em class="moment-format" data-moment-date="@mot.createdOn">@mot.createdOn</em></span>
+            <span class="pull-left"><a href="@{
+                if (mot.createdBy.email == play.mvc.Http.Context.current().session().get("email"))
+                    "/profile" else "/user/" + mot.createdBy.username
+            }">@{val name = mot.createdBy.username; "@" + name}</a></span>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+</div>

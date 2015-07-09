@@ -1,0 +1,21 @@
+@(text: String, search: Boolean, mots: java.util.List[models.BonMot])
+
+@main {
+    <div class="col-sm-4"></div>
+    <div class="col-sm-4">
+        <h2>Search</h2>
+        <form method="GET">
+            <input type="text" name="text" class="form-control" placeholder="@@username or #pith" value="@text"/>
+            <button class="btn btn-primary pull-right" type="submit">Search <i class="glyphicon glyphicon-search"></i></button>
+        </form>
+        <hr />
+        @if(search) {
+            @if(mots.size() == 0) {
+                <strong>No results.</strong>
+            } else {
+                @bonmots(mots)
+            }
+        }
+    </div>
+    <div class="col-sm-4"></div>
+}

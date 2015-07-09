@@ -10,4 +10,6 @@ lazy val root = (project in file("."))
 libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.3.5",
   "org.webjars" % "jquery" % "1.11.3",
+  "org.webjars" % "momentjs" % "2.9.0",
+  "org.webjars" % "modernizr" % "2.8.3",
   "org.mindrot" % "jbcrypt" % "0.3m")

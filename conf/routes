@@ -1,18 +1,34 @@
 
 
-GET         /                    controllers.Application.index()
+GET         /                       controllers.Application.index()
 
-GET         /jsroutes            controllers.Application.jsRoutes
-GET         /assets/*file        controllers.Assets.at(path="/public", file)
+# Asset Routing
+GET         /jsroutes               controllers.Application.jsRoutes
+GET         /assets/*file           controllers.Assets.at(path="/public", file)
 
-GET         /register            controllers.Secure.signup()
-POST        /register            controllers.Secure.register()
-GET         /login               controllers.Secure.login()
-POST        /login               controllers.Secure.authenticate()
-POST        /logout              controllers.Secure.logout()
+# Registration
+GET         /register               controllers.Secure.signup()
+POST        /register               controllers.Secure.register()
 
-POST        /bonmot/new          controllers.BonMot.create()
+# Login
+GET         /login                  controllers.Secure.login()
+POST        /login                  controllers.Secure.authenticate()
 
-GET         /api/bonmots         controllers.BonMots.latest(page: Int = 0, pageSize: Int = 25, piths: String ?= "")
+# Logout
+POST        /logout                 controllers.Secure.logout()
+
+# New Bonmot
+POST        /bonmot/new             controllers.BonMot.create()
+
+# Profile
+GET         /profile                controllers.Profile.index()
+GET         /user/:username         controllers.Profile.user(username: String)
+
+# Search
+GET         /search                 controllers.Search.index(text: String ?= "")
+
+# API
+POST        /api/postmessage        controllers.api.BonMot.create(text: String ?= "")
+GET         /api/bonmots            controllers.BonMots.latest(page: Int = 0, pageSize: Int = 25, piths: String ?= "")
 
 

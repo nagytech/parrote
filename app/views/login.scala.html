@@ -1,7 +1,8 @@
-@(loginForm: Form[Application.Login])
+@import viewmodels.Login
+@(loginForm: Form[Login])
 
 @main {
-    @helper.form(routes.Application.authenticate(), 'class -> "col-sm-4 col-sm-offset-4") {
+    @helper.form(routes.Secure.authenticate(), 'class -> "col-sm-4 col-sm-offset-4") {
         @if(loginForm.hasGlobalErrors) {
             <p>
                 @loginForm.globalError

@@ -1,8 +1,10 @@
 package controllers;
 
+import play.mvc.Security;
+import viewmodels.Login;
+import viewmodels.Signup;
 import models.User;
 import play.data.Form;
-import play.data.validation.Constraints;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -17,93 +19,6 @@ import static play.data.Form.form;
  * Controller for facilitating user registration and authentication.
  */
 public class Secure extends Controller {
-
-    /**
-     * Login object
-     * <p>
-     * Viewmodel for login and authentication
-     */
-    public static class Login {
-
-
-        /**
-         * User's email address
-         */
-        @Constraints.Required
-        @Constraints.Email
-        public String email;
-
-        /**
-         * User's plain text password
-         */
-        @Constraints.Required
-        public String password;
-
-        /**
-         * Model validation used by form binding
-         *
-         * @returns error message if invalid, or null if valid
-         */
-        @SuppressWarnings("unused")
-        public String validate() {
-
-            // Try to authenticate the user
-            if (!User.authenticate(email, password)) {
-                // Clean password
-                password = "";
-                return Messages.get("login.invalid");
-            }
-            return null;
-
-        }
-    }
-
-    /**
-     * Signup object
-     * <p>
-     * Viewmodel for signup and registration
-     */
-    public static class Signup extends Login {
-
-        /**
-         * User's chosen username
-         */
-        @Constraints.Required
-        @Constraints.MaxLength(24)
-        public String username;
-
-        /**
-         * Password match field
-         */
-        @Constraints.Required
-        public String passwordMatch;
-
-        /**
-         * Model validation used by form binding
-         *
-         * @return error message if invalid, or null if valid
-         */
-        @Override
-        public String validate() {
-
-            // Check that the passwords match
-            if (!password.equals(passwordMatch)) {
-                return Messages.get("login.invalid");
-            }
-
-            // Check that the email does not already exist
-            if (User.findByEmail(email) != null) {
-                return Messages.get("signup.emailExists");
-            }
-
-            // Check that the username does not already exist
-            if (User.findByUsername(username) != null) {
-                return Messages.get("signup.usernameExists");
-            }
-            return null;
-        }
-
-    }
 
     /**
      * POST: Authenticate action
@@ -154,6 +69,7 @@ public class Secure extends Controller {
      *
      * @return redirect to main page
      */
+    @Security.Authenticated(Authenticator.class)
     public static Result logout() {
 
         // Clear session state
@@ -192,7 +108,7 @@ public class Secure extends Controller {
         }
 
         // Success, redirect to login page
-        return redirect(routes.Application.login());
+        return redirect(routes.Secure.login());
 
     }
 

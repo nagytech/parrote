@@ -36,14 +36,12 @@ public class BonMot extends Audit {
     }
 
     public String formatForWeb() {
-        // Note: this is inneficient
+        String output = text;
         Matcher m = matchPiths();
-        while (m.find()) {
-           String p = m.group(1).toLowerCase();
-            // TODO:
-        }
-        return text;
 
+        // TODO:
+
+        return text;
     }
 
     public static List<BonMot> getLatest(int page, int pageSize, String[] pithArray) {

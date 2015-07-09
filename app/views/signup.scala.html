@@ -1,12 +1,15 @@
-@(signupForm: Form[Application.Signup])
+@import viewmodels.Signup
+@(signupForm: Form[Signup])
 
 @main {
 
-    @helper.form(routes.Application.register(), 'class -> "col-sm-4 col-sm-offset-4") {
+    @helper.form(routes.Secure.register(), 'class -> "col-sm-4 col-sm-offset-4") {
 
         @if(signupForm.hasGlobalErrors) {
             <p>
+                <!-- TODO -->
             @signupForm.globalError
+
             </p>
         }
 

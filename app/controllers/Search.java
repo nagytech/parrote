@@ -10,25 +10,28 @@ import java.util.List;
 
 public class Search extends Controller {
 
-    public static Result index(String text) {
+    public static Result index(String q) {
 
         // TODO: clean text for post back
         // TODO: search
 
         List<models.BonMot> mots = new ArrayList<>();
-        if (text == null) {
-            return ok(search.render(text, false, mots));
+        if (q == null) {
+            return ok(search.render(q, false, mots));
         } else {
 
-            if (text.startsWith("@")) {
-                User user = User.findByUsername(text.substring(1, text.length()));
+            if (q.startsWith("@")) {
+                User user = User.findByUsername(q.substring(1, q.length()));
                 if (user == null)
-                    return ok(search.render(text, true, mots));
+                    return ok(search.render(q, true, mots));
+                if (user.email == request().username())
+                    return redirect("/profile");
                 return redirect("/user/" + user.username);
-            } else {
+            } else if (q.startsWith("#")) {
                 // assume hash
-                // todo: filterhash.
-                return ok(search.render(text, true, models.BonMot.getLatest(0, 25, new String[] { text })));
+                return ok(search.render(q, true, models.BonMot.getLatest(0, 25, new String[] { q.substring(1, q.length()) })));
+            } else {
+                return ok(search.render(q, true, models.BonMot.getLatest(0, 25, new String[] {q})));
             }
 
         }

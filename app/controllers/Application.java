@@ -1,19 +1,29 @@
 package controllers;
 
-import models.User;
+import actions.UnlogAction;
 import play.Routes;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.With;
 import views.html.index;
 
-import java.util.List;
-
+/**
+ * Application Controller.
+ * <p>
+ * Main landing controller of the application
+ */
+@With(UnlogAction.class)
 public class Application extends Controller {
 
+    /**
+     * GET: index action
+     *
+     * @return Latest bonmot listing for all users.
+     */
     public static Result index() {
 
         // List the latest mots from all users
-        List<models.BonMot> mots = models.BonMot.getLatest(0, 25, new String[]{});
+        java.util.List<models.BonMot> mots = models.BonMot.getLatest(0, 25, new String[]{});
         return ok(index.render(mots));
 
     }

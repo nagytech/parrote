@@ -1,15 +1,12 @@
-
-@(mots: List[models.BonMot])
+@(mots: java.util.List[models.BonMot])
 @main {
 
     <div class="col-sm-4"></div>
     <div class="col-sm-4">
         <div class="panel">
-            <h3>Recent BonMots</h3>
+            <h2>Recent BonMots</h2>
         </div>
-        @for(mot <- mots) {
-            @bonmot(mot)
-        }
+        @bonmots(mots)
     </div>
     <div class="col-sm-4">
     </div>

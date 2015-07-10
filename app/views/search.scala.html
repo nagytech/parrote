@@ -5,8 +5,9 @@
     <div class="col-sm-4">
         <h2>Search</h2>
         <form method="GET">
-            <input type="text" name="text" class="form-control" placeholder="@@username or #pith" value="@text"/>
+            <input type="text" name="q" class="form-control" placeholder="@@username or #pith" value="@text" autocomplete="off"/>
             <button class="btn btn-primary pull-right" type="submit">Search <i class="glyphicon glyphicon-search"></i></button>
+            <div class="clearfix"></div>
         </form>
         <hr />
         @if(search) {

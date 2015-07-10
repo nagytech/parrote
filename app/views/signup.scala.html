@@ -13,10 +13,10 @@
             </p>
         }
 
-        @helper.inputText(signupForm("username"), 'class -> "form-control")
-        @helper.inputText(signupForm("email"), 'class -> "form-control")
-        @helper.inputPassword(signupForm("password"), 'class -> "form-control")
-        @helper.inputPassword(signupForm("passwordMatch"), 'class -> "form-control")
+        @helper.inputText(signupForm("username"), 'class -> "form-control", '_label -> "Username")
+        @helper.inputText(signupForm("email"), 'class -> "form-control", '_label -> "Email")
+        @helper.inputPassword(signupForm("password"), 'class -> "form-control", '_label -> "Password")
+        @helper.inputPassword(signupForm("passwordMatch"), 'class -> "form-control", '_label -> "Confirm Password")
         <button class="btn btn-primary" type="submit" name="submit">Signup</button>
     }
 }

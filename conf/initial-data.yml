@@ -1,0 +1,4 @@
+- &admin !!models.User
+    email:      admin@admin.com
+    username:   admin
+    password:   password

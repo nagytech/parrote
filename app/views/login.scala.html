@@ -8,8 +8,8 @@
                 @loginForm.globalError
             </p>
         }
-        @helper.inputText(loginForm("email"), 'class -> "form-control")
-        @helper.inputPassword(loginForm("password"), 'class -> "form-control")
+        @helper.inputText(loginForm("email"), 'class -> "form-control", '_label -> "Email")
+        @helper.inputPassword(loginForm("password"), 'class -> "form-control", '_label -> "Password")
         <button class="btn btn-primary" type="submit" name="submit">Login</button>
     }
 }

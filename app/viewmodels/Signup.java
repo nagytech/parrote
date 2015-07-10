@@ -1,6 +1,7 @@
 package viewmodels;
 
 import models.User;
+import play.data.Form;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
 
@@ -16,6 +17,7 @@ public class Signup extends Login {
      */
     @Constraints.Required
     @Constraints.MaxLength(24)
+
     public String username;
 
     /**

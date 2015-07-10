@@ -42,4 +42,21 @@ public class BonMot extends Controller {
 
     }
 
+    public static Result byPith(String tag) {
+
+        java.util.List<models.BonMot> bonMots = models.BonMot.getLatest(0, 25, new String[]{tag});
+        return ok(Json.prettyPrint(Json.toJson(bonMots)));
+    }
+
+    public static Result byUser(String username) {
+
+        User user = User.findByUsername(username);
+        if (user == null)
+            return notFound();
+
+        java.util.List<models.BonMot> bonMots = models.BonMot.getLatestForUser(user, 0, 25);
+        return ok(Json.prettyPrint(Json.toJson(bonMots)));
+
+    }
+
 }

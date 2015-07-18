@@ -1,7 +1,7 @@
 resolvers += "Typesafe repository" at "https://repo.typesafe.com/typesafe/releases/"
 
 // Use the Play sbt plugin for Play projects
-addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.1")
+addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.4.2")
 
 // Coffeescript compilation
 addSbtPlugin("com.typesafe.sbt" % "sbt-coffeescript" % "1.0.0")

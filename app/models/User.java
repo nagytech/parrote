@@ -3,6 +3,7 @@ package models;
 import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.joda.time.DateTime;
 import org.mindrot.jbcrypt.BCrypt;
 import play.Logger;
 import play.data.validation.Constraints;
@@ -10,6 +11,7 @@ import play.data.validation.Constraints;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,14 +28,37 @@ public class User extends Audit {
     @JsonIgnore
     public String password;
     @JsonIgnore
+    public Date lastAction;
+    @JsonIgnore
+    public boolean banned;
+    @JsonIgnore
     public List<User> crowd = new ArrayList<>();
+
+    public String getStatus() {
+
+        if (banned)
+          return "Banned";
+
+        DateTime  date = new DateTime(lastAction);
+        if (date.plusMinutes(10).isAfterNow()) {
+            return "Online";
+        } else if (date.plusMinutes(60).isAfterNow()) {
+            return "Idle";
+        } else if (date.plusHours(6).isBeforeNow()) {
+            return "Inactive";
+        }
+
+        return "Offline";
+    }
 
     public static boolean authenticate(String email, String password) {
 
         User user = find.where()
                 .eq("email", email)
+                .ne("banned", true)
                 .isNull("deleted")
                 .findUnique();
+
         try {
             if (user == null || !BCrypt.checkpw(password, user.password)) {
                 Logger.debug("User failed to authenticate: [{}]", email);
@@ -79,6 +104,8 @@ public class User extends Audit {
         user.username = username;
         user.password = BCrypt.hashpw(password, BCrypt.gensalt());
 
+        Logger.info(user.password);
+
         try {
             user.save();
         } catch (Exception ex) {
@@ -96,4 +123,7 @@ public class User extends Audit {
         return String.format("@%s <%s>", username, email);
     }
 
+    public static List<User> findAll() {
+        return User.find.orderBy("username").findList();
+    }
 }

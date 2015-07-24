@@ -8,12 +8,9 @@ import views.html.search;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Search extends Controller {
+public class Search extends BaseController {
 
     public static Result index(String q) {
-
-        // TODO: clean text for post back
-        // TODO: search
 
         List<models.BonMot> mots = new ArrayList<>();
         if (q == null) {

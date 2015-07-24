@@ -6,17 +6,29 @@
     @helper.form(routes.Secure.register(), 'class -> "col-sm-4 col-sm-offset-4") {
 
         @if(signupForm.hasGlobalErrors) {
-            <p>
-                <!-- TODO -->
-            @signupForm.globalError
-
-            </p>
+            <div class="panel panel-danger">
+                <div class="panel-heading">
+                    Signup Error
+                </div>
+                <div class="panel-body">
+                    <ul>
+                    @for(validationError <- signupForm.globalErrors) {
+                        <li>@validationError.message</li>
+                    }
+                    </ul>
+                </div>
+            </div>
         }
 
         @helper.inputText(signupForm("username"), 'class -> "form-control", '_label -> "Username")
         @helper.inputText(signupForm("email"), 'class -> "form-control", '_label -> "Email")
         @helper.inputPassword(signupForm("password"), 'class -> "form-control", '_label -> "Password")
         @helper.inputPassword(signupForm("passwordMatch"), 'class -> "form-control", '_label -> "Confirm Password")
-        <button class="btn btn-primary" type="submit" name="submit">Signup</button>
+        <div>
+            <button class="btn btn-danger pull-right" href="#" data-action="navigate" data-action-url="@routes.Application.index()">
+                Cancel <i class="glyphicon glyphicon-remove"></i></button>
+            <button class="btn btn-primary pull-right" type="submit" name="submit">
+                Signup <i class="glyphicon glyphicon-edit"></i></button>
+        </div>
     }
 }

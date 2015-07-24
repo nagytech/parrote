@@ -1,4 +1,26 @@
 - &admin !!models.User
     email:      admin@admin.com
     username:   admin
-    password:   password
+    password:   $2a$10$6qcM9wmSFGeiTN2hwhIE5OJ0emrAOf1juJx8TA7oywQDvEdS6Wn4K
+    banned:     false
+    lastAction: 2015-07-01
+
+- &test1 !!models.User
+    email:      test@test.com
+    username:   test
+    password:   $2a$10$6qcM9wmSFGeiTN2hwhIE5OJ0emrAOf1juJx8TA7oywQDvEdS6Wn4K
+    banned:     false
+    lastAction: 2015-07-01
+
+- &hw !!models.BonMot
+    user:       *test1
+    text:       'Hello, World!'
+    createdBy:  *test1
+    createdOn:  2015-07-01
+
+- &bh !!models.BonMot
+    user:       *admin
+    text:       'Beware the banhammer!'
+    createdBy:  *admin
+    createdOn:  2015-07-01
+

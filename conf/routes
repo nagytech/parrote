@@ -3,7 +3,7 @@
 GET         /                           controllers.Application.index()
 
 # Asset Routing
-GET         /jsroutes                   controllers.Application.jsRoutes
+GET         /jsroutes                   controllers.Reverse.jsRoutes
 GET         /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Registration
@@ -16,6 +16,10 @@ POST        /login                      controllers.Secure.authenticate()
 
 # Logout
 POST        /logout                     controllers.Secure.logout()
+
+# Admin
+GET         /admin                      controllers.Secure.admin()
+POST        /ban/:email                 controllers.Secure.ban(email: String)
 
 # New Bonmot
 POST        /bonmot/new                 controllers.BonMot.create()

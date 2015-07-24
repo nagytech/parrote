@@ -8,8 +8,12 @@ import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Controller;
 import play.mvc.Result;
+import views.html.admin;
 import views.html.login;
 import views.html.signup;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import static play.data.Form.form;
 
@@ -18,7 +22,38 @@ import static play.data.Form.form;
  * <p>
  * Controller for facilitating user registration and authentication.
  */
-public class Secure extends Controller {
+public class Secure extends BaseController {
+
+    @Security.Authenticated(Authenticator.class)
+    public static Result admin() {
+
+        if (session().get("email") != "admin@admin.com")
+            redirect(routes.Application.index());
+
+        java.util.List<User> users = User.findAll();
+
+        return ok(admin.render(users));
+
+    }
+
+    @Security.Authenticated(Authenticator.class)
+    public static Result ban(String email) {
+
+        if (session().get("email") != "admin@admin.com")
+            redirect(routes.Application.index());
+
+        User user = User.findByEmail(email);
+        if (user.email.equalsIgnoreCase("admin@admin.com"))
+            redirect(routes.Secure.admin());
+
+        user.banned = true;
+        user.save();
+
+        return redirect(routes.Secure.admin());
+
+    }
+
+
 
     /**
      * POST: Authenticate action
@@ -42,6 +77,12 @@ public class Secure extends Controller {
         // Clear any previous session and add current user's email to new session.
         session().clear();
         session("email", postLogin.email);
+
+        User user = User.findByEmail(postLogin.email);
+        user.lastAction = new Date();
+        user.save();
+
+        session("username", user.username);
 
         // Redirect to index
         return redirect(routes.Application.index());

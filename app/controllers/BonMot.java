@@ -16,7 +16,7 @@ import static play.data.Form.form;
  * Controller for managing BonMots
  */
 @Security.Authenticated(Authenticator.class)
-public class BonMot extends Controller {
+public class BonMot extends BaseController {
 
     /**
      * POST: Create action
@@ -25,7 +25,7 @@ public class BonMot extends Controller {
      */
     public static Result create() {
 
-        // Bind data from teh request
+        // Bind data from the request
         Form<models.BonMot> motForm = form(models.BonMot.class).bindFromRequest();
         if (motForm.hasErrors()) {
             return badRequest(); // TODO: redo the form

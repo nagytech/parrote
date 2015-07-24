@@ -1,6 +1,7 @@
 package controllers.api;
 
 import controllers.Authenticator;
+import controllers.BaseController;
 import controllers.routes;
 import models.User;
 import play.data.Form;
@@ -18,7 +19,7 @@ import static play.data.Form.form;
  * Controller for managing BonMots
  */
 @Security.Authenticated(Authenticator.class)
-public class BonMot extends Controller {
+public class BonMot extends BaseController {
 
     /**
      * POST: Create action (API Based)

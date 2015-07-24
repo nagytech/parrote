@@ -1,0 +1,33 @@
+@(users: List[models.User])
+
+@main {
+    <div class="col-sm-6 col-sm-offset-3">
+        <div class="panel panel-default">
+            <table class="table table-condensed">
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(user <- users) {
+                    <tr>
+                        <td>@user.username</td>
+                        <td>@user.email</td>
+                        <td>@user.getStatus()</td>
+                        <td>@if(!user.banned && user.email != "admin@admin.com") {
+                            <form action="@routes.Secure.ban(user.email)" method="POST">
+                                <button class="btn btn-danger btn-xs" type="submit">
+                                    Ban <i class="glyphicon glyphicon-alert"></i></button>
+                            </form>
+                        }</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

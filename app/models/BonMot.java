@@ -35,15 +35,6 @@ public class BonMot extends Audit {
         return m;
     }
 
-    public String formatForWeb() {
-        String output = text;
-        Matcher m = matchPiths();
-
-        // TODO:
-
-        return text;
-    }
-
     public static List<BonMot> getLatest(int page, int pageSize, String[] pithArray) {
 
         ExpressionList<BonMot> motsEl = find.where();

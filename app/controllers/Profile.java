@@ -3,12 +3,22 @@ package controllers;
 import models.*;
 import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
 import views.html.profile;
 
 import java.util.List;
 
-public class Profile extends Controller {
+/**
+ * Profile controller
+ */
+public class Profile extends BaseController {
 
+    /**
+     *  GET: Index page
+     *
+     * @return Current logged in user's profle page with a list of recent bonmots
+     */
+    @Security.Authenticated(Authenticator.class)
     public static Result index() {
 
         User user = User.findByEmail(session().get("email"));
@@ -18,6 +28,11 @@ public class Profile extends Controller {
 
     }
 
+    /**
+     * User's
+     * @param username
+     * @return
+     */
     public static Result user(String username) {
 
         User user = User.findByUsername(username);

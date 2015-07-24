@@ -1,0 +1,3 @@
+PORT=50084
+sbt ~run -Dhttp.port=$PORT -Dplay.evolutions.db.default.autoApply=true
+

@@ -17,7 +17,7 @@ import static play.libs.Json.toJson;
  * <p>
  * Handles plural actions relating to BonMots
  */
-public class BonMots extends Controller {
+public class BonMots extends BaseController {
 
     /**
      * latest Action

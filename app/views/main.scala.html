@@ -15,20 +15,25 @@
 
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="#" data-action="navigate" data-action-url="@routes.Application.index()">Home</a></li>
+                        <li><a href="#" data-action="navigate" data-action-url="@routes.Application.index()">Home <i class="glyphicon glyphicon-home"></i></a></li>
                         @if(Http.Context.current().session().get("email") != null) {
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">Post</a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">Post <i class="glyphicon glyphicon-bullhorn"></i></a></li>
                         }
-                        <li><a href="#" data-action="navigate" data-action-url="@routes.Search.index()">Search</a></li>
+                        <li><a href="#" data-action="navigate" data-action-url="@routes.Search.index()">Search <i class="glyphicon glyphicon-search"></i></a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if(Http.Context.current().session().get("email") == null) {
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url">Login</a></li>
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.signup().url">Sign Up</a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.signup().url">Sign Up <i class="glyphicon glyphicon-edit"></i></a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url">Login <i class="glyphicon glyphicon-log-out"></i></a></li>
                         } else {
-                            <li><a href="#" data-action="logout">Logout</a></li>
+                            @if(Http.Context.current().session().get("email") == "admin@admin.com") {
+                                <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.admin()">Admin <i class="glyphicon glyphicon-lock"></i></a></li>
+                            }
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@Http.Context.current().session().get("username") <i class="glyphicon glyphicon-user"></i></a></li>
+                            <li><a href="#" data-action="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a></li>
                             @helper.form(routes.Secure.logout(), 'hidden -> "hidden", 'id -> "logout-form") { }
                         }
+
                     </ul>
                 </div>
             </div>
@@ -38,7 +43,7 @@
         </div>
         <script src="@routes.Assets.at("lib/jquery/jquery.min.js")" ></script>
         <script src="@routes.Assets.at("moment.js")" ></script>
-        <script type="text/javascript" src="@routes.Application.jsRoutes"></script>
+        <script type="text/javascript" src="@routes.Reverse.jsRoutes"></script>
         <script src="@routes.Assets.at("javascripts/main.js")" ></script>
         <script src="@routes.Assets.at("javascripts/bonmot.js")" ></script>
     </body>

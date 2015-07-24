@@ -4,7 +4,10 @@ import play.Application;
 import play.GlobalSettings;
 import play.Logger;
 import play.libs.Yaml;
+import play.mvc.Action;
+import play.mvc.Http;
 
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -21,5 +24,4 @@ public class Global  extends GlobalSettings {
         }
 
     }
-
 }

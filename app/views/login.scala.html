@@ -1,15 +1,24 @@
 @import viewmodels.Login
 @(loginForm: Form[Login])
 
-@main {
-    @helper.form(routes.Secure.authenticate(), 'class -> "col-sm-4 col-sm-offset-4") {
-        @if(loginForm.hasGlobalErrors) {
-            <p>
-                @loginForm.globalError
-            </p>
+    @main {
+        @helper.form(routes.Secure.authenticate(), 'class -> "col-sm-4 col-sm-offset-4") {
+            @if(loginForm.hasGlobalErrors) {
+                <div class="panel panel-danger">
+                    <div class="panel-heading">
+                        Login Error
+                    </div>
+                    <div class="panel-body">
+                        <ul>
+                        @for(validationError <- loginForm.globalErrors) {
+                            <li>@validationError.message</li>
+                        }
+                        </ul>
+                    </div>
+                </div>
+            }
+            @helper.inputText(loginForm("email"), 'class -> "form-control", '_label -> "Email")
+            @helper.inputPassword(loginForm("password"), 'class -> "form-control", '_label -> "Password")
+            <button class="btn btn-primary pull-right" type="submit" name="submit">Login <i class="glyphicon glyphicon-log-in"></i></button>
         }
-        @helper.inputText(loginForm("email"), 'class -> "form-control", '_label -> "Email")
-        @helper.inputPassword(loginForm("password"), 'class -> "form-control", '_label -> "Password")
-        <button class="btn btn-primary" type="submit" name="submit">Login</button>
     }
-}

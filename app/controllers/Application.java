@@ -1,10 +1,7 @@
 package controllers;
 
-import actions.UnlogAction;
-import play.Routes;
 import play.mvc.Controller;
 import play.mvc.Result;
-import play.mvc.With;
 import views.html.index;
 
 /**
@@ -12,8 +9,7 @@ import views.html.index;
  * <p>
  * Main landing controller of the application
  */
-@With(UnlogAction.class)
-public class Application extends Controller {
+public class Application extends BaseController {
 
     /**
      * GET: index action
@@ -28,13 +24,4 @@ public class Application extends Controller {
 
     }
 
-    public static Result jsRoutes() {
-        return ok(Routes
-                .javascriptRouter("jsRoutes",
-                        routes.javascript.Secure.authenticate(),
-                        routes.javascript.Secure.login(),
-                        routes.javascript.Secure.register(),
-                        routes.javascript.Secure.signup()
-                ));
-    }
 }

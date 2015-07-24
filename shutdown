@@ -1,0 +1,5 @@
+# Check for pid and try to kill it
+if [ -f ./target/universal/stage/RUNNING_PID ]
+then
+  kill -15 $(cat ./target/universal/stage/RUNNING_PID) 2> /dev/null
+fi

@@ -1,0 +1,10 @@
+PORT=50084
+
+./shutdown
+
+# Compile for prod
+sbt clean compile stage
+
+# Startup on port and evolve
+./target/universal/stage/bin/parrote -Dhttp.port=$PORT -Dplay.evolutions.db.default.autoApply=true &
+

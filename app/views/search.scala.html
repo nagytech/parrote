@@ -1,4 +1,4 @@
-@(text: String, search: Boolean, mots: java.util.List[models.BonMot])
+@(text: String, search: Boolean, mots: java.util.List[models.BonMot], message: String)
 
 @main {
     <div class="col-sm-4"></div>
@@ -12,7 +12,7 @@
         <hr />
         @if(search) {
             @if(mots.size() == 0) {
-                <strong>No results.</strong>
+                <strong>@message</strong>
             } else {
                 @bonmots(mots)
             }

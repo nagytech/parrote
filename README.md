@@ -65,7 +65,7 @@ The menu provides links to the following pages:
 - Search
 - Register‡
 - Login‡
-- Admin‡‡
+- Users‡‡
 - Logout‡‡‡ 
 
 ‡   Hidden when logged in  
@@ -102,7 +102,7 @@ Users may login with the username / password they have used in registration.
 
 Error messages are displayed where login details cannot be determined to be authentic.
 
-### Admin Mode
+### Admin Mode (Users Page)
 The admin account admin@admin.com / password allows the user to access the 
 administrative panel where they can view the list of currently active users.
 
@@ -112,5 +112,5 @@ HTTP request.
 ### Logout
 Users can log out at any time using the logout button in the upper right hand corner.
 
-Note that after a period of inactivity, users sessions will expire and they will 
+Note that after a period of inactivity (6 hours), users sessions will expire and they will
 officially be logged out on the next HTTP request.

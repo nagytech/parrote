@@ -6,6 +6,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import views.html.profile;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,16 +30,32 @@ public class Profile extends BaseController {
     }
 
     /**
-     * User's
+     * GET: User Action
+     *
+     * Shows a specific user's profile.  If it is the current user, then
+     * it renders the same page as their user profile.
+     *
      * @param username
      * @return
      */
     public static Result user(String username) {
 
-        User user = User.findByUsername(username);
-        List<models.BonMot> mots = models.BonMot.getLatestForUser(user, 0, 25);
+        // Check if the requested profile is the same as the logged in user's profile
+        boolean ownProfile = false;
+        // If null, render will display 'user not found'
+        String nameCheck = null;
+        List<models.BonMot> mots = new ArrayList<>();
 
-        return ok(profile.render(user.username, false, mots));
+        // Find the user's latest bonmots if they exist
+        User user = User.findByUsername(username);
+        if (user != null) {
+            nameCheck = user.username;
+            ownProfile = user.email.equalsIgnoreCase(session().get("email"));
+            // TODO: Pagination
+            mots = models.BonMot.getLatestForUser(user, 0, 25);
+        }
+
+        return ok(profile.render(nameCheck, ownProfile, mots));
 
     }
 

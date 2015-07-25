@@ -34,6 +34,8 @@ public class Signup extends Login {
     @Override
     public String validate() {
 
+        // TODO: Should return more than one message at a time.
+
         // Check that the passwords match
         if (!password.equals(passwordMatch)) {
             return Messages.get("login.invalid");

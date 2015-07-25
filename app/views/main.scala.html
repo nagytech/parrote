@@ -34,9 +34,9 @@
                             <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url">Login <i class="glyphicon glyphicon-log-out"></i></a></li>
                         } else {
                             @if(Http.Context.current().session().get("email") == "admin@admin.com") {
-                                <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.admin()">Admin <i class="glyphicon glyphicon-lock"></i></a></li>
+                                <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.admin()">Users <i class="glyphicon glyphicon-user"></i></a></li>
                             }
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@Http.Context.current().session().get("username") <i class="glyphicon glyphicon-user"></i></a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@Http.Context.current().session().get("username")</a></li>
                             <li><a href="#" data-action="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a></li>
                             @helper.form(routes.Secure.logout(), 'hidden -> "hidden", 'id -> "logout-form") { }
                         }

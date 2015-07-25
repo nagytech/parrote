@@ -1,18 +1,16 @@
 package controllers;
 
-import play.mvc.Security;
-import viewmodels.Login;
-import viewmodels.Signup;
 import models.User;
 import play.data.Form;
 import play.i18n.Messages;
-import play.mvc.Controller;
 import play.mvc.Result;
+import play.mvc.Security;
+import viewmodels.Login;
+import viewmodels.Signup;
 import views.html.admin;
 import views.html.login;
 import views.html.signup;
 
-import java.util.ArrayList;
 import java.util.Date;
 
 import static play.data.Form.form;
@@ -24,6 +22,13 @@ import static play.data.Form.form;
  */
 public class Secure extends BaseController {
 
+    /**
+     * GET: Admin action
+     * <p>
+     * Restricted to Admin user only.
+     *
+     * @return render user management page
+     */
     @Security.Authenticated(Authenticator.class)
     public static Result admin() {
 
@@ -36,6 +41,18 @@ public class Secure extends BaseController {
 
     }
 
+    /**
+     * POST: Ban action
+     * <p>
+     * - Allows the admin user to instantly ban another user
+     * - Once banned, the other user will no longer be able to
+     * log in.  Their session is terminated.
+     * <p>
+     * Restricted to Admin user only.
+     *
+     * @param email
+     * @return
+     */
     @Security.Authenticated(Authenticator.class)
     public static Result ban(String email) {
 
@@ -52,7 +69,6 @@ public class Secure extends BaseController {
         return redirect(routes.Secure.admin());
 
     }
-
 
 
     /**

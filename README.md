@@ -38,12 +38,6 @@ The application uses both [jQuery](https://jquery.com/) and Twitter
 [bootstrap](https://getbootstrap.com) components in order
 to target 'A' grade browsers across all modern platforms.
 
-*Desktop*
-TODO: Pics
-
-*Mobile*
-TODO: Pics
-
 ### Landing Page
 The landing page (also known as the home page) provides a list of the 
 latest BonMots sorted in descending order.  
@@ -86,8 +80,6 @@ Users can search by one of two ways:
 
 Search results will be displayed below in list format.
 
-TODO: Pic
-
 The user can also navigate to the search page by clicking on any of the hyperlinked
 Piths in any BonMot.
 
@@ -105,16 +97,10 @@ start using the application.
 Note that usernames must be unique, and no email address can be used more than once.  The user
 will receive a warning if they violate any of the validation logic.
 
-TODO: Pic
-
 ### Login Page
 Users may login with the username / password they have used in registration.
 
-TODO: pic
-
 Error messages are displayed where login details cannot be determined to be authentic.
-
-TODO: pic
 
 ### Admin Mode
 The admin account admin@admin.com / password allows the user to access the 
@@ -122,8 +108,6 @@ administrative panel where they can view the list of currently active users.
 
 In addition, the admin can ban a user which will force a logout on the next
 HTTP request.
-
-TODO: pic
 
 ### Logout
 Users can log out at any time using the logout button in the upper right hand corner.

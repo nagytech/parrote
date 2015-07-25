@@ -1,7 +1,8 @@
 # Parotte
-This web application is a Twitter-like application written in Play 
-Framework 2.4.x.  It was prepared for the Advanced Web Technologies 
-Unit at the University of New England (COMP391) Trimester 2 2015.
+This web application is a Twitter-like application written in [Play 
+Framework 2.4.x](https://playframework.com).  It was prepared for the 
+Advanced Web Technologies Unit at the University of New England (COMP391) 
+Trimester 2 2015.
 
 ## Terminology
 Object names are based around the phrase 'pithy bon mot'.  In this 
@@ -17,7 +18,7 @@ The following ports are the output of the `my_tomcat_ports` command on
 turing.  
 
 Environment | Port
-------------|-----
+------------|------------------------
 Dev         |	`52084`   
 Test        | `51084`    
 Prod        |	`50084` (to be marked)  

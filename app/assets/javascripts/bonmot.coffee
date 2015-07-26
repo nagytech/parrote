@@ -1,11 +1,12 @@
 $ ->
-
+  # Convert piths within bonmots to clickable links that
+  # navigate to the search page for that pith
   linkHash = () ->
     $('.bonmot .words').each (i, v) ->
       f = $(v)
-      f.html(f.text().replace(/#(\S*)/g,'<a href="/search?q=%23$1">#$1</a>'))
+      f.html(f.text().replace(/#(\S*)/g, '<a href="/search?q=%23$1">#$1</a>'))
 
-# Convert timestamps into 'n Xs ago' format
+  # Convert timestamps into 'n Xs ago' format
   calcMoment = () ->
     $('.moment-format').each (i, v) ->
       f = $(v)
@@ -16,5 +17,6 @@ $ ->
     calcMoment()
   , 60000)
 
+  # On page load, perform text formatting
   linkHash()
   calcMoment()

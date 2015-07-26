@@ -9,6 +9,10 @@ Object names are based around the phrase 'pithy bon mot'.  In this
 application, a posted statement is referred to as a `BonMot` while
 a hashtag is known as a `Pith`.
 
+## Data Storage Notes
+ - A many to many relationship is used to link Piths to BonMots.
+ - #Piths and @Usernames are both stored without their prefix characters.
+
 ## Usage
 Implementation notes and general features of the application are listed
 below to assist in the testing, review and marking process.
@@ -20,7 +24,7 @@ turing.
 Environment | Port
 ------------|------------------------
 Dev         |	`52084`   
-Test        | `51084`    
+Test        |   `51084`
 Prod        |	`50084` (to be marked)  
 
 ### Commands

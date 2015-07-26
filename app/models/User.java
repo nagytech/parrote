@@ -1,6 +1,5 @@
 package models;
 
-import com.avaje.ebean.ExpressionList;
 import com.avaje.ebean.Model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.joda.time.DateTime;
@@ -10,36 +9,78 @@ import play.data.validation.Constraints;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * User model
+ * <p>
+ * Represents a user who has registered in the system
+ */
 @Entity
 public class User extends Audit {
 
+    /**
+     * Finder
+     */
     static final Model.Finder<Long, User> find = new Model.Finder<>(User.class);
 
+    /**
+     * Username (must be unique)
+     * <p>
+     * NOTE: Stored without the @ prefix
+     */
     @Column(length = 64, unique = true)
     public String username;
+    /**
+     * Email address (must be unique)
+     */
     @Constraints.Email
     @Column(unique = true)
     @JsonIgnore
     public String email;
+    /**
+     * User's password (Stored encrypted)
+     */
     @JsonIgnore
     public String password;
+    /**
+     * Date time of the user's last action (last HTTP request)
+     * <p>
+     * NOTE: This relies upon every controller using the
+     * BaseController that uses the @With(UnlogAction) action.
+     */
     @JsonIgnore
     public Date lastAction;
+    /**
+     * Flag to denote if the user is banned (true) or not (false)
+     */
     @JsonIgnore
     public boolean banned;
-    @JsonIgnore
-    public List<User> crowd = new ArrayList<>();
+    /**
+     * List of user's friends
+     *
+     * TODO: Not implemented
+     */
+    //@JsonIgnore
+    //public List<User> crowd = new ArrayList<>();
 
+    /**
+     * Get the user's status based on the last action time
+     * - Banned: User has been banned
+     * - Online: Active in last 10 minutes
+     * - Idle: Active in the last 60 minutes
+     * - Inactive: Active in the last 6 hours
+     * - Offline: Not active in the last 6 hours
+     *
+     * @return status as per above
+     */
     public String getStatus() {
 
         if (banned)
-          return "Banned";
+            return "Banned";
 
-        DateTime  date = new DateTime(lastAction);
+        DateTime date = new DateTime(lastAction);
         if (date.plusMinutes(10).isAfterNow()) {
             return "Online";
         } else if (date.plusMinutes(60).isAfterNow()) {
@@ -51,8 +92,17 @@ public class User extends Audit {
         return "Offline";
     }
 
+    /**
+     * Authenticate the user using JBCrypt against the plaintext password
+     * to match the corresponding cypted entry in the datastore
+     *
+     * @param email    user's email
+     * @param password entered password in plain text
+     * @return true if authenticated, false otherwise
+     */
     public static boolean authenticate(String email, String password) {
 
+        // Find the user's entry in the data store
         User user = find.where()
                 .eq("email", email)
                 .ne("banned", true)
@@ -60,6 +110,7 @@ public class User extends Audit {
                 .findUnique();
 
         try {
+            // Check that the user exists and the password matches
             if (user == null || !BCrypt.checkpw(password, user.password)) {
                 Logger.debug("User failed to authenticate: [{}]", email);
                 return false;
@@ -73,6 +124,12 @@ public class User extends Audit {
 
     }
 
+    /**
+     * Find the user by their email address
+     *
+     * @param email
+     * @return user, or null if not exist
+     */
     public static User findByEmail(String email) {
 
         User user = find.where()
@@ -86,43 +143,70 @@ public class User extends Audit {
         return user;
     }
 
+    /**
+     * Find the user by their username
+     *
+     * NOTE: Does not include the @ symbol.
+     *
+     * @param username
+     * @return user, or null if not exist
+     */
     public static User findByUsername(String username) {
 
-        ExpressionList<User> users = find.where()
-                .eq("username", username);
-
-        if (users.findRowCount() == 1)
-            return users.findUnique();
-        return null;
+        return find.where().eq("username", username).findUnique();
 
     }
 
+    /**
+     * Register a user with the given email, username and password
+     *
+     * @param email email (should be unique)
+     * @param username username (should also be unique)
+     * @param password user's password - no length / security limitations (will be crypted)
+     *
+     * @return true if registration complete, otherwise false
+     */
     public static boolean register(String email, String username, String password) {
 
+        // Create user object
         User user = new User();
         user.email = email;
         user.username = username;
         user.password = BCrypt.hashpw(password, BCrypt.gensalt());
 
-        Logger.info(user.password);
+        // For extracting a crypted password to put in initial-data.yml
+        //Logger.info(user.password);
 
         try {
+            // Attempt to save the record
             user.save();
         } catch (Exception ex) {
+            // Exception most likely means validation logic failed.  Error message
+            // should be generated in the controller since the database isn't always
+            // clear on why inserts fail.
             Logger.error("Failed to register new user: [{}]", email);
             Logger.error("Exception:", ex);
             return false;
         }
+
         Logger.info("Registered new user: [{}]", email);
         return true;
 
     }
 
+    /**
+     * Format username with @ prefix.
+     * @return username with @ prefix
+     */
     @Override
     public String toString() {
         return String.format("@%s <%s>", username, email);
     }
 
+    /**
+     * Find all of the current users (including those who are banned.
+     * @return list of users
+     */
     public static List<User> findAll() {
         return User.find.orderBy("username").findList();
     }

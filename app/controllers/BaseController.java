@@ -8,5 +8,6 @@ import play.mvc.With;
 @With(UnlogAction.class)
 public class BaseController extends Controller {
 
+    // Nothing to see here, move along
 
 }

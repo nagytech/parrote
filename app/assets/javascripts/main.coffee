@@ -1,5 +1,4 @@
 $ ->
-
   # Handle the logout action
   $('a[data-action=logout').on 'click', () ->
     $('#logout-form').submit()

@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 /**
- * Created by geoist on 10/07/15.
+ * Created by jnagy on 10/07/15.
  */
 public class Global  extends GlobalSettings {
 

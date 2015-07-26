@@ -5,7 +5,7 @@ import play.mvc.Controller;
 import play.mvc.Result;
 
 /**
- * Created by geoist on 24/07/15.
+ * Created by jnagy on 24/07/15.
  */
 public class Reverse extends Controller {
     /**

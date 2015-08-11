@@ -19,7 +19,8 @@ POST        /logout                     controllers.Secure.logout()
 
 # Admin
 GET         /admin                      controllers.Secure.admin()
-POST        /ban/:email                 controllers.Secure.ban(email: String)
+POST        /admin/ban/:email           controllers.Secure.ban(email: String)
+POST        /admin/expire/:email        controllers.Secure.expire(email: String)
 
 # New Bonmot
 POST        /bonmot/new                 controllers.BonMot.create()

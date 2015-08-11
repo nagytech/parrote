@@ -1,12 +1,14 @@
 package actions;
 
 import controllers.routes;
+import models.Session;
 import models.User;
 import org.joda.time.DateTime;
 import play.libs.F;
 import play.mvc.Action;
 import play.mvc.Http;
 import play.mvc.Result;
+import services.SessionStateService;
 
 /**
  * UnlogAction - Action extension
@@ -33,18 +35,18 @@ public class UnlogAction extends Action.Simple {
     public F.Promise<Result> call(Http.Context context) throws Throwable {
 
         // If the user does not exist, but is logged in.
-        String email = context.session().get("email");
-        if (email == null || email.isEmpty()) return delegate.call(context);
+        Session session = SessionStateService.Current();
+        if (session == null || session.user == null)
+            return delegate.call(context);
 
-        User user = User.findByEmail(email);
-        if (user == null || user.banned || new DateTime(user.lastAction).plusHours(6).isBeforeNow()) {
+        User user = session.user;
+        if (user.banned || new DateTime(session.lastAccess).plusHours(6).isBeforeNow()) {
             // Clear the session if user invalid, banned, or inactive for over 6 hours
-            context.session().clear();
+            SessionStateService.ExpireCurrentSession();
             return F.Promise.pure(redirect(routes.Application.index()));
-        } else if (user != null) {
+        } else {
             // Update user activity flag
-            user.lastAction = DateTime.now().toDate();
-            user.save();
+            SessionStateService.UpdateCurrentSession();
         }
 
         return delegate.call(context);

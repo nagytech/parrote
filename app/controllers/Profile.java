@@ -1,9 +1,10 @@
 package controllers;
 
 import models.*;
-import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import security.Authenticator;
+import security.SessionStateStore;
 import views.html.profile;
 
 import java.util.ArrayList;
@@ -22,7 +23,7 @@ public class Profile extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result index() {
 
-        User user = User.findByEmail(session().get("email"));
+        User user = SessionStateStore.get();
         List<models.BonMot> mots = models.BonMot.getLatestForUser(user, 0, 25);
 
         return ok(profile.render(user.username, true, mots));

@@ -3,8 +3,12 @@ package controllers;
 import models.User;
 import play.data.Form;
 import play.i18n.Messages;
+import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
+import security.Authenticator;
+import security.SessionStateStore;
+import services.SessionStateService;
 import viewmodels.Login;
 import viewmodels.Signup;
 import views.html.admin;
@@ -12,6 +16,7 @@ import views.html.login;
 import views.html.signup;
 
 import java.util.Date;
+import java.util.UUID;
 
 import static play.data.Form.form;
 
@@ -32,9 +37,11 @@ public class Secure extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result admin() {
 
-        if (session().get("email") != "admin@admin.com")
+        // If the current user is not an admin, redirect
+        if (!SessionStateStore.get().admin)
             redirect(routes.Application.index());
 
+        // Get the current user set
         java.util.List<User> users = User.findAll();
 
         return ok(admin.render(users));
@@ -56,15 +63,35 @@ public class Secure extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result ban(String email) {
 
-        if (session().get("email") != "admin@admin.com")
+        // If the current user is not an admin, redirect
+        if (!SessionStateStore.get().admin)
             redirect(routes.Application.index());
 
+        // Don't allow banning of an admin
         User user = User.findByEmail(email);
-        if (user.email.equalsIgnoreCase("admin@admin.com"))
+        if (user.admin)
             redirect(routes.Secure.admin());
 
+        // Ban the user
         user.banned = true;
         user.save();
+
+        // post / get
+        return redirect(routes.Secure.admin());
+
+    }
+
+
+    /**
+     * Expire the user's session as identified by their email address
+     *
+     * @param email
+     * @return
+     */
+    public static Result expire(String uuid) {
+
+        // Expire the given session
+        SessionStateService.ExpireSession(UUID.fromString(uuid));
 
         return redirect(routes.Secure.admin());
 
@@ -90,15 +117,11 @@ public class Secure extends BaseController {
         // Get data from the post
         Login postLogin = loginForm.get();
 
-        // Clear any previous session and add current user's email to new session.
-        session().clear();
-        session("email", postLogin.email);
-
+        // Get the user and update their last action
         User user = User.findByEmail(postLogin.email);
-        user.lastAction = new Date();
-        user.save();
 
-        session("username", user.username);
+        // Clear any previous session and add current user's email to new session.
+        SessionStateService.CreateSession(user);
 
         // Redirect to index
         return redirect(routes.Application.index());
@@ -113,6 +136,10 @@ public class Secure extends BaseController {
      * @return rendered login form
      */
     public static Result login() {
+
+        // redirect if already logged in
+        if (SessionStateService.Current() != null)
+            return redirect(routes.Application.index());
 
         // Render login form
         return ok(login.render(form(Login.class)));
@@ -129,10 +156,14 @@ public class Secure extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result logout() {
 
-        // Clear session state
-        session().clear();
+        User user = SessionStateStore.getUser();
 
-        // Redirect to main page
+        if (user == null)
+            // Redirect to main page
+            return redirect(routes.Application.index());
+
+        SessionStateService.ExpireSession();
+
         return redirect(routes.Application.index());
 
     }

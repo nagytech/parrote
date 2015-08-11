@@ -2,6 +2,7 @@ package models;
 
 import com.avaje.ebean.Model;
 import play.mvc.Http;
+import security.SessionStateStore;
 
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
@@ -76,7 +77,7 @@ public class Audit extends Model {
     public void save() {
         if (createdOn == null) {
             createdOn = new Date();
-            createdBy = User.findByEmail(Http.Context.current().session().get("email"));
+            createdBy = SessionStateStore.get();
         }
         super.save();
     }
@@ -87,7 +88,7 @@ public class Audit extends Model {
     @Override
     public void insert() {
         createdOn = new Date();
-        createdBy = User.findByEmail(Http.Context.current().session().get("email"));
+        createdBy = SessionStateStore.get();
         super.insert();
     }
 
@@ -97,7 +98,7 @@ public class Audit extends Model {
     @Override
     public void update() {
         updatedOn = new Date();
-        updatedBy = User.findByEmail(Http.Context.current().session().get("email"));
+        updatedBy = SessionStateStore.get();
         super.update();
     }
 
@@ -108,7 +109,7 @@ public class Audit extends Model {
     public void delete() {
         deleted = true;
         deletedOn = new Date();
-        deletedBy = User.findByEmail(Http.Context.current().session().get("email"));
+        deletedBy = SessionStateStore.get();
         super.delete();
     }
 }

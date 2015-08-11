@@ -1,5 +1,4 @@
 @import play.i18n._
-@import play.mvc.Http
 @(content: Html)
 <!DOCTYPE html>
 <html>
@@ -22,21 +21,21 @@
 
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
-                        <li><a href="#" data-action="navigate" data-action-url="@routes.Application.index()">Home <i class="glyphicon glyphicon-home"></i></a></li>
-                        @if(Http.Context.current().session().get("email") != null) {
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">Post <i class="glyphicon glyphicon-bullhorn"></i></a></li>
+                        <li><a href="#" data-action="navigate" data-action-url="@routes.Application.index()"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+                        @if(services.SessionStateService.Current() != null) {
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()"><i class="glyphicon glyphicon-bullhorn"></i> Post</a></li>
                         }
-                        <li><a href="#" data-action="navigate" data-action-url="@routes.Search.index()">Search <i class="glyphicon glyphicon-search"></i></a></li>
+                        <li><a href="#" data-action="navigate" data-action-url="@routes.Search.index()"><i class="glyphicon glyphicon-search"></i> Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        @if(Http.Context.current().session().get("email") == null) {
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.signup().url">Sign Up <i class="glyphicon glyphicon-edit"></i></a></li>
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url">Login <i class="glyphicon glyphicon-log-out"></i></a></li>
+                        @if(services.SessionStateService.Current() == null) {
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.signup().url"><i class="glyphicon glyphicon-edit"></i> Sign Up</a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url"><i class="glyphicon glyphicon-log-out"></i> Login</a></li>
                         } else {
-                            @if(Http.Context.current().session().get("email") == "admin@admin.com") {
-                                <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.admin()">Users <i class="glyphicon glyphicon-user"></i></a></li>
+                            @if(services.SessionStateService.Current().user.admin) {
+                                <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.admin()"><i class="glyphicon glyphicon-user"></i> Users</a></li>
                             }
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@Http.Context.current().session().get("username")</a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@services.SessionStateService.Current().user.username</a></li>
                             <li><a href="#" data-action="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a></li>
                             @helper.form(routes.Secure.logout(), 'hidden -> "hidden", 'id -> "logout-form") { }
                         }

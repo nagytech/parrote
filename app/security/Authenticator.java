@@ -1,8 +1,15 @@
-package controllers;
+package security;
 
+import controllers.routes;
+import models.User;
 import play.mvc.Http.Context;
 import play.mvc.Result;
+import play.mvc.Results;
 import play.mvc.Security;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Authenticator Class : Extends Security.Authenticator
@@ -17,7 +24,12 @@ public class Authenticator extends Security.Authenticator {
      */
     @Override
     public String getUsername(Context context) {
-        return context.session().get("email");
+
+        User user = SessionStateStore.get();
+        if (user != null)
+            return user.email;
+        return null;
+
     }
 
     /**
@@ -29,6 +41,8 @@ public class Authenticator extends Security.Authenticator {
      */
     @Override
     public Result onUnauthorized(Context context) {
-        return redirect(routes.Secure.login());
+
+        return Results.redirect(routes.Secure.login());
+
     }
 }

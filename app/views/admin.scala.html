@@ -1,4 +1,4 @@
-@(users: List[models.User])
+@(sessions: List[viewmodels.Session])
 
 @main {
     <div class="col-sm-6 col-sm-offset-3">
@@ -13,17 +13,24 @@
                     </tr>
                 </thead>
                 <tbody>
-                @for(user <- users) {
+                @for(session <- sessions) {
                     <tr>
-                        <td>@user.username</td>
-                        <td>@user.email</td>
-                        <td>@user.getStatus()</td>
-                        <td>@if(!user.banned && user.email != "admin@admin.com") {
-                            <form action="@routes.Secure.ban(user.email)" method="POST">
+                        <td>@session.user.username</td>
+                        <td>@session.user.email</td>
+                        <td>@session.getStatus()</td>
+                        <td>@if(!session.user.banned && !session.user.admin) {
+                            <form action="@routes.Secure.ban(session.user.email)" method="POST">
                                 <button class="btn btn-danger btn-xs" type="submit">
                                     Ban <i class="glyphicon glyphicon-alert"></i></button>
                             </form>
-                        }</td>
+                            }
+                            @if(session.getStatus() != "Offline" && !session.user.admin) {
+                            <form action="@routes.Secure.expire(session.user.email)" method="POST">
+                                <button class="btn btn-warning btn-xs" type="submit">
+                                    Expire <i class="glyphicon glyphicon-time"></i></button>
+                            </form>
+                            }
+                        </td>
                     </tr>
                 }
                 </tbody>

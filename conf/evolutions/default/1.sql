@@ -44,6 +44,8 @@ create table user (
   email                     varchar(255),
   password                  varchar(255),
   last_action               timestamp,
+  expired                   boolean,
+  admin                     boolean,
   banned                    boolean,
   constraint uq_user_username unique (username),
   constraint uq_user_email unique (email),

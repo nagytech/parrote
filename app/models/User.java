@@ -44,53 +44,17 @@ public class User extends Audit {
      */
     @JsonIgnore
     public String password;
+
     /**
-     * Date time of the user's last action (last HTTP request)
-     * <p>
-     * NOTE: This relies upon every controller using the
-     * BaseController that uses the @With(UnlogAction) action.
+     * Flag to denote if the user is an administrator
      */
     @JsonIgnore
-    public Date lastAction;
+    public boolean admin;
     /**
      * Flag to denote if the user is banned (true) or not (false)
      */
     @JsonIgnore
     public boolean banned;
-    /**
-     * List of user's friends
-     *
-     * TODO: Not implemented
-     */
-    //@JsonIgnore
-    //public List<User> crowd = new ArrayList<>();
-
-    /**
-     * Get the user's status based on the last action time
-     * - Banned: User has been banned
-     * - Online: Active in last 10 minutes
-     * - Idle: Active in the last 60 minutes
-     * - Inactive: Active in the last 6 hours
-     * - Offline: Not active in the last 6 hours
-     *
-     * @return status as per above
-     */
-    public String getStatus() {
-
-        if (banned)
-            return "Banned";
-
-        DateTime date = new DateTime(lastAction);
-        if (date.plusMinutes(10).isAfterNow()) {
-            return "Online";
-        } else if (date.plusMinutes(60).isAfterNow()) {
-            return "Idle";
-        } else if (date.plusHours(6).isBeforeNow()) {
-            return "Inactive";
-        }
-
-        return "Offline";
-    }
 
     /**
      * Authenticate the user using JBCrypt against the plaintext password

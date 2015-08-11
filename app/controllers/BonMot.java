@@ -2,11 +2,11 @@ package controllers;
 
 import models.User;
 import play.data.Form;
-import play.libs.Json;
-import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import security.Authenticator;
 import services.BonMotService;
+import services.SessionStateService;
 
 import static play.data.Form.form;
 
@@ -36,7 +36,8 @@ public class BonMot extends BaseController {
         postMot.clean();
 
         // Prepare data for the bonmot service
-        User user = User.findByEmail(session().get("email"));
+        User user = SessionStateService.Current().user;
+        System.out.println(user.email);
         String text = postMot.text;
 
         // Create new bonmot

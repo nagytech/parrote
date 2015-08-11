@@ -110,8 +110,9 @@ Error messages are displayed where login details cannot be determined to be auth
 The admin account admin@admin.com / password allows the user to access the 
 administrative panel where they can view the list of currently active users.
 
-In addition, the admin can ban a user which will force a logout on the next
-HTTP request.
+The admin user can use the 'Users Page' to monitor the online activity status
+of site users.  From this page, the admin also has the ability to expire user sessions and
+'remotely force a logout'. In addition, the admin can ban a user from using their account.
 
 ### Logout
 Users can log out at any time using the logout button in the upper right hand corner.

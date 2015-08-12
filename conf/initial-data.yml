@@ -4,7 +4,6 @@
     password:   $2a$10$6qcM9wmSFGeiTN2hwhIE5OJ0emrAOf1juJx8TA7oywQDvEdS6Wn4K
     banned:     false
     admin:      true
-    lastAction: 2015-07-01
 
 - &test1 !!models.User
     email:      test@test.com
@@ -12,7 +11,6 @@
     password:   $2a$10$6qcM9wmSFGeiTN2hwhIE5OJ0emrAOf1juJx8TA7oywQDvEdS6Wn4K
     banned:     false
     admin:      false
-    lastAction: 2015-07-01
 
 - &hw !!models.BonMot
     user:       *test1

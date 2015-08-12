@@ -4,6 +4,7 @@ import com.avaje.ebean.Model;
 import models.Session;
 import models.User;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.mvc.Http;
 
 import java.util.UUID;
@@ -28,6 +29,8 @@ public class SessionStateService {
         session.lastAccess = DateTime.now();
         session.save();
 
+        Logger.debug("Persisted session to database: " + session.id.toString());
+
         // set in the cookie
         setCurrentUuid(session.id);
 
@@ -39,8 +42,9 @@ public class SessionStateService {
     public static Session Current() {
 
         UUID uuid = getCurrentUuid();
+        if (uuid != null)
         return FindSession(uuid);
-
+        return null;
     }
 
     /**
@@ -78,11 +82,12 @@ public class SessionStateService {
      */
     public static Session FindSession(UUID uuid) {
 
-        return find
+        Session session = find
                 .where()
                 .eq("id", uuid)
-                .ne("deleted", true)
                 .findUnique();
+
+        return session;
 
     }
 
@@ -94,7 +99,6 @@ public class SessionStateService {
 
         return find
                 .where()
-                .ne("deleted", true)
                 .findList();
 
     }
@@ -106,7 +110,7 @@ public class SessionStateService {
 
         Session session = Current();
         session.lastAccess = DateTime.now();
-        session.save();
+        session.update();
 
     }
 
@@ -116,7 +120,9 @@ public class SessionStateService {
      */
     private static UUID getCurrentUuid() {
 
-        return UUID.fromString(Http.Context.current().session().get("_"));
+        String uuid = Http.Context.current().session().get("id");
+        if (uuid == null) return null;
+        return UUID.fromString(uuid);
 
     }
 
@@ -127,7 +133,10 @@ public class SessionStateService {
     private static void setCurrentUuid(UUID uuid) {
 
         Http.Context.current().session().clear();
-        Http.Context.current().session().put("_", uuid.toString());
+        System.out.println(uuid.toString());
+        Http.Context.current().session().put("id", uuid.toString());
+
+        Logger.debug("Set current session to: " + uuid.toString());
 
     }
 

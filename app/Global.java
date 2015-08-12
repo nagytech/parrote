@@ -32,9 +32,5 @@ public class Global  extends GlobalSettings {
             Ebean.save((List<?>) Yaml.load("initial-data.yml"));
         }
 
-        List<User> users = User.findAll();
-
-
-
     }
 }

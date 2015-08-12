@@ -1,13 +1,14 @@
 package controllers;
 
+import models.Session;
 import models.User;
+import org.joda.time.DateTime;
 import play.data.Form;
 import play.i18n.Messages;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.Authenticator;
-import security.SessionStateStore;
 import services.SessionStateService;
 import viewmodels.Login;
 import viewmodels.Signup;
@@ -15,8 +16,7 @@ import views.html.admin;
 import views.html.login;
 import views.html.signup;
 
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 import static play.data.Form.form;
 
@@ -38,12 +38,11 @@ public class Secure extends BaseController {
     public static Result admin() {
 
         // If the current user is not an admin, redirect
-        if (!SessionStateStore.get().admin)
+        if (!SessionStateService.Current().user.admin)
             redirect(routes.Application.index());
 
         // Get the current user set
-        java.util.List<User> users = User.findAll();
-
+        List<User> users = User.findAll();
         return ok(admin.render(users));
 
     }
@@ -64,7 +63,7 @@ public class Secure extends BaseController {
     public static Result ban(String email) {
 
         // If the current user is not an admin, redirect
-        if (!SessionStateStore.get().admin)
+        if (!SessionStateService.Current().user.admin)
             redirect(routes.Application.index());
 
         // Don't allow banning of an admin
@@ -120,6 +119,8 @@ public class Secure extends BaseController {
         // Get the user and update their last action
         User user = User.findByEmail(postLogin.email);
 
+        System.out.println("user: " + user.email);
+
         // Clear any previous session and add current user's email to new session.
         SessionStateService.CreateSession(user);
 
@@ -156,13 +157,13 @@ public class Secure extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result logout() {
 
-        User user = SessionStateStore.getUser();
+        User user = SessionStateService.Current().user;
 
         if (user == null)
             // Redirect to main page
             return redirect(routes.Application.index());
 
-        SessionStateService.ExpireSession();
+        SessionStateService.ExpireCurrentSession();
 
         return redirect(routes.Application.index());
 

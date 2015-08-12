@@ -1,11 +1,13 @@
 package security;
 
 import controllers.routes;
+import models.Session;
 import models.User;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Results;
 import play.mvc.Security;
+import services.SessionStateService;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,9 +27,9 @@ public class Authenticator extends Security.Authenticator {
     @Override
     public String getUsername(Context context) {
 
-        User user = SessionStateStore.get();
-        if (user != null)
-            return user.email;
+        Session session = SessionStateService.Current();
+        if (session != null && session.user != null)
+            return session.user.email;
         return null;
 
     }

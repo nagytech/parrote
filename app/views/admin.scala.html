@@ -1,4 +1,4 @@
-@(sessions: List[viewmodels.Session])
+@(users: java.util.List[models.User])
 
 @main {
     <div class="col-sm-6 col-sm-offset-3">
@@ -13,19 +13,19 @@
                     </tr>
                 </thead>
                 <tbody>
-                @for(session <- sessions) {
+                @for(user <- users) {
                     <tr>
-                        <td>@session.user.username</td>
-                        <td>@session.user.email</td>
-                        <td>@session.getStatus()</td>
-                        <td>@if(!session.user.banned && !session.user.admin) {
-                            <form action="@routes.Secure.ban(session.user.email)" method="POST">
+                        <td>@user.username</td>
+                        <td>@user.email</td>
+                        <td>@if(user.sessions.size() > 0) { @user.sessions.get(0).getStatus() } else { Offline }</td>
+                        <td>@if(!user.banned && !user.admin) {
+                            <form action="@routes.Secure.ban(user.email)" method="POST">
                                 <button class="btn btn-danger btn-xs" type="submit">
                                     Ban <i class="glyphicon glyphicon-alert"></i></button>
                             </form>
                             }
-                            @if(session.getStatus() != "Offline" && !session.user.admin) {
-                            <form action="@routes.Secure.expire(session.user.email)" method="POST">
+                            @if(user.sessions.size() > 0 && !user.admin) {
+                            <form action="@routes.Secure.expire(user.sessions.get(0).id.toString())" method="POST">
                                 <button class="btn btn-warning btn-xs" type="submit">
                                     Expire <i class="glyphicon glyphicon-time"></i></button>
                             </form>

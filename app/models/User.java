@@ -7,8 +7,8 @@ import org.mindrot.jbcrypt.BCrypt;
 import play.Logger;
 import play.data.validation.Constraints;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
+import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -55,6 +55,10 @@ public class User extends Audit {
      */
     @JsonIgnore
     public boolean banned;
+
+    @OneToMany(fetch = FetchType.EAGER)
+    @JsonIgnore
+    public List<Session> sessions = new ArrayList<>();
 
     /**
      * Authenticate the user using JBCrypt against the plaintext password

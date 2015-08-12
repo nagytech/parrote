@@ -6,8 +6,8 @@ import models.User;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
-import security.SessionStateStore;
 import services.BonMotService;
+import services.SessionStateService;
 
 import static play.data.Form.form;
 
@@ -31,7 +31,7 @@ public class BonMot extends BaseController {
             return badRequest("Invalid text length.  Text must be less than 129 characters.");
 
         // Prepare data for the bonmot service
-        User user = SessionStateStore.get();
+        User user = SessionStateService.Current().user;
 
         // Create new bonmot
         models.BonMot mot = BonMotService.create(user, text);

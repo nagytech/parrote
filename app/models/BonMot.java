@@ -72,7 +72,7 @@ public class BonMot extends Audit {
         ExpressionList<BonMot> motsEl = find.where();
         String pithOut = "";
         if (pithArray != null && pithArray.length > 0) {
-            motsEl = motsEl.in("piths.code", pithArray);
+            motsEl = motsEl.in("piths.code", (Object[])pithArray);
             pithOut = String.join(", ", pithArray);
         }
 
@@ -82,7 +82,10 @@ public class BonMot extends Audit {
                 .findPagedList(page, pageSize)
                 .getList();
 
-        Logger.debug("Found [{}] bonmots for piths [{}]", mots.size(), pithOut);
+        if (pithOut.length() > 0)
+            Logger.debug("Found [{}] bonmots for piths [{}]", mots.size(), pithOut);
+        else
+            Logger.debug("Found [{}] bonmots", mots.size());
 
         return mots;
 

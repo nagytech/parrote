@@ -33,7 +33,7 @@
                             <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url"><i class="glyphicon glyphicon-log-out"></i> Login</a></li>
                         } else {
                             @if(services.SessionStateService.Current().user.admin) {
-                                <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.admin()"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+                                <li><a href="#" data-action="navigate" data-action-url="@routes.Admin.index()"><i class="glyphicon glyphicon-user"></i> Users</a></li>
                             }
                             <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@services.SessionStateService.Current().user.username</a></li>
                             <li><a href="#" data-action="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a></li>

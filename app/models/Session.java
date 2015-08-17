@@ -2,6 +2,7 @@ package models;
 
 import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
+import play.Logger;
 
 import javax.persistence.*;
 import java.util.UUID;

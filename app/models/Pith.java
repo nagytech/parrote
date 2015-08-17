@@ -44,7 +44,7 @@ public class Pith extends Audit {
     public static List<Pith> findList(String[] codes) {
 
         List<Pith> piths = find.where()
-                .in("code", codes)
+                .in("code", (Object[])codes)
                 .findList();
 
         return piths;

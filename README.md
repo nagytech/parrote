@@ -1,11 +1,11 @@
 # Parotte
-This web application is a Twitter-like application written in [Play 
-Framework 2.4.x](https://playframework.com).  It was prepared for the 
-Advanced Web Technologies Unit at the University of New England (COMP391) 
+This web application is a Twitter-like application written in [Play
+Framework 2.4.x](https://playframework.com).  It was prepared for the
+Advanced Web Technologies Unit at the University of New England (COMP391)
 Trimester 2 2015.
 
 ## Terminology
-Object names are based around the phrase 'pithy bon mot'.  In this 
+Object names are based around the phrase 'pithy bon mot'.  In this
 application, a posted statement is referred to as a `BonMot` while
 a hashtag is known as a `Pith`.
 
@@ -18,38 +18,54 @@ Implementation notes and general features of the application are listed
 below to assist in the testing, review and marking process.
 
 ### Ports
-The following ports are the output of the `my_tomcat_ports` command on 
+The following ports are the output of the `my_tomcat_ports` command on
 turing.  
 
 Environment | Port
 ------------|------------------------
-Dev         |	`52084`   
-Test        |   `51084`
+Dev         |	`52084`
+Test        | `51084`
 Prod        |	`50084` (to be marked)  
 
 ### Commands
-The following shell commands are available in the root directory of the 
+The following shell commands are available in the root directory of the
 application to facilitate startup / shutdown procedures.
 
 `./debug`       Starts the application in `~run` mode on port `52804`
 `./startup`	    Stops/Starts the application on port `50084` and evolves h2  
-.`/shutdown`	  Stops the application  
+.`/shutdown`	  Stops the application
+
+### Initialization
+On initial run of the application, the h2 database will be populated with the
+following users:
+
+Email             | Username | Password
+------------------|----------|----------
+admin@admin.com   | admin    | password
+test@test.com     | test     | password
+
+The following bonmots will also be added to the system:
+
+Username  | Bonmot
+----------|-------------------
+test      | Hello, World!
+admin     | Beware the banhammer!
 
 ## General Notes
 
 ### Browser and Platform compatibility
-The application uses both [jQuery](https://jquery.com/) and Twitter 
+The application uses both [jQuery](https://jquery.com/) and Twitter
 [bootstrap](https://getbootstrap.com) components in order
 to target 'A' grade browsers across all modern platforms.
 
 ### Landing Page
-The landing page (also known as the home page) provides a list of the 
+The landing page (also known as the home page) provides a list of the
 latest BonMots sorted in descending order.  
 
 ### BonMot Display
 The rendering of a BonMot has three stages:
 
-- Scala template is rendered 
+- Scala template is rendered
   - the username is presented as a hyperlink to the user's profile
   - timestamp is provided raw
   - bonmot and piths are provided raw
@@ -58,19 +74,18 @@ The rendering of a BonMot has three stages:
 
 _Note: This process may change in the future when we move to client side React.js_
 
-### Navigation Bar 
-The top nav bar, available on all pages, will collapse on mobile devices 
-into a drop down menu.  The drop down menu is triggered when the user 
+### Navigation Bar
+The top nav bar, available on all pages, will collapse on mobile devices
+into a drop down menu.  The drop down menu is triggered when the user
 clicks the hamburger icon in the upper right hand corner of the browser window.
 
 The menu provides links to the following pages:
-
 - Home
 - Search
 - Register‡
 - Login‡
 - Users‡‡
-- Logout‡‡‡ 
+- Logout‡‡‡
 
 ‡   Hidden when logged in  
 ‡‡  Only visible to the admin user  
@@ -90,12 +105,12 @@ Piths in any BonMot.
 _Note: Pagination is currently not enabled and is limited to the last 25 entries_
 
 ### Registration
-Users can register by choosing a unique username, email and password.  No email confirmation 
-or activation is neccessary.  The password is encrypted using salted blowfish encryption 
+Users can register by choosing a unique username, email and password.  No email confirmation
+or activation is neccessary.  The password is encrypted using salted blowfish encryption
 provided by [jBCrypt](http://www.mindrot.org/projects/jBCrypt/).
 
-Once the registration has been processed by the server the user is immediately 
-redirected to the login page to 
+Once the registration has been processed by the server the user is immediately
+redirected to the login page to
 start using the application.
 
 Note that usernames must be unique, and no email address can be used more than once.  The user
@@ -107,7 +122,7 @@ Users may login with the username / password they have used in registration.
 Error messages are displayed where login details cannot be determined to be authentic.
 
 ### Admin Mode (Users Page)
-The admin account admin@admin.com / password allows the user to access the 
+The admin account admin@admin.com / password allows the user to access the
 administrative panel where they can view the list of currently active users.
 
 The admin user can use the 'Users Page' to monitor the online activity status
@@ -117,5 +132,4 @@ of site users.  From this page, the admin also has the ability to expire user se
 ### Logout
 Users can log out at any time using the logout button in the upper right hand corner.
 
-Note that after a period of inactivity (6 hours), users sessions will expire and they will
-officially be logged out on the next HTTP request.
+Note that after a period of inactivity (6 hours), users sessions will automatically expire and they will officially be logged out on the next HTTP request.

@@ -17,19 +17,20 @@
                     <tr>
                         <td>@user.username</td>
                         <td>@user.email</td>
-                        <td>@if(user.sessions.size() > 0) { @user.sessions.get(0).getStatus() } else { Offline }</td>
+                        <td>@{if(user.sessions.size() > 0) user.sessions.get(0).getStatus() else if (user.banned) "Banned" else "Offline" }
+                        </td>
                         <td>@if(!user.banned && !user.admin) {
-                            <form action="@routes.Secure.ban(user.email)" method="POST">
+                            <form action="@routes.Admin.ban(user.email)" method="POST">
                                 <button class="btn btn-danger btn-xs" type="submit">
                                     Ban <i class="glyphicon glyphicon-alert"></i></button>
                             </form>
                             }
                             @if(user.sessions.size() > 0 && !user.admin) {
-                            <form action="@routes.Secure.expire(user.sessions.get(0).id.toString())" method="POST">
+                            <form action="@routes.Admin.expire(user.sessions.get(0).id.toString())" method="POST">
                                 <button class="btn btn-warning btn-xs" type="submit">
                                     Expire <i class="glyphicon glyphicon-time"></i></button>
                             </form>
-                            }
+                          }
                         </td>
                     </tr>
                 }

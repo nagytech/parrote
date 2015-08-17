@@ -28,76 +28,6 @@ import static play.data.Form.form;
 public class Secure extends BaseController {
 
     /**
-     * GET: Admin action
-     * <p>
-     * Restricted to Admin user only.
-     *
-     * @return render user management page
-     */
-    @Security.Authenticated(Authenticator.class)
-    public static Result admin() {
-
-        // If the current user is not an admin, redirect
-        if (!SessionStateService.Current().user.admin)
-            redirect(routes.Application.index());
-
-        // Get the current user set
-        List<User> users = User.findAll();
-        return ok(admin.render(users));
-
-    }
-
-    /**
-     * POST: Ban action
-     * <p>
-     * - Allows the admin user to instantly ban another user
-     * - Once banned, the other user will no longer be able to
-     * log in.  Their session is terminated.
-     * <p>
-     * Restricted to Admin user only.
-     *
-     * @param email
-     * @return
-     */
-    @Security.Authenticated(Authenticator.class)
-    public static Result ban(String email) {
-
-        // If the current user is not an admin, redirect
-        if (!SessionStateService.Current().user.admin)
-            redirect(routes.Application.index());
-
-        // Don't allow banning of an admin
-        User user = User.findByEmail(email);
-        if (user.admin)
-            redirect(routes.Secure.admin());
-
-        // Ban the user
-        user.banned = true;
-        user.save();
-
-        // post / get
-        return redirect(routes.Secure.admin());
-
-    }
-
-
-    /**
-     * Expire the user's session as identified by their email address
-     *
-     * @param email
-     * @return
-     */
-    public static Result expire(String uuid) {
-
-        // Expire the given session
-        SessionStateService.ExpireSession(UUID.fromString(uuid));
-
-        return redirect(routes.Secure.admin());
-
-    }
-
-
-    /**
      * POST: Authenticate action
      * <p>
      * Attempt to authenticate the user based on the POST data
@@ -118,8 +48,6 @@ public class Secure extends BaseController {
 
         // Get the user and update their last action
         User user = User.findByEmail(postLogin.email);
-
-        System.out.println("user: " + user.email);
 
         // Clear any previous session and add current user's email to new session.
         SessionStateService.CreateSession(user);

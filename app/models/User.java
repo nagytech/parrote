@@ -73,9 +73,13 @@ public class User extends Audit {
         // Find the user's entry in the data store
         User user = find.where()
                 .eq("email", email)
-                .ne("banned", true)
                 .isNull("deleted")
                 .findUnique();
+
+        if (user.banned) {
+            Logger.debug("User [{}] is banned, refusing to authenticate", user.email);
+            user = null;
+        }
 
         try {
             // Check that the user exists and the password matches

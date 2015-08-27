@@ -32,6 +32,9 @@ GET         /user/:username             controllers.Profile.user(username: Strin
 # Search
 GET         /search                     controllers.Search.index(q: String ?= "")
 
+# Single Page App
+GET         /spa                        controllers.SinglePage.index()
+
 # API
 POST        /api/postmessage            controllers.api.BonMot.create(text: String ?= "")
 GET         /api/users/:username        controllers.api.BonMot.byUser(username: String)

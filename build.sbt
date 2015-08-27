@@ -12,4 +12,5 @@ libraryDependencies ++= Seq(
   "org.webjars" % "jquery" % "1.11.3",
   "org.webjars" % "momentjs" % "2.9.0",
   "org.webjars" % "modernizr" % "2.8.3",
-  "org.mindrot" % "jbcrypt" % "0.3m")
+  "org.mindrot" % "jbcrypt" % "0.3m",
+  "org.mongodb" % "mongo-java-driver" % "3.0.3")

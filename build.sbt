@@ -7,6 +7,8 @@ scalaVersion := "2.11.6"
 lazy val root = (project in file("."))
   .enablePlugins(PlayJava, PlayEbean)
 
+includeFilter in (Assets, LessKeys.less) := "*.less"
+
 libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap" % "3.3.5",
   "org.webjars" % "jquery" % "1.11.3",

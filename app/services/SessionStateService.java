@@ -1,60 +1,66 @@
 package services;
 
-import com.avaje.ebean.Model;
+import com.mongodb.BasicDBObject;
+import factories.SessionFactory;
 import models.Session;
 import models.User;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.mvc.Http;
+import repositories.SessionRepository;
 
-import java.util.UUID;
 
-/**
- * Created by jnagy on 11/08/15.
- */
 public class SessionStateService {
 
-    private static final Model.Finder<UUID, Session> find = new Model.Finder<>(Session.class);
+    SessionRepository sessionRepository;
+
+    public SessionStateService() {
+        sessionRepository = new SessionRepository();
+    }
 
     /**
      * Persist a session user into the database
+     *
      * @param user
      * @return
      */
-    public static UUID CreateSession(User user) {
+    public String CreateSession(User user) {
 
-        // persist to the database
-        Session session = new Session();
-        session.user = user;
-        session.lastAccess = DateTime.now();
-        session.save();
-
-        Logger.debug("Persisted session to database: " + session.id.toString());
+        // create and store the session
+        Session session = new SessionFactory().create(user.id);
+        sessionRepository.insert(session);
 
         // set in the cookie
-        setCurrentUuid(session.id);
+        Http.Context.current().session().clear();
+        Http.Context.current().session().put("id", session.sessionId);
 
         // Return the unique id
-        return session.id;
+        return session.sessionId;
 
     }
 
-    public static Session Current() {
+    /**
+     * Get the session for the current http context
+     *
+     * @return
+     */
+    public Session Current() {
 
-        UUID uuid = getCurrentUuid();
-        if (uuid != null)
-        return FindSession(uuid);
-        return null;
+        // Get id from context
+        String sessionId = getCurrentSessionId();
+
+        // Return null if no session, or find the session and return it
+        return sessionId == null ? null : sessionRepository.findSessionBySessionId(sessionId);
+
     }
 
     /**
      * Session expiry
      */
-    public static void ExpireCurrentSession() {
+    public void ExpireCurrentSession() {
 
         // Un-persist the current session
-        UUID uuid = getCurrentUuid();
-        SessionStateService.ExpireSession(uuid);
+        String sessionId = getCurrentSessionId();
+        ExpireSession(sessionId);
 
         // Clear the session data on the client side.
         Http.Context.current().session().clear();
@@ -65,78 +71,52 @@ public class SessionStateService {
      * Expire a session so that it can no longer be utilized
      * - note: this forces any user with the session to be logged out
      *
-     * @param uuid
+     * @param sessionId
      */
-    public static void ExpireSession(UUID uuid) {
+    public void ExpireSession(String sessionId) {
 
         // Expire session by id
-        Session session = FindSession(uuid);
-        session.delete();
+        Session session = sessionRepository.findSessionBySessionId(sessionId);
 
-    }
-
-    /**
-     * Find a single session based on uuid
-     * @param uuid
-     * @return
-     */
-    public static Session FindSession(UUID uuid) {
-
-        Session session = find
-                .where()
-                .eq("id", uuid)
-                .findUnique();
-
-        return session;
+        // Remove from database
+        sessionRepository.remove(session);
 
     }
 
     /**
      * Get all users in the current session store
+     *
      * @return
      */
-    public static java.util.List<Session> ListAll() {
+    public java.util.List<Session> ListAll() {
 
-        return find
-                .where()
-                .findList();
+        return null;
 
     }
 
     /**
      * Updates the last access time for the session
      */
-    public static void UpdateCurrentSession() {
+    public void UpdateCurrentSession() {
 
-        Session session = Current();
-        session.lastAccess = DateTime.now();
-        session.update();
+        // Get current session
+        String sessionId = getCurrentSessionId();
+
+        // Update last access with new date time
+        sessionRepository.updateLastAccess(sessionId);
 
     }
 
     /**
      * Get the current session uuid from the current http context.
+     *
      * @return
      */
-    private static UUID getCurrentUuid() {
+    private String getCurrentSessionId() {
 
-        String uuid = Http.Context.current().session().get("id");
-        if (uuid == null) return null;
-        return UUID.fromString(uuid);
-
-    }
-
-    /**
-     * Set the current session uuid from the given param
-     * @param uuid
-     */
-    private static void setCurrentUuid(UUID uuid) {
-
-        Http.Context.current().session().clear();
-        System.out.println(uuid.toString());
-        Http.Context.current().session().put("id", uuid.toString());
-
-        Logger.debug("Set current session to: " + uuid.toString());
+        String sessionId = Http.Context.current().session().get("id");
+        if (sessionId == null) return null;
+        return sessionId;
 
     }
 

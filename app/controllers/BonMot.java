@@ -1,5 +1,6 @@
 package controllers;
 
+import models.Session;
 import models.User;
 import play.data.Form;
 import play.mvc.Result;
@@ -36,7 +37,7 @@ public class BonMot extends BaseController {
         postMot.clean();
 
         // Prepare data for the bonmot service
-        User user = SessionStateService.Current().user;
+        User user = getUser();
         System.out.println(user.email);
         String text = postMot.text;
 

@@ -9,10 +9,6 @@ import play.mvc.Results;
 import play.mvc.Security;
 import services.SessionStateService;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-
 /**
  * Authenticator Class : Extends Security.Authenticator
  */
@@ -27,11 +23,10 @@ public class Authenticator extends Security.Authenticator {
     @Override
     public String getUsername(Context context) {
 
-        Session session = SessionStateService.Current();
-        if (session != null && session.user != null)
-            return session.user.email;
-        return null;
-
+        Session session = new SessionStateService().Current();
+        if (session != null && session.userId == null)
+            return null;
+        return User.findById(session.userId).email;
     }
 
     /**

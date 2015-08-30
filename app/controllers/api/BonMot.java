@@ -31,7 +31,7 @@ public class BonMot extends BaseController {
             return badRequest("Invalid text length.  Text must be less than 129 characters.");
 
         // Prepare data for the bonmot service
-        User user = SessionStateService.Current().user;
+        User user = getUser();
 
         // Create new bonmot
         models.BonMot mot = BonMotService.create(user, text);

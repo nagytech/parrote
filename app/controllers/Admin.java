@@ -37,8 +37,9 @@ public class Admin extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result index() {
 
-        // If the current user is not an admin, redirect
-        if (!SessionStateService.Current().user.admin)
+        // Redirect if user is not admin
+        User user = getUser();
+        if (user == null || !user.admin)
             return redirect(routes.Application.index());
 
         // Get the current user set
@@ -63,10 +64,11 @@ public class Admin extends BaseController {
     public static Result ban(String email) {
 
         // If the current user is not an admin, redirect
-        if (!SessionStateService.Current().user.admin)
+        if (!getUser().admin)
             return redirect(routes.Application.index());
 
         // Don't allow banning of an admin
+        // TODO: Old way
         User user = User.findByEmail(email);
         if (user.admin)
             return redirect(routes.Admin.index());
@@ -83,13 +85,14 @@ public class Admin extends BaseController {
     /**
      * Expire the user's session as identified by their email address
      *
-     * @param email
+     * @param uuid
      * @return
      */
     public static Result expire(String uuid) {
 
         // Expire the given session
-        SessionStateService.ExpireSession(UUID.fromString(uuid));
+        SessionStateService service = new SessionStateService();
+        service.ExpireSession(uuid);
 
         return redirect(routes.Admin.index());
 

@@ -23,7 +23,7 @@ public class Profile extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result index() {
 
-        User user = SessionStateService.Current().user;
+        User user = getUser();
         List<models.BonMot> mots = models.BonMot.getLatestForUser(user, 0, 25);
 
         return ok(profile.render(user.username, true, mots));

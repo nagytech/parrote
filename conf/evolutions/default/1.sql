@@ -31,13 +31,6 @@ create table pith (
   constraint pk_pith primary key (id))
 ;
 
-create table session (
-  id                        varchar(40) not null,
-  user_id                   varchar(40),
-  last_access               timestamp,
-  constraint pk_session primary key (id))
-;
-
 create table user (
   id                        varchar(40) not null,
   created_on                timestamp,
@@ -77,14 +70,12 @@ alter table pith add constraint fk_pith_updatedBy_6 foreign key (updated_by_id) 
 create index ix_pith_updatedBy_6 on pith (updated_by_id);
 alter table pith add constraint fk_pith_deletedBy_7 foreign key (deleted_by_id) references user (id) on delete restrict on update restrict;
 create index ix_pith_deletedBy_7 on pith (deleted_by_id);
-alter table session add constraint fk_session_user_8 foreign key (user_id) references user (id) on delete restrict on update restrict;
-create index ix_session_user_8 on session (user_id);
-alter table user add constraint fk_user_createdBy_9 foreign key (created_by_id) references user (id) on delete restrict on update restrict;
-create index ix_user_createdBy_9 on user (created_by_id);
-alter table user add constraint fk_user_updatedBy_10 foreign key (updated_by_id) references user (id) on delete restrict on update restrict;
-create index ix_user_updatedBy_10 on user (updated_by_id);
-alter table user add constraint fk_user_deletedBy_11 foreign key (deleted_by_id) references user (id) on delete restrict on update restrict;
-create index ix_user_deletedBy_11 on user (deleted_by_id);
+alter table user add constraint fk_user_createdBy_8 foreign key (created_by_id) references user (id) on delete restrict on update restrict;
+create index ix_user_createdBy_8 on user (created_by_id);
+alter table user add constraint fk_user_updatedBy_9 foreign key (updated_by_id) references user (id) on delete restrict on update restrict;
+create index ix_user_updatedBy_9 on user (updated_by_id);
+alter table user add constraint fk_user_deletedBy_10 foreign key (deleted_by_id) references user (id) on delete restrict on update restrict;
+create index ix_user_deletedBy_10 on user (deleted_by_id);
 
 
 
@@ -101,8 +92,6 @@ drop table if exists bon_mot;
 drop table if exists bon_mot_pith;
 
 drop table if exists pith;
-
-drop table if exists session;
 
 drop table if exists user;
 

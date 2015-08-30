@@ -1,5 +1,9 @@
 @import play.i18n._
+@import play.mvc.Http.Context
 @(content: Html)
+@* Add vars from session *@
+@session = @{Option(Context.current().args.get("session")).getOrElse(null).asInstanceOf[models.Session]}
+@user = @{Option(Context.current().args.get("user")).getOrElse(null).asInstanceOf[models.User]}
 <!DOCTYPE html>
 <html>
     <head>
@@ -22,20 +26,20 @@
                 <div id="navbar" class="navbar-collapse collapse">
                     <ul class="nav navbar-nav">
                         <li><a href="#" data-action="navigate" data-action-url="@routes.Application.index()"><i class="glyphicon glyphicon-home"></i> Home</a></li>
-                        @if(services.SessionStateService.Current() != null) {
+                        @if(session != null) {
                             <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()"><i class="glyphicon glyphicon-bullhorn"></i> Post</a></li>
                         }
                         <li><a href="#" data-action="navigate" data-action-url="@routes.Search.index()"><i class="glyphicon glyphicon-search"></i> Search</a></li>
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
-                        @if(services.SessionStateService.Current() == null) {
+                        @if(user == null) {
                             <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.signup().url"><i class="glyphicon glyphicon-edit"></i> Sign Up</a></li>
                             <li><a href="#" data-action="navigate" data-action-url="@routes.Secure.login().url"><i class="glyphicon glyphicon-log-out"></i> Login</a></li>
                         } else {
-                            @if(services.SessionStateService.Current().user.admin) {
+                            @if(user.admin) {
                                 <li><a href="#" data-action="navigate" data-action-url="@routes.Admin.index()"><i class="glyphicon glyphicon-user"></i> Users</a></li>
                             }
-                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@services.SessionStateService.Current().user.username</a></li>
+                            <li><a href="#" data-action="navigate" data-action-url="@routes.Profile.index()">@@@user.username</a></li>
                             <li><a href="#" data-action="logout">Logout <i class="glyphicon glyphicon-log-out"></i></a></li>
                             @helper.form(routes.Secure.logout(), 'hidden -> "hidden", 'id -> "logout-form") { }
                         }

@@ -1,27 +1,37 @@
 package models;
 
-import com.avaje.ebean.Model;
 import org.joda.time.DateTime;
-import play.Logger;
 
-import javax.persistence.*;
+import java.util.Date;
+import java.util.Map;
 import java.util.UUID;
 
 /**
- * Created by jnagy on 11/08/15.
+ * Session class - stores session information about a user
+ * and their current session
  */
-@Entity
-public class Session extends Model {
+public class Session extends ModelBase {
 
-    @Id
-    public UUID id;
-    @ManyToOne(fetch = FetchType.EAGER)
-    public User user;
-    public DateTime lastAccess;
+    /**
+     * User Id
+     */
+    public UUID userId;
+    /**
+     * Last access for given user
+     */
+    public Date lastAccess;
+    /**
+     * Id for the session (UUID as string)
+     */
+    public String sessionId;
+
+
+    public Session() {
+
+    }
 
     /**
      * Get the user's status based on the last action time
-     * - Banned: User has been banned
      * - Online: Active in last 10 minutes
      * - Idle: Active in the last 60 minutes
      * - Inactive: Active in the last 6 hours
@@ -30,9 +40,6 @@ public class Session extends Model {
      * @return status as per above
      */
     public String getStatus() {
-
-        if (user.banned)
-            return "Banned";
 
         if (lastAccess != null) {
 

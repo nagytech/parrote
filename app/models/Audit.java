@@ -86,7 +86,7 @@ public class Audit extends Model {
     @Override
     public void insert() {
         createdOn = new Date();
-        createdBy = SessionStateService.Current().user;
+        //createdBy = SessionStateService.Current().user;
         super.insert();
     }
 
@@ -96,7 +96,7 @@ public class Audit extends Model {
     @Override
     public void update() {
         updatedOn = new Date();
-        updatedBy = SessionStateService.Current().user;
+        //updatedBy = SessionStateService.Current().user;
         super.update();
     }
 
@@ -107,7 +107,7 @@ public class Audit extends Model {
     public void delete() {
         deleted = true;
         deletedOn = new Date();
-        deletedBy = SessionStateService.Current().user;
+        //deletedBy = SessionStateService.Current().user;
         super.delete();
     }
 }

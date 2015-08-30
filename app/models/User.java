@@ -11,6 +11,7 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * User model
@@ -55,10 +56,6 @@ public class User extends Audit {
      */
     @JsonIgnore
     public boolean banned;
-
-    @OneToMany(fetch = FetchType.EAGER)
-    @JsonIgnore
-    public List<Session> sessions = new ArrayList<>();
 
     /**
      * Authenticate the user using JBCrypt against the plaintext password
@@ -166,6 +163,11 @@ public class User extends Audit {
 
     }
 
+    public static User findById(UUID userId) {
+        Logger.warn("REMOVE ME - TEMPORARY METHOD FOR REFACTOR PURPOSES");
+        return User.find.where().eq("id", userId).findUnique();
+    }
+
     /**
      * Format username with @ prefix.
      * @return username with @ prefix
@@ -182,4 +184,5 @@ public class User extends Audit {
     public static List<User> findAll() {
         return User.find.orderBy("username").findList();
     }
+
 }

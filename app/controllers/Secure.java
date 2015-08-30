@@ -50,7 +50,7 @@ public class Secure extends BaseController {
         User user = User.findByEmail(postLogin.email);
 
         // Clear any previous session and add current user's email to new session.
-        SessionStateService.CreateSession(user);
+        new SessionStateService().CreateSession(user);
 
         // Redirect to index
         return redirect(routes.Application.index());
@@ -67,7 +67,7 @@ public class Secure extends BaseController {
     public static Result login() {
 
         // redirect if already logged in
-        if (SessionStateService.Current() != null)
+        if (getSession() != null)
             return redirect(routes.Application.index());
 
         // Render login form
@@ -85,13 +85,13 @@ public class Secure extends BaseController {
     @Security.Authenticated(Authenticator.class)
     public static Result logout() {
 
-        User user = SessionStateService.Current().user;
+        User user = getUser();
 
         if (user == null)
             // Redirect to main page
             return redirect(routes.Application.index());
 
-        SessionStateService.ExpireCurrentSession();
+        new SessionStateService().ExpireCurrentSession();
 
         return redirect(routes.Application.index());
 

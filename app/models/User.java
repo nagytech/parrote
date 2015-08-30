@@ -43,7 +43,7 @@ public class User extends ModelBase {
      */
     public boolean banned;
     /**
-     * Sessions for the user
+     * Sessions for the user - non-normalized
      */
     public List<UUID> sessions = new ArrayList<>();
 

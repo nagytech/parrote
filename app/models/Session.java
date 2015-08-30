@@ -15,6 +15,7 @@ public class Session extends ModelBase {
 
     /**
      * Id for the session (UUID as string)
+     * (not using the _id because it's rather sequential)
      */
     public String sessionId;
     /**
@@ -22,7 +23,7 @@ public class Session extends ModelBase {
      */
     public ObjectId userId;
     /**
-     * Username for session
+     * Username for session - non normalized
      */
     public String username;
     /**

@@ -14,7 +14,7 @@ import java.util.regex.Matcher;
 /**
  * BonMotService Utility
  * <p>
- * Facilitates BonMot CRUD
+ * Facilitates BonMot logic operations
  */
 public class BonMotService {
 

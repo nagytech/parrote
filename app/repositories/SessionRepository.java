@@ -7,7 +7,7 @@ import org.joda.time.DateTime;
 import java.util.UUID;
 
 /**
- * Created by jnagy on 29/08/15.
+ * Repository for Session CRUD operations
  */
 public class SessionRepository extends RepositoryBase<Session> {
 
@@ -16,28 +16,8 @@ public class SessionRepository extends RepositoryBase<Session> {
     }
 
     /**
-     * Find a single session based on sessionId
-     *
-     * @param sessionId
-     * @return session from db
+     * Ensure that the sessionId is unique
      */
-    public Session findSessionBySessionId(String sessionId) {
-
-        Session session = findOne("{sessionId: '"+sessionId+"'}");
-        return session;
-
-    }
-
-    /**
-     * Update the stored session with a lastAccess of now.
-     * @param sessionId
-     */
-    public void updateLastAccess(String sessionId) {
-
-        update(String.format("{sessionId: '%s'}", sessionId), new BasicDBObject("lastAccess", DateTime.now().toDate()).toString());
-
-    }
-
     public void index() {
         doIndex("{sessionId: 1},{unique: true}");
     }

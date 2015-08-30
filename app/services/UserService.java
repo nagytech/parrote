@@ -10,12 +10,16 @@ import repositories.UserRepository;
 import java.util.List;
 
 /**
- * Created by jnagy on 30/08/15.
+ * Service object for coordinating user functions
  */
 public class UserService {
 
+    // User repository instance
     UserRepository userRepository;
 
+    /**
+     * User Service
+     */
     public UserService() {
         userRepository = new UserRepository();
     }
@@ -34,7 +38,6 @@ public class UserService {
         User user = findByEmail(email);
 
         boolean authenticated = false;
-
         if (user != null) {
 
             if (user.banned) {
@@ -156,8 +159,6 @@ public class UserService {
     }
 
     public List<User> all() {
-
-        // TODO: Order by...
 
         return userRepository.all();
 

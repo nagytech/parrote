@@ -10,7 +10,11 @@ import play.Logger;
 import play.mvc.Http;
 import repositories.SessionRepository;
 
-
+/**
+ * SessionState Service Utility
+ * ---
+ * Facilitates session state logic
+ */
 public class SessionStateService {
 
     SessionRepository sessionRepository;
@@ -51,7 +55,7 @@ public class SessionStateService {
         String sessionId = getCurrentSessionId();
 
         // Return null if no session, or find the session and return it
-        return sessionId == null ? null : sessionRepository.findSessionBySessionId(sessionId);
+        return sessionId == null ? null : findSessionBySessionId(sessionId);
 
     }
 
@@ -78,21 +82,10 @@ public class SessionStateService {
     public void ExpireSession(String sessionId) {
 
         // Expire session by id
-        Session session = sessionRepository.findSessionBySessionId(sessionId);
+        Session session = findSessionBySessionId(sessionId);
 
         // Remove from database
         sessionRepository.remove(session);
-
-    }
-
-    /**
-     * Get all users in the current session store
-     *
-     * @return
-     */
-    public java.util.List<Session> ListAll() {
-
-        return null;
 
     }
 
@@ -105,7 +98,32 @@ public class SessionStateService {
         String sessionId = getCurrentSessionId();
 
         // Update last access with new date time
-        sessionRepository.updateLastAccess(sessionId);
+        updateLastAccess(sessionId);
+
+    }
+
+    /**
+     * Find a single session based on sessionId
+     *
+     * @param sessionId
+     * @return session from db
+     */
+    public Session findSessionBySessionId(String sessionId) {
+
+        Session session = sessionRepository.findOne("{sessionId: '"+sessionId+"'}");
+        return session;
+
+    }
+
+    /**
+     * Update the stored session with a lastAccess of now.
+     * @param sessionId
+     */
+    public void updateLastAccess(String sessionId) {
+
+        // Update the session with a timestamp of now for lastAccess
+        sessionRepository.update(String.format("{sessionId: '%s'}", sessionId)
+                , new BasicDBObject("lastAccess", DateTime.now().toDate()).toString());
 
     }
 
@@ -116,6 +134,7 @@ public class SessionStateService {
      */
     private String getCurrentSessionId() {
 
+        // Get the current session id from http context
         String sessionId = Http.Context.current().session().get("id");
         if (sessionId == null) return null;
         return sessionId;

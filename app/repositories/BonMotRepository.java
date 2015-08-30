@@ -9,10 +9,13 @@ import play.Logger;
 import java.util.List;
 
 /**
- * Created by jnagy on 30/08/15.
+ * Repository for BonMot CRUD operations
  */
 public class BonMotRepository extends RepositoryBase<BonMot> {
 
+    /**
+     * BonMotRepository
+     */
     public BonMotRepository() {
         super(BonMot.class, "bonmots");
     }

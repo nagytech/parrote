@@ -1,37 +1,59 @@
 package controllers;
 
-import actions.UnlogAction;
+import actions.SessionAction;
 import models.Session;
 import models.User;
-import org.bson.types.ObjectId;
 import play.mvc.Controller;
 import play.mvc.With;
+import repositories.UnitOfWork;
 import services.SessionStateService;
 import services.UserService;
 
+import javax.inject.Inject;
+
 /**
- * Base controller with session activity handler as UnlogAction class
+ * Base controller with session activity handler as SessionAction class
  */
-@With(UnlogAction.class)
+@With(SessionAction.class)
 public class BaseController extends Controller {
 
-    public BaseController() {
+    private User user;
+    private boolean userCheck;
+    private Session session;
+    private boolean sessionCheck;
 
+    protected final UnitOfWork uow;
+
+    public BaseController(UnitOfWork uow) {
+        this.uow = uow;
     }
 
-    public static User getUser() {
-        SessionStateService service = new SessionStateService();
-        UserService userservice = new UserService();
-        Session session = service.Current();
+    public User getUser() {
+
+        // Utilize user cache
+        if (user == null && userCheck) return null;
+        userCheck = true;
+
+        // Utilize session cache
+        if (session == null && sessionCheck) return null;
+        getSession();
         if (session == null) return null;
-        User user = userservice.findById(new ObjectId(session.userId));
+
+        // Lookup user
+        user = uow.getUserService().findById(session.userId);
         return user;
     }
 
-    public static Session getSession() {
-        SessionStateService service = new SessionStateService();
-        Session session = service.Current();
+    public Session getSession() {
+
+        // Utilize session cache
+        if (session == null && sessionCheck) return null;
+        sessionCheck = true;
+
+        // Lookup session
+        session = uow.getSessionStateService().Current();
         return session;
+
     }
 
 }

@@ -26,7 +26,13 @@ import javax.inject.Inject;
  */
 public class SessionAction extends Action.Simple {
 
+    /**
+     * Session service - injected
+     */
     private SessionStateService sessionService;
+    /**
+     * User service - injected
+     */
     private UserService userService;
 
     @Inject
@@ -72,7 +78,7 @@ public class SessionAction extends Action.Simple {
 
         // Continue with call
         return delegate.call(context);
-        
+
     }
 
 }

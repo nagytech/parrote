@@ -3,8 +3,11 @@ package controllers;
 import play.mvc.Controller;
 import play.mvc.Result;
 import repositories.BonMotRepository;
+import repositories.UnitOfWork;
 import services.BonMotService;
 import views.html.index;
+
+import javax.inject.Inject;
 
 /**
  * Application Controller.
@@ -13,17 +16,19 @@ import views.html.index;
  */
 public class Application extends BaseController {
 
+    @Inject
+    public Application(UnitOfWork uow) {
+        super(uow);
+    }
+
     /**
      * GET: index action
      *
      * @return Latest bonmot listing for all users.
      */
-    public static Result index() {
-
-        BonMotService service = new BonMotService();
-
+    public Result index() {
         // List the latest mots from all users
-        java.util.List<models.BonMot> mots = service.getLatest(0, 25, "");
+        java.util.List<models.BonMot> mots = uow.getBonMotService().getLatestForTag("");
         return ok(index.render(mots));
 
     }

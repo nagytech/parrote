@@ -14,22 +14,21 @@ import java.util.UUID;
 public class Session extends ModelBase {
 
     /**
+     * Id for the session (UUID as string)
+     */
+    public String sessionId;
+    /**
      * User Id
      */
-    public String userId;
+    public ObjectId userId;
+    /**
+     * Username for session
+     */
+    public String username;
     /**
      * Last access for given user
      */
     public Date lastAccess;
-    /**
-     * Id for the session (UUID as string)
-     */
-    public String sessionId;
-
-
-    public Session() {
-
-    }
 
     /**
      * Get the user's status based on the last action time

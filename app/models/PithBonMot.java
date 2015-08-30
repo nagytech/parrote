@@ -1,7 +1,11 @@
 package models;
 
+import org.bson.types.ObjectId;
+
 /**
- * Created by jnagy on 30/08/15.
+ * Relation between piths and bonmots
  */
 public class PithBonMot {
+    public ObjectId pithId;
+    public ObjectId bonMotId;
 }

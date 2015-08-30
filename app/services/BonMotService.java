@@ -66,7 +66,9 @@ public class BonMotService {
      * @param pageSize page size
      * @return
      */
-    public List<BonMot> getLatest(int page, int pageSize, String tag) {
+    public List<BonMot> getLatestForTag(String tag) {
+
+
 
         //TODO: find relationship
         // TODO: Get tags
@@ -82,7 +84,7 @@ public class BonMotService {
     /**
      * Get the latest bonmots for the given user
      *
-     * @param userId user to search by
+     * @param user - user to search by
      * @return
      */
     public List<BonMot> getLatestForUser(User user) {

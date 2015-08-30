@@ -1,14 +1,15 @@
 package controllers;
 
-import models.*;
+import models.User;
 import play.mvc.Result;
 import play.mvc.Security;
+import repositories.UnitOfWork;
 import security.Authenticator;
 import services.BonMotService;
-import services.SessionStateService;
 import services.UserService;
 import views.html.profile;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,13 +18,18 @@ import java.util.List;
  */
 public class Profile extends BaseController {
 
+    @Inject
+    public Profile(UnitOfWork uow) {
+        super(uow);
+    }
+
     /**
      *  GET: Index page
      *
      * @return Current logged in user's profle page with a list of recent bonmots
      */
     @Security.Authenticated(Authenticator.class)
-    public static Result index() {
+    public Result index() {
 
         User user = getUser();
         BonMotService service = new BonMotService();
@@ -42,7 +48,7 @@ public class Profile extends BaseController {
      * @param username
      * @return
      */
-    public static Result user(String username) {
+    public Result user(String username) {
 
         // Check if the requested profile is the same as the logged in user's profile
         boolean ownProfile = false;

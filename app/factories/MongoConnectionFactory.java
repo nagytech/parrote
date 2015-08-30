@@ -18,8 +18,6 @@ public class MongoConnectionFactory {
         MongoClient mc = new MongoClient();
         DB db = mc.getDB(name);
 
-        Logger.info(db.getName());
-
         return new db.MongoConnection(db, mc);
 
     }

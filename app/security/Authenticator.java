@@ -2,9 +2,6 @@ package security;
 
 import controllers.routes;
 import models.Session;
-import models.User;
-import org.bson.types.ObjectId;
-import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Results;
@@ -31,7 +28,7 @@ public class Authenticator extends Security.Authenticator {
             return null;
         }
         UserService userService = new UserService();
-        return userService.findById(new ObjectId(session.userId)).email;
+        return userService.findById(session.userId).email;
     }
 
     /**

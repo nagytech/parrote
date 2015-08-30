@@ -11,7 +11,7 @@ import java.util.UUID;
  */
 public class SessionFactory {
 
-    public Session create(String userId) {
+    public Session create(ObjectId userId) {
 
         Session session = new Session();
 

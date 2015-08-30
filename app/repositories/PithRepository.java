@@ -17,5 +17,4 @@ public class PithRepository extends RepositoryBase<BonMot> {
         super(Pith.class, "piths");
     }
 
-
 }

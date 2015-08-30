@@ -3,8 +3,10 @@ package controllers;
 import models.*;
 import play.mvc.Controller;
 import play.mvc.Result;
+import repositories.UnitOfWork;
 import views.html.search;
 
+import javax.inject.Inject;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +15,12 @@ import java.util.List;
  *
  * Used for searching and displaying search results
  */
-public abstract class Search extends BaseController {
+public class Search extends BaseController {
+
+    @Inject
+    public Search(UnitOfWork uow) {
+        super(uow);
+    }
 
     /**
      * GET: Index action
@@ -23,7 +30,7 @@ public abstract class Search extends BaseController {
      *
      * @return display of search results
      */
-    public static Result index(String q) {
+    public Result index(String q) {
 
         List<models.BonMot> mots = new ArrayList<>();
 

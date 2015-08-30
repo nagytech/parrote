@@ -5,9 +5,12 @@ import models.User;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
+import repositories.UnitOfWork;
 import security.Authenticator;
 import services.BonMotService;
 import services.SessionStateService;
+
+import javax.inject.Inject;
 
 import static play.data.Form.form;
 
@@ -19,12 +22,19 @@ import static play.data.Form.form;
 @Security.Authenticated(Authenticator.class)
 public class BonMot extends BaseController {
 
+    BonMotService bonMotService;
+
+    @Inject
+    public BonMot(UnitOfWork uow) {
+        super(uow);
+    }
+
     /**
      * POST: Create action
      *
      * @return redirect to the main page
      */
-    public static Result create() {
+    public Result create() {
 
         // Bind data from the request
         Form<models.BonMot> motForm = form(models.BonMot.class).bindFromRequest();
@@ -40,8 +50,7 @@ public class BonMot extends BaseController {
         String text = postMot.text;
 
         // Create new bonmot
-        BonMotService service = new BonMotService();
-        service.create(user, text);
+        uow.getBonMotService().create(user, text);
 
         // Redirect to main page
         return redirect(routes.Profile.index());

@@ -1,26 +1,14 @@
 package controllers;
 
-import models.Session;
 import models.User;
-import org.joda.time.DateTime;
-import play.data.Form;
-import play.i18n.Messages;
-import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
-import repositories.UserRepository;
+import repositories.UnitOfWork;
 import security.Authenticator;
-import services.SessionStateService;
-import services.UserService;
-import viewmodels.Login;
-import viewmodels.Signup;
 import views.html.admin;
-import views.html.login;
-import views.html.signup;
 
-import java.util.*;
-
-import static play.data.Form.form;
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Secure Controller
@@ -28,6 +16,11 @@ import static play.data.Form.form;
  * Controller for facilitating user registration and authentication.
  */
 public class Admin extends BaseController {
+
+    @Inject
+    public Admin(UnitOfWork uow) {
+        super(uow);
+    }
 
     /**
      * GET: Admin action
@@ -37,7 +30,7 @@ public class Admin extends BaseController {
      * @return render user management page
      */
     @Security.Authenticated(Authenticator.class)
-    public static Result index() {
+    public Result index() {
 
         // Redirect if user is not admin
         User user = getUser();
@@ -45,7 +38,7 @@ public class Admin extends BaseController {
             return redirect(routes.Application.index());
 
         // Get the current user set
-        List<User> users = new UserRepository().all();
+        List<User> users = uow.getUserService().all();
         return ok(admin.render(users));
 
     }
@@ -63,20 +56,19 @@ public class Admin extends BaseController {
      * @return
      */
     @Security.Authenticated(Authenticator.class)
-    public static Result ban(String email) {
+    public Result ban(String email) {
 
         // If the current user is not an admin, redirect
         if (!getUser().admin)
             return redirect(routes.Application.index());
 
         // Don't allow banning of an admin
-        UserService userService = new UserService();
-        User user = userService.findByEmail(email);
+        User user = uow.getUserService().findByEmail(email);
         if (user.admin)
             return redirect(routes.Admin.index());
 
         // Ban the user
-        userService.banUser(user);
+        uow.getUserService().banUser(user);
 
         // post / get
         return redirect(routes.Admin.index());
@@ -89,11 +81,10 @@ public class Admin extends BaseController {
      * @param uuid
      * @return
      */
-    public static Result expire(String uuid) {
+    public Result expire(String uuid) {
 
         // Expire the given session
-        SessionStateService service = new SessionStateService();
-        service.ExpireSession(uuid);
+        uow.getSessionStateService().ExpireSession(uuid);
 
         return redirect(routes.Admin.index());
 

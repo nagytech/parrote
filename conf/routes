@@ -1,41 +1,41 @@
 
 
-GET         /                           controllers.Application.index()
+GET         /                           @controllers.Application.index()
 
 # Asset Routing
 GET         /jsroutes                   controllers.Reverse.jsRoutes
 GET         /assets/*file               controllers.Assets.at(path="/public", file)
 
 # Registration
-GET         /register                   controllers.Secure.signup()
-POST        /register                   controllers.Secure.register()
+GET         /register                   @controllers.Secure.signup()
+POST        /register                   @controllers.Secure.register()
 
 # Login
-GET         /login                      controllers.Secure.login()
-POST        /login                      controllers.Secure.authenticate()
+GET         /login                      @controllers.Secure.login()
+POST        /login                      @controllers.Secure.authenticate()
 
 # Logout
-POST        /logout                     controllers.Secure.logout()
+POST        /logout                     @controllers.Secure.logout()
 
 # Admin
-GET         /admin                      controllers.Admin.index()
-POST        /admin/ban/:email           controllers.Admin.ban(email: String)
-POST        /admin/expire/:email        controllers.Admin.expire(email: String)
+GET         /admin                      @controllers.Admin.index()
+POST        /admin/ban/:email           @controllers.Admin.ban(email: String)
+POST        /admin/expire/:email        @controllers.Admin.expire(email: String)
 
 # New Bonmot
-POST        /bonmot/new                 controllers.BonMot.create()
+POST        /bonmot/new                 @controllers.BonMot.create()
 
 # Profile
-GET         /profile                    controllers.Profile.index()
-GET         /user/:username             controllers.Profile.user(username: String)
+GET         /profile                    @controllers.Profile.index()
+GET         /user/:username             @controllers.Profile.user(username: String)
 
 # Search
-GET         /search                     controllers.Search.index(q: String ?= "")
+GET         /search                     @controllers.Search.index(q: String ?= "")
 
 # Single Page App
 GET         /spa                        controllers.SinglePage.index()
 
 # API
-POST        /api/postmessage            controllers.api.BonMot.create(text: String ?= "")
-GET         /api/users/:username        controllers.api.BonMot.byUser(username: String)
-GET         /api/tags/:tag              controllers.api.BonMot.byPith(tag: String)
+POST        /api/postmessage            @controllers.api.BonMot.create(text: String ?= "")
+GET         /api/users/:username        @controllers.api.BonMot.byUser(username: String)
+GET         /api/tags/:tag              @controllers.api.BonMot.byPith(tag: String)

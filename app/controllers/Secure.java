@@ -8,6 +8,7 @@ import play.i18n.Messages;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
+import repositories.UnitOfWork;
 import security.Authenticator;
 import services.SessionStateService;
 import services.UserService;
@@ -17,6 +18,7 @@ import views.html.admin;
 import views.html.login;
 import views.html.signup;
 
+import javax.inject.Inject;
 import java.util.*;
 
 import static play.data.Form.form;
@@ -28,6 +30,11 @@ import static play.data.Form.form;
  */
 public class Secure extends BaseController {
 
+    @Inject
+    public Secure(UnitOfWork uow) {
+        super(uow);
+    }
+
     /**
      * POST: Authenticate action
      * <p>
@@ -35,7 +42,7 @@ public class Secure extends BaseController {
      *
      * @return redirect to main page on success, bad request revert to form on failure
      */
-    public static Result authenticate() {
+    public Result authenticate() {
 
         // Bind form from request and check for errors
         Form<Login> loginForm = form(Login.class).bindFromRequest();
@@ -48,11 +55,10 @@ public class Secure extends BaseController {
         Login postLogin = loginForm.get();
 
         // Get the user and update their last action
-        UserService userService = new UserService();
-        User user = userService.findByEmail(postLogin.email);
+        User user = uow.getUserService().findByEmail(postLogin.email);
 
         // Clear any previous session and add current user's email to new session.
-        new SessionStateService().CreateSession(user);
+        uow.getSessionStateService().CreateSession(user);
 
         // Redirect to index
         return redirect(routes.Application.index());
@@ -66,7 +72,7 @@ public class Secure extends BaseController {
      *
      * @return rendered login form
      */
-    public static Result login() {
+    public Result login() {
 
         // redirect if already logged in
         if (getSession() != null)
@@ -85,7 +91,7 @@ public class Secure extends BaseController {
      * @return redirect to main page
      */
     @Security.Authenticated(Authenticator.class)
-    public static Result logout() {
+    public Result logout() {
 
         User user = getUser();
 
@@ -93,7 +99,7 @@ public class Secure extends BaseController {
             // Redirect to main page
             return redirect(routes.Application.index());
 
-        new SessionStateService().ExpireCurrentSession();
+        uow.getSessionStateService().ExpireCurrentSession();
 
         return redirect(routes.Application.index());
 
@@ -106,7 +112,7 @@ public class Secure extends BaseController {
      *
      * @return redirect to login form on success, bad request revert to form on failure
      */
-    public static Result register() {
+    public Result register() {
 
         // Bind from form request
         Form<Signup> signupForm = form(Signup.class).bindFromRequest();
@@ -119,8 +125,7 @@ public class Secure extends BaseController {
         Signup postSignup = signupForm.get();
 
         // Try to register the user
-        UserService userService = new UserService();
-        if (!userService.register(postSignup.email, postSignup.username, postSignup.password)) {
+        if (!uow.getUserService().register(postSignup.email, postSignup.username, postSignup.password)) {
             // If the registration failed, return bad request
             signupForm.data().put("password", "");
             signupForm.reject(Messages.get("signup.error"));
@@ -139,7 +144,7 @@ public class Secure extends BaseController {
      *
      * @return render signup form
      */
-    public static Result signup() {
+    public Result signup() {
 
         // Render signup form
         return ok(signup.render(form(Signup.class)));

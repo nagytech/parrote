@@ -28,7 +28,7 @@ public class SessionStateService {
     public String CreateSession(User user) {
 
         // create and store the session
-        Session session = new SessionFactory().create(user.get_id().toString());
+        Session session = new SessionFactory().create((ObjectId)user.get_id());
         sessionRepository.insert(session);
 
         // set in the cookie

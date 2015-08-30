@@ -154,4 +154,12 @@ public class UserService {
         userRepository.update(String.format("{user: '%s'}", user.email), "{banned: true}");
 
     }
+
+    public List<User> all() {
+
+        // TODO: Order by...
+
+        return userRepository.all();
+
+    }
 }

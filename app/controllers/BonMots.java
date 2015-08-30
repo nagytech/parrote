@@ -7,8 +7,10 @@ import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
+import repositories.UnitOfWork;
 import services.BonMotService;
 
+import javax.inject.Inject;
 import java.util.List;
 
 import static play.libs.Json.toJson;
@@ -20,6 +22,11 @@ import static play.libs.Json.toJson;
  */
 public class BonMots extends BaseController {
 
+    @Inject
+    public BonMots(UnitOfWork uow) {
+        super(uow);
+    }
+
     /**
      * latest Action
      * <p>
@@ -29,11 +36,10 @@ public class BonMots extends BaseController {
      * @param pith Option: specify the pith filter
      * @return Json array of bonmots matching search critieria
      */
-    public static Result latest(int page, int pageSize, String pith) {
+    public Result latest(int page, int pageSize, String pith) {
 
         // Get the bonmots matching the parameters
-        BonMotService service = new BonMotService();
-        List<BonMot> mots = service.getLatest(page, pageSize, pith);
+        List<BonMot> mots = uow.getBonMotService().getLatestForTag(pith);
 
         // TODO: properly design the DTO
         // Return the json array

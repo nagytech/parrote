@@ -1,7 +1,6 @@
 package repositories;
 
 import services.BonMotService;
-import services.PithService;
 import services.SessionStateService;
 import services.UserService;
 
@@ -11,7 +10,6 @@ import services.UserService;
 public class UnitOfWork {
 
     BonMotService bonMotService;
-    PithService pithService;
     SessionStateService sessionStateService;
     UserService userService;
 
@@ -19,12 +17,6 @@ public class UnitOfWork {
         if (bonMotService == null)
             bonMotService = new BonMotService();
         return bonMotService;
-    }
-
-    public PithService getPithService() {
-        if (pithService == null)
-            pithService = new PithService();
-        return pithService;
     }
 
     public SessionStateService getSessionStateService() {

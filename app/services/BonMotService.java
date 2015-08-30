@@ -2,12 +2,10 @@ package services;
 
 import com.mongodb.BasicDBObject;
 import models.BonMot;
-import models.Pith;
 import models.User;
 import org.bson.types.ObjectId;
 import play.Logger;
 import repositories.BonMotRepository;
-import repositories.PithRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,11 +19,9 @@ import java.util.regex.Matcher;
 public class BonMotService {
 
     BonMotRepository bonMotRepository;
-    PithRepository pithRepository;
 
     public BonMotService() {
         bonMotRepository = new BonMotRepository();
-        pithRepository = new PithRepository();
     }
 
     /**

@@ -7,10 +7,16 @@ import org.joda.time.DateTime;
 import java.util.UUID;
 
 /**
- * Created by jnagy on 29/08/15.
+ * Session factory
  */
 public class SessionFactory {
 
+    /**
+     * Create a new Session object with new sessionId and lastAccess of now.
+     *
+     * @param userId - primary _id of mongo user object
+     * @return
+     */
     public Session create(ObjectId userId) {
 
         Session session = new Session();

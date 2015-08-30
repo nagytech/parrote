@@ -23,9 +23,21 @@ import java.util.regex.Pattern;
  */
 public class BonMot extends ModelBase {
 
+    /**
+     * Text message
+     */
     public String text;
+    /**
+     * User object _id
+     */
     public ObjectId userId;
+    /**
+     * Username - (denormalized)
+     */
     public String username;
+    /**
+     * Piths that were found via matchPiths method
+     */
     public List<String> piths;
 
     /**

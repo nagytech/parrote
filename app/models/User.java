@@ -34,7 +34,6 @@ public class User extends ModelBase {
      * User's password (Stored encrypted)
      */
     public String password;
-
     /**
      * Flag to denote if the user is an administrator
      */
@@ -43,6 +42,10 @@ public class User extends ModelBase {
      * Flag to denote if the user is banned (true) or not (false)
      */
     public boolean banned;
+    /**
+     * Sessions for the user
+     */
+    public List<UUID> sessions = new ArrayList<>();
 
     /**
      * Format username with @ prefix.

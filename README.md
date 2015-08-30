@@ -1,3 +1,16 @@
+Second Revision
+
+**TODO**
+
+- [ ] update documentation to explain mongodb
+- [ ] fix the session / user expire page (needs some type of non-normalized storage solution)
+- [ ] implement react.js
+- [ ] implement websocket
+- [ ] implement additional apis that may be required
+
+
+---------------------------------
+
 # Parotte
 This web application is a Twitter-like application written in [Play
 Framework 2.4.x](https://playframework.com).  It was prepared for the

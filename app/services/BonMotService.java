@@ -59,11 +59,13 @@ public class BonMotService {
 
     }
 
+    /**
+     * Simply get the latest bonmots from the system - no filters.
+     * @return
+     */
     public List<BonMot> getLatest() {
 
-        return bonMotRepository.find(
-                "{ $query: { }, $orderby: { createdOn: -1 } }"
-        );
+        return bonMotRepository.find("{ $query: { }, $orderby: { createdOn: -1 } }");
 
     }
 
@@ -71,15 +73,13 @@ public class BonMotService {
      * Get the latest bonmots in the system for any piths in the array
      * - returns all piths where no piths are given
      *
-     * @param page     page number
-     * @param pageSize page size
      * @return
      */
     public List<BonMot> getLatestForTag(String tag) {
 
         // Execute the expression query
         List<BonMot> mots = bonMotRepository.find(
-                "{ $query: { piths: { $elemMatch: { $in: ['"+tag+"'] } } }, $orderby: { createdOn: -1 } }"
+                "{ $query: { piths: { $elemMatch: { $in: ['" + tag + "'] } } }, $orderby: { createdOn: -1 } }"
         );
 
         return mots;

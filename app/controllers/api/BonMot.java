@@ -20,8 +20,6 @@ import javax.inject.Inject;
 @Security.Authenticated(Authenticator.class)
 public class BonMot extends BaseController {
 
-    UnitOfWork uow;
-
     @Inject
     public BonMot(UnitOfWork uow) {
         super(uow);

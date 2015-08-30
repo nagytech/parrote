@@ -27,6 +27,7 @@ public class Application extends BaseController {
      * @return Latest bonmot listing for all users.
      */
     public Result index() {
+
         // List the latest mots from all users
         java.util.List<models.BonMot> mots = uow.getBonMotService().getLatestForTag("");
         return ok(index.render(mots));

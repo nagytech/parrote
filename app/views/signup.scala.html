@@ -20,7 +20,7 @@
             </div>
         }
 
-        @helper.inputText(signupForm("username"), 'class -> "form-control", '_label -> "Username")
+        @helper.inputText(signupForm("username"), 'class -> "form-control", '_label -> "Username", 'autofocus -> "autofocus")
         @helper.inputText(signupForm("email"), 'class -> "form-control", '_label -> "Email")
         @helper.inputPassword(signupForm("password"), 'class -> "form-control", '_label -> "Password")
         @helper.inputPassword(signupForm("passwordMatch"), 'class -> "form-control", '_label -> "Confirm Password")

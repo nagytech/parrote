@@ -17,7 +17,7 @@
                     </div>
                 </div>
             }
-            @helper.inputText(loginForm("email"), 'class -> "form-control", '_label -> "Email")
+            @helper.inputText(loginForm("email"), 'class -> "form-control", '_label -> "Email", 'autofocus -> "autofocus")
             @helper.inputPassword(loginForm("password"), 'class -> "form-control", '_label -> "Password")
             <button class="btn btn-primary pull-right" type="submit" name="submit">Login <i class="glyphicon glyphicon-log-in"></i></button>
         }

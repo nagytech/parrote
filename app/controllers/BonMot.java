@@ -22,8 +22,6 @@ import static play.data.Form.form;
 @Security.Authenticated(Authenticator.class)
 public class BonMot extends BaseController {
 
-    BonMotService bonMotService;
-
     @Inject
     public BonMot(UnitOfWork uow) {
         super(uow);

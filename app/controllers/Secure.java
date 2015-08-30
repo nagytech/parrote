@@ -10,6 +10,7 @@ import play.mvc.Result;
 import play.mvc.Security;
 import security.Authenticator;
 import services.SessionStateService;
+import services.UserService;
 import viewmodels.Login;
 import viewmodels.Signup;
 import views.html.admin;
@@ -47,7 +48,8 @@ public class Secure extends BaseController {
         Login postLogin = loginForm.get();
 
         // Get the user and update their last action
-        User user = User.findByEmail(postLogin.email);
+        UserService userService = new UserService();
+        User user = userService.findByEmail(postLogin.email);
 
         // Clear any previous session and add current user's email to new session.
         new SessionStateService().CreateSession(user);
@@ -117,7 +119,8 @@ public class Secure extends BaseController {
         Signup postSignup = signupForm.get();
 
         // Try to register the user
-        if (!User.register(postSignup.email, postSignup.username, postSignup.password)) {
+        UserService userService = new UserService();
+        if (!userService.register(postSignup.email, postSignup.username, postSignup.password)) {
             // If the registration failed, return bad request
             signupForm.data().put("password", "");
             signupForm.reject(Messages.get("signup.error"));

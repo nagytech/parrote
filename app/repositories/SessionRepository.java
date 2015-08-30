@@ -23,7 +23,7 @@ public class SessionRepository extends RepositoryBase<Session> {
      */
     public Session findSessionBySessionId(String sessionId) {
 
-        Session session = find("{sessionId: '"+sessionId+"'}");
+        Session session = findOne("{sessionId: '"+sessionId+"'}");
         return session;
 
     }
@@ -34,7 +34,11 @@ public class SessionRepository extends RepositoryBase<Session> {
      */
     public void updateLastAccess(String sessionId) {
 
-        update(String.format("{sessionId: '%s'}", sessionId), new BasicDBObject("lastAccess", DateTime.now().toDate()));
+        update(String.format("{sessionId: '%s'}", sessionId), new BasicDBObject("lastAccess", DateTime.now().toDate()).toString());
 
+    }
+
+    public void index() {
+        doIndex("{sessionId: 1},{unique: true}");
     }
 }

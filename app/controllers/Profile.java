@@ -4,7 +4,9 @@ import models.*;
 import play.mvc.Result;
 import play.mvc.Security;
 import security.Authenticator;
+import services.BonMotService;
 import services.SessionStateService;
+import services.UserService;
 import views.html.profile;
 
 import java.util.ArrayList;
@@ -24,7 +26,8 @@ public class Profile extends BaseController {
     public static Result index() {
 
         User user = getUser();
-        List<models.BonMot> mots = models.BonMot.getLatestForUser(user, 0, 25);
+        BonMotService service = new BonMotService();
+        List<models.BonMot> mots = service.getLatestForUser(user, 0, 25);
 
         return ok(profile.render(user.username, true, mots));
 
@@ -48,12 +51,14 @@ public class Profile extends BaseController {
         List<models.BonMot> mots = new ArrayList<>();
 
         // Find the user's latest bonmots if they exist
-        User user = User.findByUsername(username);
+        UserService userService = new UserService();
+        User user = userService.findByUsername(username);
         if (user != null) {
             nameCheck = user.username;
             ownProfile = user.email.equalsIgnoreCase(session().get("email"));
             // TODO: Pagination
-            mots = models.BonMot.getLatestForUser(user, 0, 25);
+            BonMotService bonMotService = new BonMotService();
+            mots = bonMotService.getLatestForUser(user, 0, 25);
         }
 
         return ok(profile.render(nameCheck, ownProfile, mots));

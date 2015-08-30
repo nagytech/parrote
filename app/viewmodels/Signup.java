@@ -4,6 +4,8 @@ import models.User;
 import play.data.Form;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
+import services.BonMotService;
+import services.UserService;
 
 /**
  * Signup object
@@ -42,12 +44,13 @@ public class Signup extends Login {
         }
 
         // Check that the email does not already exist
-        if (User.findByEmail(email) != null) {
+        UserService userService = new UserService();
+        if (userService.findByEmail(email) != null) {
             return Messages.get("signup.emailExists");
         }
 
         // Check that the username does not already exist
-        if (User.findByUsername(username) != null) {
+        if (userService.findByUsername(username) != null) {
             return Messages.get("signup.usernameExists");
         }
         return null;

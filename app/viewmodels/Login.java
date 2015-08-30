@@ -4,6 +4,7 @@ package viewmodels;
 import models.User;
 import play.data.validation.Constraints;
 import play.i18n.Messages;
+import services.UserService;
 
 /**
  * Login object
@@ -34,12 +35,11 @@ public class Login {
     public String validate() {
 
         // Try to authenticate the user
-        if (!User.authenticate(email, password)) {
-            // Clean password
-            password = "";
-            return Messages.get("login.invalid");
-        }
-        return null;
+        if (new UserService().authenticate(email, password))
+            return null;
+
+        password = "";
+        return Messages.get("login.invalid");
 
     }
 }

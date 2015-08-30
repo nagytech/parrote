@@ -6,6 +6,11 @@ import factories.MongoConnectionFactory;
 import models.ModelBase;
 import org.bson.types.ObjectId;
 import org.jongo.Jongo;
+import org.jongo.MongoCursor;
+import play.Logger;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by jnagy on 29/08/15.
@@ -25,7 +30,23 @@ public class RepositoryBase<T extends ModelBase> {
 
     }
 
-    public T find(String query) {
+    public List<T> all() {
+        List<T> list = new ArrayList<>();
+        MongoCursor<T> cursor = getCollection().find().as(clazz);
+        while (cursor.hasNext())
+            list.add(cursor.next());
+        return list;
+    }
+
+    public List<T> find(String query, int skip, int take) {
+        List<T> list = new ArrayList<>();
+        MongoCursor<T> cursor = getCollection().find(query).skip(skip).limit(take).as(clazz);
+        while (cursor.hasNext())
+            list.add(cursor.next());
+        return list;
+    }
+
+    public T findOne(String query) {
         return (T) getCollection().findOne(query).as(clazz);
     }
 
@@ -46,8 +67,12 @@ public class RepositoryBase<T extends ModelBase> {
 
     }
 
-    public void update(String query, BasicDBObject obj) {
-        getCollection().update(query).with(obj);
+    public void update(String query, String obj) {
+        getCollection().update(query).with(String.format("{$set:%s}", obj));
+    }
+
+    protected void doIndex(String query) {
+        getCollection().ensureIndex(query);
     }
 
     private org.jongo.MongoCollection getCollection() {

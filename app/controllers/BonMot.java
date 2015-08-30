@@ -42,7 +42,8 @@ public class BonMot extends BaseController {
         String text = postMot.text;
 
         // Create new bonmot
-        BonMotService.create(user, text);
+        BonMotService service = new BonMotService();
+        service.create(user, text);
 
         // Redirect to main page
         return redirect(routes.Profile.index());

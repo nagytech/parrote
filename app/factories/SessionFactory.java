@@ -1,6 +1,7 @@
 package factories;
 
 import models.Session;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import java.util.UUID;
@@ -10,7 +11,7 @@ import java.util.UUID;
  */
 public class SessionFactory {
 
-    public Session create(UUID userId) {
+    public Session create(String userId) {
 
         Session session = new Session();
 

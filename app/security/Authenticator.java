@@ -3,11 +3,14 @@ package security;
 import controllers.routes;
 import models.Session;
 import models.User;
+import org.bson.types.ObjectId;
+import play.Logger;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Results;
 import play.mvc.Security;
 import services.SessionStateService;
+import services.UserService;
 
 /**
  * Authenticator Class : Extends Security.Authenticator
@@ -24,9 +27,11 @@ public class Authenticator extends Security.Authenticator {
     public String getUsername(Context context) {
 
         Session session = new SessionStateService().Current();
-        if (session != null && session.userId == null)
+        if (session != null && session.userId == null) {
             return null;
-        return User.findById(session.userId).email;
+        }
+        UserService userService = new UserService();
+        return userService.findById(new ObjectId(session.userId)).email;
     }
 
     /**

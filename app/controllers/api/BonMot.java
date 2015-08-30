@@ -1,5 +1,7 @@
 package controllers.api;
 
+import repositories.BonMotRepository;
+import repositories.UserRepository;
 import security.Authenticator;
 import controllers.BaseController;
 import models.User;
@@ -7,7 +9,9 @@ import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
 import services.BonMotService;
+import services.PithService;
 import services.SessionStateService;
+import services.UserService;
 
 import static play.data.Form.form;
 
@@ -26,6 +30,8 @@ public class BonMot extends BaseController {
      */
     public static Result create(String text) {
 
+        BonMotService service = new BonMotService();
+
         // Check the text is valid
         if (text == null || text.length() > 129)
             return badRequest("Invalid text length.  Text must be less than 129 characters.");
@@ -34,7 +40,7 @@ public class BonMot extends BaseController {
         User user = getUser();
 
         // Create new bonmot
-        models.BonMot mot = BonMotService.create(user, text);
+        models.BonMot mot = service.create(user, text);
 
         // Redirect to main page
         return ok(Json.toJson(mot));
@@ -43,17 +49,21 @@ public class BonMot extends BaseController {
 
     public static Result byPith(String tag) {
 
-        java.util.List<models.BonMot> bonMots = models.BonMot.getLatest(0, 25, new String[]{tag});
+        BonMotService bonMotService = new BonMotService();
+        java.util.List<models.BonMot> bonMots =  bonMotService.getLatest(0, 25, tag);
         return ok(Json.prettyPrint(Json.toJson(bonMots)));
     }
 
     public static Result byUser(String username) {
 
-        User user = User.findByUsername(username);
+        UserService userService = new UserService();
+
+        User user = userService.findByUsername(username);
         if (user == null)
             return notFound();
 
-        java.util.List<models.BonMot> bonMots = models.BonMot.getLatestForUser(user, 0, 25);
+        BonMotService bonMotService = new BonMotService();
+        java.util.List<models.BonMot> bonMots = bonMotService.getLatestForUser(user.get_id(), 0, 25);
         return ok(Json.prettyPrint(Json.toJson(bonMots)));
 
     }

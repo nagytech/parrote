@@ -8,8 +8,10 @@ import play.i18n.Messages;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.Security;
+import repositories.UserRepository;
 import security.Authenticator;
 import services.SessionStateService;
+import services.UserService;
 import viewmodels.Login;
 import viewmodels.Signup;
 import views.html.admin;
@@ -43,7 +45,7 @@ public class Admin extends BaseController {
             return redirect(routes.Application.index());
 
         // Get the current user set
-        List<User> users = User.findAll();
+        List<User> users = new UserRepository().all();
         return ok(admin.render(users));
 
     }
@@ -68,14 +70,13 @@ public class Admin extends BaseController {
             return redirect(routes.Application.index());
 
         // Don't allow banning of an admin
-        // TODO: Old way
-        User user = User.findByEmail(email);
+        UserService userService = new UserService();
+        User user = userService.findByEmail(email);
         if (user.admin)
             return redirect(routes.Admin.index());
 
         // Ban the user
-        user.banned = true;
-        user.save();
+        userService.banUser(user);
 
         // post / get
         return redirect(routes.Admin.index());

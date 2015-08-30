@@ -1,5 +1,6 @@
 package models;
 
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import java.util.Date;
@@ -15,7 +16,7 @@ public class Session extends ModelBase {
     /**
      * User Id
      */
-    public UUID userId;
+    public String userId;
     /**
      * Last access for given user
      */

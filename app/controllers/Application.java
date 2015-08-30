@@ -2,6 +2,8 @@ package controllers;
 
 import play.mvc.Controller;
 import play.mvc.Result;
+import repositories.BonMotRepository;
+import services.BonMotService;
 import views.html.index;
 
 /**
@@ -18,8 +20,10 @@ public class Application extends BaseController {
      */
     public static Result index() {
 
+        BonMotService service = new BonMotService();
+
         // List the latest mots from all users
-        java.util.List<models.BonMot> mots = models.BonMot.getLatest(0, 25, new String[]{});
+        java.util.List<models.BonMot> mots = service.getLatest(0, 25, "");
         return ok(index.render(mots));
 
     }

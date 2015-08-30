@@ -4,7 +4,9 @@ import com.mongodb.BasicDBObject;
 import factories.SessionFactory;
 import models.Session;
 import models.User;
+import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
+import play.Logger;
 import play.mvc.Http;
 import repositories.SessionRepository;
 
@@ -26,7 +28,7 @@ public class SessionStateService {
     public String CreateSession(User user) {
 
         // create and store the session
-        Session session = new SessionFactory().create(user.id);
+        Session session = new SessionFactory().create(user.get_id().toString());
         sessionRepository.insert(session);
 
         // set in the cookie

@@ -1,19 +1,13 @@
 package controllers.api;
 
-import repositories.BonMotRepository;
-import repositories.UserRepository;
-import security.Authenticator;
 import controllers.BaseController;
 import models.User;
 import play.libs.Json;
 import play.mvc.Result;
 import play.mvc.Security;
+import security.Authenticator;
 import services.BonMotService;
-import services.PithService;
-import services.SessionStateService;
 import services.UserService;
-
-import static play.data.Form.form;
 
 /**
  * BonMot API Controller
@@ -63,7 +57,7 @@ public class BonMot extends BaseController {
             return notFound();
 
         BonMotService bonMotService = new BonMotService();
-        java.util.List<models.BonMot> bonMots = bonMotService.getLatestForUser(user.get_id(), 0, 25);
+        java.util.List<models.BonMot> bonMots = bonMotService.getLatestForUser(user);
         return ok(Json.prettyPrint(Json.toJson(bonMots)));
 
     }

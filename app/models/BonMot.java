@@ -24,7 +24,8 @@ import java.util.regex.Pattern;
 public class BonMot extends ModelBase {
 
     public String text;
-    public User user;
+    public ObjectId userId;
+    public String username;
 
     /**
      * Find any Piths within the text using the regex \B#(\w\w+)
@@ -36,10 +37,6 @@ public class BonMot extends ModelBase {
         final Pattern p = Pattern.compile(r);
         Matcher m = p.matcher(text);
         return m;
-    }
-
-    public void clean() {
-        // TODO: 
     }
 
 }

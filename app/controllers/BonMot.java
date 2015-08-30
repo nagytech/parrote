@@ -29,16 +29,14 @@ public class BonMot extends BaseController {
         // Bind data from the request
         Form<models.BonMot> motForm = form(models.BonMot.class).bindFromRequest();
         if (motForm.hasErrors()) {
-            return badRequest(); // TODO: redo the form
+            return badRequest();
         }
 
         // Get data from the posted form
         models.BonMot postMot = motForm.get();
-        postMot.clean();
 
         // Prepare data for the bonmot service
         User user = getUser();
-        System.out.println(user.email);
         String text = postMot.text;
 
         // Create new bonmot

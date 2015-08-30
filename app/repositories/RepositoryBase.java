@@ -38,9 +38,9 @@ public class RepositoryBase<T extends ModelBase> {
         return list;
     }
 
-    public List<T> find(String query, int skip, int take) {
+    public List<T> find(String query) {
         List<T> list = new ArrayList<>();
-        MongoCursor<T> cursor = getCollection().find(query).skip(skip).limit(take).as(clazz);
+        MongoCursor<T> cursor = getCollection().find(query).as(clazz);
         while (cursor.hasNext())
             list.add(cursor.next());
         return list;

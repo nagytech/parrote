@@ -4,6 +4,7 @@ import com.mongodb.BasicDBObject;
 import models.BonMot;
 import models.Pith;
 import models.User;
+import org.bson.types.ObjectId;
 import play.Logger;
 import repositories.BonMotRepository;
 
@@ -36,12 +37,13 @@ public class BonMotService {
 
         // Create a new bonmot and transform the data
         models.BonMot newMot = new models.BonMot();
-        newMot.user = user;
+        newMot.userId = (ObjectId)user.get_id();
         newMot.text = text;
+        newMot.username = user.username;
 
         bonMotRepository.insert(newMot);
 
-        Logger.debug("Created new bonmot with text [{}] from user [{}]", newMot.text, newMot.user);
+        Logger.debug("Created new bonmot with text [{}] from user [{}]", newMot.text, user.toString());
 
         // Iterate the piths and store each one
         Matcher m = newMot.matchPiths();
@@ -71,7 +73,7 @@ public class BonMotService {
         // TODO: Handle null tag
 
         // Execute the expression query
-        List<BonMot> mots = bonMotRepository.find("{}", page * pageSize, pageSize);
+        List<BonMot> mots = bonMotRepository.find("{}");
 
         return mots;
 
@@ -81,13 +83,13 @@ public class BonMotService {
      * Get the latest bonmots for the given user
      *
      * @param userId user to search by
-     * @param page page number
-     * @param pageSize page size
      * @return
      */
-    public List<BonMot> getLatestForUser(Object userId, int page, int pageSize) {
+    public List<BonMot> getLatestForUser(User user) {
 
-        List<BonMot> mots = bonMotRepository.find(new BasicDBObject("userId", userId).toString(), page, pageSize);
+        ObjectId userId = (ObjectId)user.get_id();
+
+        List<BonMot> mots = bonMotRepository.find(new BasicDBObject("userId", userId).toString());
 
         Logger.debug("Found [{}] bonmots for userId [{}]", mots.size(), userId);
 

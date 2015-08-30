@@ -3,9 +3,7 @@ package actions;
 import controllers.routes;
 import models.Session;
 import models.User;
-import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
-import play.Logger;
 import play.libs.F;
 import play.mvc.Action;
 import play.mvc.Http;
@@ -16,7 +14,7 @@ import services.UserService;
 import javax.inject.Inject;
 
 /**
- * UnlogAction - Action extension
+ * SessionAction - Action extension
  * -----------
  * To be used on a controller with the @With attribute.
  *
@@ -26,19 +24,19 @@ import javax.inject.Inject;
  * Also updates the user's last activity time stamp so that
  * we can identify the 6 hour timeout.
  */
-public class UnlogAction extends Action.Simple {
+public class SessionAction extends Action.Simple {
 
     private SessionStateService sessionService;
     private UserService userService;
 
     @Inject
-    public UnlogAction(SessionStateService sss, UserService us) {
+    public SessionAction(SessionStateService sss, UserService us) {
         sessionService = sss;
         userService = us;
     }
 
     /**
-     * Intercept the http context call / reponse and run the
+     * Intercept the http context call / response and run the
      * unlog action.
      *
      * @param context
@@ -48,26 +46,33 @@ public class UnlogAction extends Action.Simple {
     @Override
     public F.Promise<Result> call(Http.Context context) throws Throwable {
 
+        // Get the current session object
         Session session = sessionService.Current();
 
         // If the user does not exist, but is logged in.
         if (session == null || session.userId == null)
             return delegate.call(context);
 
-        User user = userService.findById(new ObjectId(session.userId));
+        // Get the corresponding user
+        User user = userService.findById(session.userId);
+
+        // Check for session validity (if user invalid, banned, or inactive for over 6 hours)
         if (user.banned || new DateTime(session.lastAccess).plusHours(6).isBeforeNow()) {
-            // Clear the session if user invalid, banned, or inactive for over 6 hours
+            // Clear the session and redirect to main page
             sessionService.ExpireCurrentSession();
             return F.Promise.pure(redirect(routes.Application.index()));
-        } else {
-            // Update user activity flag
-            sessionService.UpdateCurrentSession();
         }
 
+        // Update user activity flag
+        sessionService.UpdateCurrentSession();
+
+        // Store the user and session objects for template usage
         context.current().args.put("user", user);
         context.current().args.put("session", session);
 
+        // Continue with call
         return delegate.call(context);
+        
     }
 
 }

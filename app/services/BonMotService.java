@@ -59,6 +59,14 @@ public class BonMotService {
 
     }
 
+    public List<BonMot> getLatest() {
+
+        return bonMotRepository.find(
+                "{ $query: { }, $orderby: { createdOn: -1 } }"
+        );
+
+    }
+
     /**
      * Get the latest bonmots in the system for any piths in the array
      * - returns all piths where no piths are given
@@ -70,7 +78,9 @@ public class BonMotService {
     public List<BonMot> getLatestForTag(String tag) {
 
         // Execute the expression query
-        List<BonMot> mots = bonMotRepository.find("{piths: { $elemMatch: { $in: ['"+tag+"'] } }}");
+        List<BonMot> mots = bonMotRepository.find(
+                "{ $query: { piths: { $elemMatch: { $in: ['"+tag+"'] } } }, $orderby: { createdOn: -1 } }"
+        );
 
         return mots;
 

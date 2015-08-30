@@ -29,7 +29,7 @@ public class Application extends BaseController {
     public Result index() {
 
         // List the latest mots from all users
-        java.util.List<models.BonMot> mots = uow.getBonMotService().getLatestForTag("");
+        java.util.List<models.BonMot> mots = uow.getBonMotService().getLatest();
         return ok(index.render(mots));
 
     }

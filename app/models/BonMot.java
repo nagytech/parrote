@@ -26,6 +26,7 @@ public class BonMot extends ModelBase {
     public String text;
     public ObjectId userId;
     public String username;
+    public List<String> piths;
 
     /**
      * Find any Piths within the text using the regex \B#(\w\w+)

@@ -7,7 +7,6 @@ import play.mvc.Result;
 import play.mvc.Security;
 import repositories.UnitOfWork;
 import security.Authenticator;
-import services.BonMotService;
 import services.UserService;
 
 import javax.inject.Inject;
@@ -30,7 +29,9 @@ public class BonMot extends BaseController {
      *
      * @return Json object of the new bonmot
      */
-    public Result create(String text) {
+    public Result create() {
+
+        String text = request().body().asFormUrlEncoded().get("message")[0];
 
         // Check the text is valid
         if (text == null || text.length() > 129)

@@ -36,6 +36,6 @@ GET         /search                     @controllers.Search.index(q: String ?= "
 GET         /spa                        controllers.SinglePage.index()
 
 # API
-POST        /api/postmessage            @controllers.api.BonMot.create(text: String ?= "")
+POST        /api/postmessage            @controllers.api.BonMot.create()
 GET         /api/users/:username        @controllers.api.BonMot.byUser(username: String)
 GET         /api/tags/:tag              @controllers.api.BonMot.byPith(tag: String)

@@ -1,4 +1,3 @@
-@import play.i18n._
 <!DOCTYPE html>
 <html>
     <head>
@@ -16,7 +15,7 @@
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand" href="/">@Messages.get("brand.name") <span class="small">(spa)</span></a>
+                        <a class="navbar-brand" href="/">parrote <span class="small">(spa)</span></a>
                     </div>
                     <div id="navbar" class="navbar-collapse collapse">
                         <ul class="nav navbar-nav pull-right">
@@ -24,7 +23,7 @@
                                 <div class="input-group">
                                     <input type="text" class="form-control" placeholder="Search">
                                     <span class="input-group-btn">
-                                        <button type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
+                                        <button id="search-button" type="submit" class="btn btn-default"><i class="glyphicon glyphicon-search"></i></button>
                                     </span>
                                 </div>
                             </form>
@@ -34,26 +33,28 @@
             </nav>
         </div>
         <div id="content" class="container">
-            
-            <!-- TODO: Check if logged in -->
+
+                <!-- TODO: Check if logged in -->
+
             <div class="form-group">
-                <form id="post-form">
+                <div class="col-sm-3"></div>
+                <form id="post-form" class="col-sm-6">
                     <label>Post</label>
                     <textarea class="form-control" name="post"></textarea>
                     <button class="btn btn-primary pull-right">Post <i class="glyphicon glyphicon-bullhorn"></i></button>
                 </form>
+                <div class="col-sm-3"></div>
             </div>
 
-
-            <!-- TODO: React loading of messagess -->
+                <!-- TODO: React loading of messagess -->
 
         </div>
-        <script src="@routes.Assets.at("lib/jquery/jquery.min.js")" ></script>
-        <script src="@routes.Assets.at("lib/bootstrap/js/bootstrap.js")" ></script>
-        <script src="@routes.Assets.at("moment.js")" ></script>
-        <script src="@routes.Assets.at("lib/react/react.js")></script>
-        <script type="text/javascript" src="@routes.Reverse.jsRoutes"></script>
-        <script src="@routes.Assets.at("javascripts/spa.js")" ></script>
+        <script src='@routes.Assets.at("lib/jquery/jquery.min.js")' ></script>
+        <script src='@routes.Assets.at("lib/bootstrap/js/bootstrap.js")' ></script>
+        <script src='@routes.Assets.at("moment.js")'></script>
+        <script src='@routes.Assets.at("lib/react/react.js")'></script>
+        <script type='text/javascript' src='@routes.Reverse.jsRoutes'></script>
+        <script src='@routes.Assets.at("javascripts/spa.js")'></script>
         @*<script src="@routes.Assets.at("javascripts/bonmot.js")" ></script>*@
     </body>
 </html>

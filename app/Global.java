@@ -9,6 +9,7 @@ import play.libs.Yaml;
 import play.mvc.Action;
 import play.mvc.Http;
 import repositories.UserRepository;
+import services.BonMotService;
 import services.UserService;
 
 import java.lang.reflect.Method;
@@ -28,6 +29,7 @@ public class Global  extends GlobalSettings {
     @Override
     public void onStart(Application app) {
 
+        BonMotService bonMotService = new BonMotService();
         UserService userService = new UserService();
         userService.index();
 
@@ -43,6 +45,17 @@ public class Global  extends GlobalSettings {
             user.admin = true;
 
             userService.create(user);
+            bonMotService.create(user, "Beware the banhammer! #first");
+
+            user = new User();
+            user.email = "test@test.com";
+            user.username = "test";
+            user.password = "$2a$10$6qcM9wmSFGeiTN2hwhIE5OJ0emrAOf1juJx8TA7oywQDvEdS6Wn4K";
+            user.banned = false;
+            user.admin = false;
+
+            userService.create(user);
+            bonMotService.create(user, "Hello, world! #second");
 
         }
 

@@ -13,9 +13,10 @@ Second Revision
 
 # Parotte
 This web application is a Twitter-like application written in [Play
-Framework 2.4.x](https://playframework.com).  It was prepared for the
-Advanced Web Technologies Unit at the University of New England (COMP391)
-Trimester 2 2015.
+Framework 2.4.x](https://playframework.com).  It utilizes [mongodb](http://www.mongodb.org)
+NoSQL database with [Jongo](http://jongo.org) for unmarshalling database query results. It was
+prepared for the Advanced Web Technologies Unit at the University
+of New England (COMP391) Trimester 2 2015.
 
 ## Terminology
 Object names are based around the phrase 'pithy bon mot'.  In this
@@ -23,12 +24,25 @@ application, a posted statement is referred to as a `BonMot` while
 a hashtag is known as a `Pith`.
 
 ## Data Storage Notes
- - A many to many relationship is used to link Piths to BonMots.
  - #Piths and @Usernames are both stored without their prefix characters.
 
 ## Usage
 Implementation notes and general features of the application are listed
 below to assist in the testing, review and marking process.
+
+### Database
+Since the app depends on mongodb, it requires an accessible instance of
+mongod.  The configuration settings for host, port and database name
+are stored in the `application.conf` file prefixed by 'app.mongodb'.
+
+By default, the app will connect to the `localhost:27017/comp391_jnagy`
+resource.
+
+The data is stored in a non-normalized format in order to facilitate the
+performance gains of mongodb.  For instance, the username is stored directly
+in the session document so no join is necessary to prepare data for display.
+While it would be inconvenient to have to rename a user in all tables, the
+likelihood is very small, and the affect outweighs the performance gained.
 
 ### Ports
 The following ports are the output of the `my_tomcat_ports` command on
@@ -37,7 +51,7 @@ turing.
 Environment | Port
 ------------|------------------------
 Dev         |	`52084`
-Test        | `51084`
+Test        |	`51084`
 Prod        |	`50084` (to be marked)  
 
 ### Commands
@@ -45,11 +59,11 @@ The following shell commands are available in the root directory of the
 application to facilitate startup / shutdown procedures.
 
 `./debug`       Starts the application in `~run` mode on port `52804`
-`./startup`	    Stops/Starts the application on port `50084` and evolves h2  
+`./startup`	    Stops/Starts the application on port `50084`
 .`/shutdown`	  Stops the application
 
 ### Initialization
-On initial run of the application, the h2 database will be populated with the
+On initial run of the application, the database will be populated with the
 following users:
 
 Email             | Username | Password
@@ -61,8 +75,8 @@ The following bonmots will also be added to the system:
 
 Username  | Bonmot
 ----------|-------------------
-test      | Hello, World!
-admin     | Beware the banhammer!
+test      | Hello, World! #second
+admin     | Beware the banhammer! #first
 
 ## General Notes
 

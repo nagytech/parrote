@@ -5,7 +5,7 @@ version := "1.0"
 scalaVersion := "2.11.6"
 
 lazy val root = (project in file("."))
-  .enablePlugins(PlayJava, PlayEbean)
+  .enablePlugins(PlayJava, SbtWeb)
 
 includeFilter in (Assets, LessKeys.less) := "*.less"
 

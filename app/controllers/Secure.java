@@ -101,6 +101,10 @@ public class Secure extends BaseController {
 
         uow.getSessionStateService().ExpireCurrentSession();
 
+        String[] source = request().body().asFormUrlEncoded().get("source");
+        if (source != null && source.length > 0)
+            if (source[0].equals("spa"))
+                return redirect(routes.SinglePage.index());
         return redirect(routes.Application.index());
 
     }

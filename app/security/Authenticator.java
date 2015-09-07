@@ -2,6 +2,7 @@ package security;
 
 import controllers.routes;
 import models.Session;
+import models.User;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Results;
@@ -28,7 +29,9 @@ public class Authenticator extends Security.Authenticator {
             return null;
         }
         UserService userService = new UserService();
-        return userService.findById(session.userId).email;
+        User user = userService.findById(session.userId);
+        return (user != null) ? user.email : null;
+
     }
 
     /**

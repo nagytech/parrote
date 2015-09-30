@@ -3,6 +3,7 @@ package actors;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 import akka.actor.UntypedActor;
+import hubs.BonMotHub;
 import hubs.BonMotHubListener;
 
 /**
@@ -47,10 +48,13 @@ public class LiveSearchResultsActor extends UntypedActor {
      * @param out
      */
     public LiveSearchResultsActor(String token, ActorRef out) {
+
         this.token = token;
         this.out = out;
 
         this.listener = (e) -> out.tell(e, self());
+
+        BonMotHub.getInstance().addListener(this.listener);
     }
 
     @Override
@@ -60,6 +64,8 @@ public class LiveSearchResultsActor extends UntypedActor {
 
     @Override
     public void postStop() throws Exception {
-        // ignored
+
+        BonMotHub.getInstance().removeListener(this.listener);
+
     }
 }

@@ -1,6 +1,7 @@
 package services;
 
 import com.mongodb.BasicDBObject;
+import hubs.BonMotHub;
 import models.BonMot;
 import models.User;
 import org.bson.types.ObjectId;
@@ -47,8 +48,13 @@ public class BonMotService {
         while (m.find())
             newMot.piths.add(m.group(1).toLowerCase());
 
+        // Insert into the repository
         bonMotRepository.insert(newMot);
 
+        // Send the newMot to the BonMotHub for live search results update
+        BonMotHub.getInstance().send(newMot);
+
+        // Logging
         Logger.debug("Created new bonmot with text [{}] from user [{}]", newMot.text, user.toString());
 
         return newMot;

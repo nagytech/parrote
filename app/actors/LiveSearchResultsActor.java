@@ -75,20 +75,20 @@ public class LiveSearchResultsActor extends UntypedActor {
 
         // Prepare delegate for live updates
         this.listener = (e) -> {
-            try {
-
-                if (
-                        (token.charAt(0) == '@' && !e.username.equals(token.substring(1))) ||
-                                (e.piths == null || e.piths.isEmpty()) ||
-                                        (token.charAt(0) == '#' && e.piths.contains(token.substring(1)) ||
-                                                e.piths.contains(token)
-                                        )
-                        )
-                    return;
-                out.tell(e.toJSONString(), self());
-            } catch (Exception ex) {
-                ex.printStackTrace();
+            boolean canReturn = false;
+            if (token.charAt(0) == '@') {
+                if (e.username.equals(token.substring(1))) {
+                    canReturn = true;
+                }
+            } else {
+                String subToken = token.charAt(0) == '#' ? token.substring(1) : token;
+                if (!e.piths.contains(subToken)) {
+                    canReturn = true;
+                }
             }
+
+            if (canReturn) out.tell(e.toJSONString(), self());
+
         };
 
         // Add listener delegate to the hub

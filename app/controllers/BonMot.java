@@ -1,16 +1,12 @@
 package controllers;
 
 import models.User;
-import play.Logger;
-import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 import repositories.UnitOfWork;
 import security.Authenticator;
 
 import javax.inject.Inject;
-
-import static play.data.Form.form;
 
 /**
  * BonMot Controller
@@ -32,21 +28,10 @@ public class BonMot extends BaseController {
      */
     public Result create() {
 
-        // Bind data from the request
-        Form<models.BonMot> motForm = form(models.BonMot.class).bindFromRequest();
-        if (motForm.hasErrors()) {
-            return badRequest();
-        }
-
-        // Get data from the posted form
-        models.BonMot postMot = motForm.get();
-
         // Prepare data for the bonmot service
         User user = getUser();
-        String text = postMot.text;
 
-        Logger.info("Creating mot");
-        Logger.info(postMot.text);
+        String text = request().body().asFormUrlEncoded().get("text")[0].toString();
 
         // Create new bonmot
         uow.getBonMotService().create(user, text);

@@ -32,6 +32,9 @@
 
     ### Submit a new bonmot to the server and update the local UI ###
     submitBonMot = (text, callback) ->
+
+      # TODO: If WS is connected, then disconnect the rjs updates (otherwise we get dupes)
+
       # Call to api to post message
       $.ajax
         url: '/api/postmessage'
@@ -39,8 +42,14 @@
         type: 'POST'
       # On Success, update the UI
       .done (data) ->
-        console.log rjs
-        # TODO: Update UI with new bonmot
+        console.log "TODO: get/set state"
+        items = rjs.state.items
+        items.push
+          text: data.text,
+          username: data.username,
+          createdOn: new Date data.createdOn
+        rjs.setState
+          items: items
         callback true
         return
       # On failure, popup a warning.

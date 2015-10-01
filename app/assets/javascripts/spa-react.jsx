@@ -27,15 +27,7 @@ var BonMotList = React.createClass({
 
         // TODO: Set state when user clicks the search button
 
-        var bmr = $('body').bonmotReact(this);
-
-        /* Something like this.... */
-        //
-        // $.ajax({ /* But it's a webservice */
-        //  url: etc...
-        // }).done(function(data) {
-        //  this.setState({ items: data })
-        // })
+        $.fn.bonmotReact(this);
 
     },
     render: function() {

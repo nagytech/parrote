@@ -1,16 +1,3 @@
-Second Revision
-
-**TODO**
-
-- [ ] update documentation to explain mongodb
-- [ ] fix the session / user expire page (needs some type of non-normalized storage solution)
-- [ ] implement react.js
-- [ ] implement websocket
-- [ ] implement additional apis that may be required
-
-
----------------------------------
-
 # Parotte
 This web application is a Twitter-like application written in [Play
 Framework 2.4.x](https://playframework.com).  It utilizes [mongodb](http://www.mongodb.org)
@@ -153,8 +140,10 @@ The admin account admin@admin.com / password allows the user to access the
 administrative panel where they can view the list of currently active users.
 
 The admin user can use the 'Users Page' to monitor the online activity status
-of site users.  From this page, the admin also has the ability to expire user sessions and
-'remotely force a logout'. In addition, the admin can ban a user from using their account.
+of site users.  ~~From this page, the admin also has the ability to expire user sessions and
+'remotely force a logout'. In addition, the admin can ban a user from using their account.~~
+
+
 
 ### Logout
 Users can log out at any time using the logout button in the upper right hand corner.

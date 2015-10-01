@@ -1,8 +1,13 @@
+// Get the mount point for rendering all bonmots
 var mountNode = document.getElementById('bonmots')
 
+// New BonMot Item React Class
 var BonMotItem = React.createClass({
+    // Render implementation
+    // - Renders a bonmot item from the owner iterateable collection
     render: function() {
         return (
+
             <div className="panel panel-default bonmot">
                 <div className="panel-body">
                     <span className="words">{this.props.item.text}</span>
@@ -15,18 +20,24 @@ var BonMotItem = React.createClass({
                     </div>
                 </div>
             </div>
+
         );
     }
 });
 
 var BonMotList = React.createClass({
+    // Get the initial state
     getInitialState: function() {
+      // Empty array of items
       return { items: [] };
     },
+    // Implemented functionality after the component mounts
     componentDidMount: function() {
         // Call external plugin with injected rjs object
         $.fn.bonmotReact(this);
     },
+    // Render implementation
+    // - Renders a list of bonmot items from the items prop of the state
     render: function() {
         return (
             <div className="bonmot-list">
@@ -40,4 +51,5 @@ var BonMotList = React.createClass({
     }
 });
 
+// Initialize the render of a bonmotlist at the render mount node
 React.render(<BonMotList />, mountNode);

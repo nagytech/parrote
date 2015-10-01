@@ -1,19 +1,21 @@
 (($) ->
 
-  me = ''
-
   ### Check if we are logged in as a user ###
   checkWhoami = (callback) ->
+    # Submit to the server a request for the current logged in username
     $.ajax
       url: '/api/whoami'
     .done (username) ->
+      # Execute callback with result
       callback username
       return
     .fail ->
       return
     return
 
+  ### Handle the on logout submit event ###
   onLogoutSubmit = ->
+    # Log the current user out by submitting the logout form
     $('form#logout-form').submit()
     return
 
@@ -22,31 +24,45 @@
     # Iterate each hidden element and remove the hidden attribute
     $('[data-state=logged-in][hidden]').each (i, e) =>
       $(e).removeAttr('hidden')
-    return username
+    return
 
   ### Initialization ###
   init = ->
     # Check for logged in user and callback to change UI accordingly
-    me = checkWhoami displayAsUser
+    checkWhoami displayAsUser
     return
 
+  ### Create a jQuery plugin to consume the ReactJs object ###
   $.fn.bonmotReact = (rjs) ->
 
+    # Clear items in the react object
     clearState = () ->
       rjs.setState
         items: []
 
+    # Update the state using the given data object
     updateState = (data) ->
-      items = rjs.state.items
+
+      # Force the data into an iterateable array
       dataArray = if !$.isArray(data) then [ data ] else data
 
+      # Get the current state from the rjs object
+      items = rjs.state.items
+
+      # Iterate the provided data and prepend to the rjs state object
+      # Iterate in reverse to handle old records first in order to
+      # unshift new records into the top
       for i in [dataArray.length - 1..0] by -1
+
         dataArrayItem = dataArray[i]
+
+        # Unshift here because we always want to insert new records onthe top
         items.unshift
           text: dataArrayItem.text,
           username: dataArrayItem.username,
           createdOn: new Date dataArrayItem.createdOn
 
+      # Re-set the rjs state object with the newly unshifted entries
       rjs.setState
         items: items
 
@@ -97,6 +113,7 @@
 
       return
 
+    ### Handle the on search submit event ###
     onSearchSubmit = (e) ->
 
       e.preventDefault()
@@ -118,9 +135,10 @@
         return
 
       ws.onclose = (e) ->
+        # TODO: Could probably warn the user that we've been disconnected
         return
 
-      # Close the websocket if a new search is submitted
+      # Close the websocket if a new search is submitted, also clear the current state
       $('form#search button').one 'click', () ->
         clearState()
         ws.close()
@@ -129,11 +147,17 @@
       return
 
 
+    ### Event hooks for driving functionality ###
+
+    # Handle a new bonmot submission
     $('#new-message button').on 'click', onNewMessageSubmit
+
+    # Handle a new search submission
     $('#search button').on 'click', onSearchSubmit
 
     return this
 
+  # Handle the logout form
   $('a#logout').on 'click', onLogoutSubmit
 
   ### Entry Point ###

@@ -6,7 +6,6 @@ import akka.actor.UntypedActor;
 import hubs.BonMotHub;
 import hubs.BonMotHubListener;
 import models.BonMot;
-import play.Logger;
 import play.libs.Json;
 import services.BonMotService;
 
@@ -58,17 +57,17 @@ public class LiveSearchResultsActor extends UntypedActor {
         this.token = token;
         this.out = out;
 
-        // Get initial search results
         BonMotService bmsvc = new BonMotService();
         List<BonMot> mots;
+
+        // Check for a user based search
         if (token.startsWith("@")) {
+            // Return latest for user
             mots = bmsvc.getLatestForUser(token.substring(1));
         } else {
-            if (token.startsWith("#")) {
-                mots = bmsvc.getLatestForTag(token.substring(1));
-            } else {
-                mots = bmsvc.getLatestForTag(token);
-            }
+            // Default to a pith based search
+            String subtoken = token.charAt(0) == '#' ? token.substring(1) : token;
+            mots = bmsvc.getLatestForTag(subtoken);
         }
 
         // Send the immediate search results as a list
@@ -77,19 +76,23 @@ public class LiveSearchResultsActor extends UntypedActor {
         // Prepare delegate for live updates
         this.listener = (e) -> {
             boolean canReturn = false;
+            // Handle a user based submission
             if (token.charAt(0) == '@') {
-                Logger.info("Checking that {} is {}", e.username, token);
+                // Check the user matches the token
                 if (e.username.equals(token.substring(1))) {
                     canReturn = true;
                 }
+            // Otherwise, default to a pith based search
             } else if (e.piths != null && !e.piths.isEmpty()) {
+                // Check the prefix and resolve to a normalized search
                 String subToken = token.charAt(0) == '#' ? token.substring(1) : token;
-                Logger.info("Checking that {} contains {}", String.join(", ", e.piths), subToken);
+                // check the piths contain the token
                 if (e.piths.contains(subToken)) {
                     canReturn = true;
                 }
             }
 
+            // Return the JSON representation of the bonmot post to the current websocket client
             if (canReturn) out.tell(e.toJSONString(), self());
 
         };
@@ -100,13 +103,11 @@ public class LiveSearchResultsActor extends UntypedActor {
 
     @Override
     public void onReceive(Object message) throws Exception {
-        // ignored
+        // ignored since we aren't sending anything from the client
     }
 
     @Override
     public void postStop() throws Exception {
-
         BonMotHub.getInstance().removeListener(this.listener);
-
     }
 }

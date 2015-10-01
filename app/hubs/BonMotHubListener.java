@@ -7,6 +7,10 @@ import models.BonMot;
  */
 public interface BonMotHubListener {
 
+    /**
+     * To be implemented anonymously with J8 lambda delegate.
+     * @param bonMot
+     */
     void processBonMot(BonMot bonMot);
 
 }

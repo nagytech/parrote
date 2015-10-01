@@ -16,10 +16,10 @@ public class LiveSearch extends Controller {
      * @param search
      * @return
      */
-    public static WebSocket<String> connect(String search) {
+    public static WebSocket<String> connect(String q) {
 
         // Let Akka create the actor and return the WebSocket instance
-        return WebSocket.<String>withActor((out) -> LiveSearchResultsActor.props(search, out));
+        return WebSocket.<String>withActor((out) -> LiveSearchResultsActor.props(q, out));
 
     }
 

@@ -33,7 +33,7 @@ public class Profile extends BaseController {
 
         User user = getUser();
         BonMotService service = new BonMotService();
-        List<models.BonMot> mots = service.getLatestForUser(user);
+        List<models.BonMot> mots = service.getLatestForUser(user.username);
 
         return ok(profile.render(user.username, true, mots));
 
@@ -64,7 +64,7 @@ public class Profile extends BaseController {
             ownProfile = user.email.equalsIgnoreCase(session().get("email"));
             // TODO: Pagination
             BonMotService bonMotService = new BonMotService();
-            mots = bonMotService.getLatestForUser(user);
+            mots = bonMotService.getLatestForUser(user.username);
         }
 
         return ok(profile.render(nameCheck, ownProfile, mots));

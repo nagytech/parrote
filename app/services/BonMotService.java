@@ -91,18 +91,18 @@ public class BonMotService {
     /**
      * Get the latest bonmots for the given user
      *
+     * - NOTE: username should not start with @
+     *
      * @param user - user to search by
      * @return
      */
-    public List<BonMot> getLatestForUser(User user) {
-
-        ObjectId userId = (ObjectId) user.get_id();
+    public List<BonMot> getLatestForUser(String username) {
 
         List<BonMot> mots = bonMotRepository
-                .find(new BasicDBObject("$query", new BasicDBObject("userId", userId))
+                .find(new BasicDBObject("$query", new BasicDBObject("username", username))
                         .append("$orderby", new BasicDBObject("createdOn", -1)).toString());
 
-        Logger.debug("Found [{}] bonmots for userId [{}]", mots.size(), userId);
+        Logger.debug("Found [{}] bonmots for username [{}]", mots.size(), username);
 
         return mots;
     }

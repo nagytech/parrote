@@ -1,17 +1,9 @@
 package models;
 
-import com.avaje.ebean.ExpressionList;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import org.bson.types.ObjectId;
 import play.Logger;
-import play.data.validation.Constraints;
+import play.libs.Json;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -52,4 +44,11 @@ public class BonMot extends ModelBase {
         return m;
     }
 
+    /**
+     * Returns this object as a JSON String
+     * @return
+     */
+    public String toJSONString() {
+        return Json.toJson(this).toString();
+    }
 }

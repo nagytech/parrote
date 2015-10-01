@@ -5,6 +5,13 @@ import akka.actor.Props;
 import akka.actor.UntypedActor;
 import hubs.BonMotHub;
 import hubs.BonMotHubListener;
+import models.BonMot;
+import play.Logger;
+import play.libs.Json;
+import services.BonMotService;
+import services.UserService;
+
+import java.util.List;
 
 /**
  * Created by jnagy on 30/09/15.
@@ -52,8 +59,26 @@ public class LiveSearchResultsActor extends UntypedActor {
         this.token = token;
         this.out = out;
 
-        this.listener = (e) -> out.tell(e, self());
+        // Get initial search results
+        BonMotService bmsvc = new BonMotService();
+        List<BonMot> mots = null;
+        String subtoken = token.substring(1);
+        if (token.startsWith("@")) {
+            mots = bmsvc.getLatestForUser(subtoken);
+        } else {
+            mots = bmsvc.getLatestForTag(subtoken);
+        }
 
+        // Send the immediate search results as a list
+        out.tell(Json.toJson(mots).asText(), self());
+
+        // Prepare delegate for live updates
+        this.listener = (e) -> {
+            out.tell(e.toJSONString(), self());
+            Logger.info("Sending");
+        };
+
+        // Add listener delegate to the hub
         BonMotHub.getInstance().addListener(this.listener);
     }
 

@@ -1,12 +1,6 @@
 package repositories;
 
-import com.avaje.ebean.ExpressionList;
-import com.mongodb.BasicDBObject;
 import models.BonMot;
-import models.User;
-import play.Logger;
-
-import java.util.List;
 
 /**
  * Repository for BonMot CRUD operations

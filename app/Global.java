@@ -1,19 +1,8 @@
-import com.avaje.ebean.Ebean;
-import db.MongoConnection;
-import factories.MongoConnectionFactory;
 import models.User;
 import play.Application;
 import play.GlobalSettings;
-import play.Logger;
-import play.libs.Yaml;
-import play.mvc.Action;
-import play.mvc.Http;
-import repositories.UserRepository;
 import services.BonMotService;
 import services.UserService;
-
-import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * GlobalSettings extension

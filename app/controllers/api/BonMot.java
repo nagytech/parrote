@@ -56,14 +56,14 @@ public class BonMot extends BaseController {
 
     public Result byUser(String username) {
 
+        // Check that the user exists before returning result
         UserService userService = new UserService();
-
-        User user = userService.findByUsername(username);
-        if (user == null)
+        if (userService.findByUsername(username) == null)
             return notFound();
 
-        java.util.List<models.BonMot> bonMots = uow.getBonMotService().getLatestForUser(user);
-        return ok(Json.prettyPrint(Json.toJson(bonMots)));
+        // Get the latest set of mots and return as Json
+        java.util.List<models.BonMot> bonMots = uow.getBonMotService().getLatestForUser(username);
+        return ok(Json.toJson(bonMots));
 
     }
 

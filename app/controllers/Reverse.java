@@ -18,7 +18,8 @@ public class Reverse extends Controller {
                         routes.javascript.Secure.authenticate(),
                         routes.javascript.Secure.login(),
                         routes.javascript.Secure.register(),
-                        routes.javascript.Secure.signup()
+                        routes.javascript.Secure.signup(),
+                        routes.javascript.LiveSearch.connect()
                 ));
     }
 }

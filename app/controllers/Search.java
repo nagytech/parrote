@@ -44,7 +44,7 @@ public class Search extends BaseController {
                 if (user == null)
                     return ok(search.render(q, true, mots, "User not found."));
                 // Get user's recent bonmots
-                return ok(search.render(q, true, uow.getBonMotService().getLatestForUser(user), "No results."));
+                return ok(search.render(q, true, uow.getBonMotService().getLatestForUser(user.username), "No results."));
             // Check for prefix that denotes pith search
             } else if (q.startsWith("#")) {
                 // assume hash

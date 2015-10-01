@@ -1,6 +1,7 @@
 package hubs;
 
 import models.BonMot;
+import play.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;

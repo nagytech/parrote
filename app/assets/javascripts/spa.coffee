@@ -58,6 +58,27 @@
   onSearchSubmit = (e) ->
     e.preventDefault()
 
+    # Init the ws based on search parameter
+    ws = new WebSocket jsRoutes.controllers.LiveSearch.connect($('form#search input').val()).webSocketURL()
+
+    # Handle error
+    ws.onError = (e) ->
+      return
+
+    # Handle incoming message
+    ws.onMessage = (e) ->
+      console.log e
+      return
+
+    # Handle the ws open
+    ws.onOpen = (e) ->
+      return
+
+    # Close the websocket if a new search is submitted
+    $('form#search button').one 'click', () ->
+      ws.close()
+      return
+
     return
 
   onLogoutSubmit = ->
@@ -83,7 +104,6 @@
   $('a#logout').on 'click', onLogoutSubmit
 
   ### Entry Point ###
-
   init()
   return
 

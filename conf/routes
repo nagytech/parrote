@@ -36,7 +36,7 @@ GET         /search                     @controllers.Search.index(q: String ?= "
 GET         /spa                        controllers.SinglePage.index()
 
 # WS
-GET         /ws/search                  controllers.LiveSearch.connect(search: String)
+GET         /ws/search                  controllers.LiveSearch.connect(q: String)
 
 # API
 POST        /api/postmessage            @controllers.api.BonMot.create()

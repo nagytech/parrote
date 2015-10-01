@@ -3,7 +3,7 @@ var mountNode = document.getElementById('bonmots')
 var BonMotItem = React.createClass({
     render: function() {
         return (
-            // TODO: CSS 
+            // TODO: CSS
             <div className="bonmot-item">
                 <div className="bonmot-text">
                     {this.props.item.text}
@@ -26,6 +26,8 @@ var BonMotList = React.createClass({
     componentDidMount: function() {
 
         // TODO: Set state when user clicks the search button
+
+        var bmr = $('body').bonmotReact(this);
 
         /* Something like this.... */
         //

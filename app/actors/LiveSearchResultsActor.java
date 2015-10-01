@@ -9,7 +9,6 @@ import models.BonMot;
 import play.Logger;
 import play.libs.Json;
 import services.BonMotService;
-import services.UserService;
 
 import java.util.List;
 
@@ -69,8 +68,10 @@ public class LiveSearchResultsActor extends UntypedActor {
             mots = bmsvc.getLatestForTag(subtoken);
         }
 
+        Logger.info("Found {} bonmots", mots.size());
+
         // Send the immediate search results as a list
-        out.tell(Json.toJson(mots).asText(), self());
+        out.tell(Json.toJson(mots).toString(), self());
 
         // Prepare delegate for live updates
         this.listener = (e) -> {

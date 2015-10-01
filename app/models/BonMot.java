@@ -1,8 +1,7 @@
 package models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.bson.types.ObjectId;
-import play.Logger;
 import play.libs.Json;
 
 import java.util.List;
@@ -14,6 +13,7 @@ import java.util.regex.Pattern;
  *
  * An instance of a user's message within the system
  */
+@JsonIgnoreProperties({"_id", "partialObject", "userId"})
 public class BonMot extends ModelBase {
 
     /**
@@ -23,7 +23,6 @@ public class BonMot extends ModelBase {
     /**
      * User object _id
      */
-    @JsonIgnore
     public ObjectId userId;
     /**
      * Username - (denormalized)

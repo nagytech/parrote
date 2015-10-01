@@ -1,5 +1,6 @@
 package services;
 
+import com.google.common.html.HtmlEscapers;
 import com.mongodb.BasicDBObject;
 import hubs.BonMotHub;
 import models.BonMot;
@@ -8,6 +9,7 @@ import org.bson.types.ObjectId;
 import play.Logger;
 import repositories.BonMotRepository;
 
+import javax.swing.text.html.HTML;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -39,7 +41,7 @@ public class BonMotService {
         // Create a new bonmot and transform the data
         models.BonMot newMot = new models.BonMot();
         newMot.userId = (ObjectId) user.get_id();
-        newMot.text = text;
+        newMot.text = HtmlEscapers.htmlEscaper().escape(text); // NOTE: Escaping HTML here to prevent XSS
         newMot.username = user.username;
         newMot.piths = new ArrayList<>();
 

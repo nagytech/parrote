@@ -41,7 +41,7 @@ public class BonMotService {
         // Create a new bonmot and transform the data
         models.BonMot newMot = new models.BonMot();
         newMot.userId = (ObjectId) user.get_id();
-        newMot.text = HtmlEscapers.htmlEscaper().escape(text); // NOTE: Escaping HTML here to prevent XSS
+        newMot.text = HtmlEscapers.htmlEscaper().escape(text);
         newMot.username = user.username;
         newMot.piths = new ArrayList<>();
 

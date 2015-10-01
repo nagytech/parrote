@@ -6,7 +6,6 @@ import akka.actor.UntypedActor;
 import hubs.BonMotHub;
 import hubs.BonMotHubListener;
 import models.BonMot;
-import play.Logger;
 import play.libs.Json;
 import services.BonMotService;
 
@@ -60,23 +59,36 @@ public class LiveSearchResultsActor extends UntypedActor {
 
         // Get initial search results
         BonMotService bmsvc = new BonMotService();
-        List<BonMot> mots = null;
-        String subtoken = token.substring(1);
+        List<BonMot> mots;
         if (token.startsWith("@")) {
-            mots = bmsvc.getLatestForUser(subtoken);
+            mots = bmsvc.getLatestForUser(token.substring(1));
         } else {
-            mots = bmsvc.getLatestForTag(subtoken);
+            if (token.startsWith("#")) {
+                mots = bmsvc.getLatestForTag(token.substring(1));
+            } else {
+                mots = bmsvc.getLatestForTag(token);
+            }
         }
-
-        Logger.info("Found {} bonmots", mots.size());
 
         // Send the immediate search results as a list
         out.tell(Json.toJson(mots).toString(), self());
 
         // Prepare delegate for live updates
         this.listener = (e) -> {
-            out.tell(e.toJSONString(), self());
-            Logger.info("Sending");
+            try {
+
+                if (
+                        (token.charAt(0) == '@' && !e.username.equals(token.substring(1))) ||
+                                (e.piths == null || e.piths.isEmpty()) ||
+                                        (token.charAt(0) == '#' && e.piths.contains(token.substring(1)) ||
+                                                e.piths.contains(token)
+                                        )
+                        )
+                    return;
+                out.tell(e.toJSONString(), self());
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
         };
 
         // Add listener delegate to the hub

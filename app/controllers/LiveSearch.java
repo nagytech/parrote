@@ -13,7 +13,7 @@ public class LiveSearch extends Controller {
 
     /**
      * Connect and open a new WebSocket with the client
-     * @param search
+     * @param q
      * @return
      */
     public static WebSocket<String> connect(String q) {

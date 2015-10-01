@@ -1,5 +1,7 @@
 (($) ->
 
+  me = ''
+
   ### Check if we are logged in as a user ###
   checkWhoami = (callback) ->
     $.ajax
@@ -20,37 +22,47 @@
     # Iterate each hidden element and remove the hidden attribute
     $('[data-state=logged-in][hidden]').each (i, e) =>
       $(e).removeAttr('hidden')
-    return
+    return username
 
   ### Initialization ###
   init = ->
     # Check for logged in user and callback to change UI accordingly
-    checkWhoami displayAsUser
+    me = checkWhoami displayAsUser
     return
 
   $.fn.bonmotReact = (rjs) ->
 
-    updateState = (source, data) ->
-      # TODO: If WS is connected, then disconnect the rjs updates (otherwise we get dupes)
+    clearState = () ->
+      rjs.setState
+        items: []
+
+    updateState = (data) ->
       items = rjs.state.items
-      items.push
-        text: data.text,
-        username: data.username,
-        createdOn: new Date data.createdOn
+      dataArray = if !$.isArray(data) then [ data ] else data
+
+      for i in [dataArray.length - 1..0] by -1
+        dataArrayItem = dataArray[i]
+        items.unshift
+          text: dataArrayItem.text,
+          username: dataArrayItem.username,
+          createdOn: new Date dataArrayItem.createdOn
+
       rjs.setState
         items: items
+
       return
 
-    ### Submit a new bonmot to the server and update the local UI ###
+    ### Submit a new bonmot to the server ###
     submitBonMot = (text, callback) ->
       # Call to api to post message
       $.ajax
         url: '/api/postmessage'
         data: message: text
         type: 'POST'
-      # On Success, update the UI
+      # On Success
       .done (data) ->
-        updateState 'post', data
+        # NOTE: No requirement to update the UI from here
+        # Only update the UI if it matches the search results AND if a WS is open
         callback true
         return
       # On failure, popup a warning.
@@ -86,6 +98,7 @@
       return
 
     onSearchSubmit = (e) ->
+
       e.preventDefault()
 
       # Init the ws based on search parameter
@@ -96,16 +109,20 @@
         return
 
       # Handle incoming message
-      ws.onMessage = (e) ->
-        console.log e
+      ws.onmessage = (e) ->
+        updateState JSON.parse(e.data)
         return
 
       # Handle the ws open
-      ws.onOpen = (e) ->
+      ws.onopen = (e) ->
+        return
+
+      ws.onclose = (e) ->
         return
 
       # Close the websocket if a new search is submitted
       $('form#search button').one 'click', () ->
+        clearState()
         ws.close()
         return
 

@@ -7,6 +7,6 @@ import models.BonMot;
  */
 public interface BonMotHubListener {
 
-    public void processBonMot(BonMot bonMot);
+    void processBonMot(BonMot bonMot);
 
 }

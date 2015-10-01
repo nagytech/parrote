@@ -1,14 +1,12 @@
 package controllers;
 
-import models.Session;
 import models.User;
+import play.Logger;
 import play.data.Form;
 import play.mvc.Result;
 import play.mvc.Security;
 import repositories.UnitOfWork;
 import security.Authenticator;
-import services.BonMotService;
-import services.SessionStateService;
 
 import javax.inject.Inject;
 
@@ -46,6 +44,9 @@ public class BonMot extends BaseController {
         // Prepare data for the bonmot service
         User user = getUser();
         String text = postMot.text;
+
+        Logger.info("Creating mot");
+        Logger.info(postMot.text);
 
         // Create new bonmot
         uow.getBonMotService().create(user, text);

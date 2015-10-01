@@ -1,7 +1,6 @@
 package hubs;
 
 import models.BonMot;
-import play.Logger;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -42,8 +41,6 @@ public class BonMotHub {
      * @param bonMot
      */
     public void send(BonMot bonMot) {
-
-        // TODO: The scaleable solution would be to filter here instead of asking the listeners to filter themselves.
 
         for (BonMotHubListener listener : listeners) {
             listener.processBonMot(bonMot);

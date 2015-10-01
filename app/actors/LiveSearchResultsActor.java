@@ -82,7 +82,7 @@ public class LiveSearchResultsActor extends UntypedActor {
                 }
             } else {
                 String subToken = token.charAt(0) == '#' ? token.substring(1) : token;
-                if (!e.piths.contains(subToken)) {
+                if (e.piths.contains(subToken)) {
                     canReturn = true;
                 }
             }

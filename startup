@@ -1,9 +1,14 @@
 PORT=50084
+DB=comp391_jnagy
 
+# Drop existing database for jnagy
+mongo $DB --eval "db.dropDatabase()" > /dev/null
+
+# Shutdown existing instance if live
 ./shutdown
 
 # Compile for prod
 sbt clean compile stage
 
-# Startup on port and evolve
-./target/universal/stage/bin/parrote -Dhttp.port=$PORT -Dplay.evolutions.db.default.autoApply=true &
+# Startup on port
+./target/universal/stage/bin/parrote -Dhttp.port=$PORT &

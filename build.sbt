@@ -18,3 +18,5 @@ libraryDependencies ++= Seq(
   "org.mindrot" % "jbcrypt" % "0.3m",
   "org.mongodb" % "mongo-java-driver" % "3.0.3",
   "org.jongo" % "jongo" % "1.2")
+
+pipelineStages := Seq(rjs)

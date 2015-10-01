@@ -11,6 +11,7 @@
         <script src='@routes.Assets.at("lib/react/react.js")'></script>
         <script type='text/javascript' src='@routes.Reverse.jsRoutes'></script>
 
+        <script src='@routes.Assets.at("javascripts/spa-react.js")' defer></script>
         <script src='@routes.Assets.at("javascripts/spa.js")' defer></script>
 
     </head>
@@ -66,7 +67,12 @@
                 </div>
             </div>
 
-                <!-- TODO: React loading of messages -->
+            <div class="row">
+                <div class="col-sm-4"></div>
+                <div id="bonmots" class="col-sm-4">
+                    <!-- Here be ReactJS -->
+                </div>
+            </div>
 
         </div>
 

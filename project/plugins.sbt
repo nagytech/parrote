@@ -15,4 +15,5 @@ addSbtPlugin("com.typesafe.sbt" % "sbt-jshint" % "1.0.3")
 // RequireJS
 addSbtPlugin("com.typesafe.sbt" % "sbt-rjs" % "1.0.7")
 
+addSbtPlugin("com.github.ddispaltro" % "sbt-reactjs" % "0.5.2")
 

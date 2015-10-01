@@ -6,6 +6,7 @@ import akka.actor.UntypedActor;
 import hubs.BonMotHub;
 import hubs.BonMotHubListener;
 import models.BonMot;
+import play.Logger;
 import play.libs.Json;
 import services.BonMotService;
 
@@ -77,11 +78,13 @@ public class LiveSearchResultsActor extends UntypedActor {
         this.listener = (e) -> {
             boolean canReturn = false;
             if (token.charAt(0) == '@') {
+                Logger.info("Checking that {} is {}", e.username, token);
                 if (e.username.equals(token.substring(1))) {
                     canReturn = true;
                 }
-            } else {
+            } else if (e.piths != null && !e.piths.isEmpty()) {
                 String subToken = token.charAt(0) == '#' ? token.substring(1) : token;
+                Logger.info("Checking that {} contains {}", String.join(", ", e.piths), subToken);
                 if (e.piths.contains(subToken)) {
                     canReturn = true;
                 }

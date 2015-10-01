@@ -1,15 +1,6 @@
 package models;
 
-import com.avaje.ebean.Model;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.joda.time.DateTime;
-import org.mindrot.jbcrypt.BCrypt;
-import play.Logger;
-import play.data.validation.Constraints;
-
-import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 

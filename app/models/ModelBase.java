@@ -1,16 +1,16 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.mongodb.ReflectionDBObject;
 import org.bson.types.ObjectId;
 import org.joda.time.DateTime;
 
 import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  *  Base class for mongodb persistence
  */
+@JsonIgnoreProperties({"_id", "partialObject"})
 public class ModelBase extends ReflectionDBObject {
 
     // Date created

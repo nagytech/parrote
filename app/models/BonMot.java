@@ -1,5 +1,6 @@
 package models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.bson.types.ObjectId;
 import play.Logger;
 import play.libs.Json;
@@ -22,6 +23,7 @@ public class BonMot extends ModelBase {
     /**
      * User object _id
      */
+    @JsonIgnore
     public ObjectId userId;
     /**
      * Username - (denormalized)
